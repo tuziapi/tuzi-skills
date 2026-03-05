@@ -17,6 +17,25 @@ Multi-provider image generation. Default provider: Tuzi (兔子API, api.tu-zi.co
 
 **CRITICAL**: This step MUST complete BEFORE any image generation. Do NOT skip or defer.
 
+### 0.1 Check API Key
+
+Check if the selected provider's API key is available. For Tuzi (default):
+
+```bash
+# Check env, then .tuzi-skills/.env files
+echo "${TUZI_API_KEY:-not_set}"
+grep -s TUZI_API_KEY .tuzi-skills/.env "$HOME/.tuzi-skills/.env"
+```
+
+| Result | Action |
+|--------|--------|
+| Key found | Continue to Step 0.2 |
+| Key NOT found | ⛔ Run API key setup (see [references/config/first-time-setup.md](references/config/first-time-setup.md) → "API Key Setup") → Store key → Then continue |
+
+**CRITICAL**: If API key is missing, MUST guide user to obtain and store it BEFORE any generation. Generation is BLOCKED until key is configured.
+
+### 0.2 Check EXTEND.md
+
 Check EXTEND.md existence (priority: project → user):
 
 ```bash

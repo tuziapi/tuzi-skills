@@ -8,8 +8,73 @@ description: First-time setup and default model selection flow for tuzi-image-ge
 ## Overview
 
 Triggered when:
-1. No EXTEND.md found → full setup (provider + model + preferences)
-2. EXTEND.md found but `default_model.[provider]` is null → model selection only
+1. API key missing for selected provider → API key setup
+2. No EXTEND.md found → full setup (provider + model + preferences)
+3. EXTEND.md found but `default_model.[provider]` is null → model selection only
+
+## API Key Setup
+
+**Triggered when**: Provider's API key is not found in env, `.tuzi-skills/.env`, or `~/.tuzi-skills/.env`.
+
+**Language**: Use user's input language or saved language preference.
+
+### Step 1: Guide user to obtain API key
+
+For Tuzi (default provider), display:
+
+```
+TUZI_API_KEY 未配置。请先获取 API Key：
+
+1. 打开 https://api.tu-zi.com/token 创建并获取 API Key
+2. 视频教程：https://www.bilibili.com/video/BV1k4PqzPEKz/
+```
+
+For other providers, display the corresponding key setup URL:
+- Google: `GOOGLE_API_KEY` — https://aistudio.google.com/apikey
+- OpenAI: `OPENAI_API_KEY` — https://platform.openai.com/api-keys
+- DashScope: `DASHSCOPE_API_KEY` — https://dashscope.console.aliyun.com/apiKey
+- Replicate: `REPLICATE_API_TOKEN` — https://replicate.com/account/api-tokens
+
+### Step 2: Ask user for API key
+
+Use AskUserQuestion:
+
+```yaml
+header: "API Key"
+question: "请输入你的 API Key（输入后将安全存储到本地 .env 文件）："
+```
+
+### Step 3: Ask save location (if no .env exists yet)
+
+```yaml
+header: "Save Location"
+question: "API Key 保存位置？"
+options:
+  - label: "Project (Recommended)"
+    description: ".tuzi-skills/.env (仅当前项目)"
+  - label: "User"
+    description: "~/.tuzi-skills/.env (所有项目共享)"
+```
+
+### Step 4: Store API key
+
+1. Create directory if needed: `mkdir -p <chosen-path>/.tuzi-skills`
+2. Append key to `.env` file (do NOT overwrite existing content):
+   ```bash
+   echo "TUZI_API_KEY=<user-provided-key>" >> <chosen-path>/.tuzi-skills/.env
+   ```
+3. Confirm to user: "API Key 已保存到 `<full-path>/.tuzi-skills/.env`"
+4. Set the key in current process env so generation can proceed immediately
+
+### Provider-specific env var names
+
+| Provider | Env Variable | Obtain URL |
+|----------|-------------|------------|
+| Tuzi | `TUZI_API_KEY` | https://api.tu-zi.com/token |
+| Google | `GOOGLE_API_KEY` | https://aistudio.google.com/apikey |
+| OpenAI | `OPENAI_API_KEY` | https://platform.openai.com/api-keys |
+| DashScope | `DASHSCOPE_API_KEY` | https://dashscope.console.aliyun.com/apiKey |
+| Replicate | `REPLICATE_API_TOKEN` | https://replicate.com/account/api-tokens |
 
 ## Setup Flow
 

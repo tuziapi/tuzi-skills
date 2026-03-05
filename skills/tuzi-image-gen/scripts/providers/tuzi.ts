@@ -106,7 +106,7 @@ export async function generateImage(
   args: CliArgs
 ): Promise<Uint8Array> {
   const apiKey = getApiKey();
-  if (!apiKey) throw new Error("TUZI_API_KEY is required. Get one at https://api.tu-zi.com");
+  if (!apiKey) throw new Error("TUZI_API_KEY is required. Get one at https://api.tu-zi.com/token (video tutorial: https://www.bilibili.com/video/BV1k4PqzPEKz/)");
 
   const baseURL = getBaseUrl();
 
