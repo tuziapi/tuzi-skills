@@ -1,6 +1,6 @@
 ---
 name: tuzi-danger-x-to-markdown
-description: Converts X (Twitter) tweets and articles to markdown with YAML front matter. Uses reverse-engineered API requiring user consent. Use when user mentions "X to markdown", "tweet to markdown", "save tweet", or provides x.com/twitter.com URLs for conversion.
+description: 将 X (Twitter) 推文和文章转换为带 YAML front matter 的 Markdown。使用逆向工程 API，需要用户同意。当用户提到"X转markdown"、"保存推文"、或提供 x.com/twitter.com 链接时使用。
 ---
 
 # X to Markdown

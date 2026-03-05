@@ -1,6 +1,6 @@
 ---
 name: tuzi-image-gen
-description: AI image generation via Tuzi API (nano-banana models), Google, OpenAI, DashScope and Replicate. Supports text-to-image, reference images, aspect ratios, model selection. Use when user asks to generate, create, or draw images.
+description: 通过兔子API（nano-banana 模型）、Google、OpenAI、DashScope 和 Replicate 进行 AI 图片生成。支持文生图、参考图片、宽高比、模型选择。当用户要求生成、创建或绘制图片时使用。
 ---
 
 # Image Generation (AI SDK)

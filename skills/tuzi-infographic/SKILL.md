@@ -1,6 +1,6 @@
 ---
 name: tuzi-infographic
-description: Generates professional infographics with 21 layout types and 20 visual styles. Analyzes content, recommends layout×style combinations, and generates publication-ready infographics. Use when user asks to create "infographic", "信息图", "visual summary", "可视化", or "高密度信息大图".
+description: 生成专业信息图，包含 21 种布局类型和 20 种视觉风格。分析内容，推荐布局×风格组合，生成可发布的信息图。当用户要求创建"信息图"、"可视化"、"高密度信息大图"、"visual summary"时使用。
 ---
 
 # Infographic Generator

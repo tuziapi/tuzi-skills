@@ -1,6 +1,6 @@
 ---
 name: tuzi-url-to-markdown
-description: Fetch any URL and convert to markdown using Chrome CDP. Supports two modes - auto-capture on page load, or wait for user signal (for pages requiring login). Use when user wants to save a webpage as markdown.
+description: 通过 Chrome CDP 抓取任意 URL 并转换为 Markdown。支持两种模式——页面加载后自动抓取，或等待用户信号（适用于需要登录的页面）。当用户要求将网页保存为 Markdown 时使用。
 ---
 
 # URL to Markdown

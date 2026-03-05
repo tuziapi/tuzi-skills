@@ -1,6 +1,6 @@
 ---
 name: tuzi-markdown-to-html
-description: Converts Markdown to styled HTML with WeChat-compatible themes. Supports code highlighting, math, PlantUML, footnotes, alerts, and infographics. Use when user asks for "markdown to html", "convert md to html", "md转html", or needs styled HTML output from markdown.
+description: 将 Markdown 转换为带样式的 HTML，支持微信公众号兼容主题。支持代码高亮、数学公式、PlantUML、脚注、提示框和信息图。当用户要求 "markdown to html"、"md转html"、"转换为html" 时使用。
 ---
 
 # Markdown to HTML Converter

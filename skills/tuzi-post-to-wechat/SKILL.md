@@ -1,6 +1,6 @@
 ---
 name: tuzi-post-to-wechat
-description: Posts content to WeChat Official Account (微信公众号) via API or Chrome CDP. Supports article posting (文章) with HTML, markdown, or plain text input, and image-text posting (贴图, formerly 图文) with multiple images. Use when user mentions "发布公众号", "post to wechat", "微信公众号", or "贴图/图文/文章".
+description: 通过 API 或 Chrome CDP 发布内容到微信公众号。支持文章发布（HTML、Markdown 或纯文本输入）和图文消息发布（多图）。当用户提到"发布公众号"、"微信公众号"、"贴图"、"图文"、"文章"时使用。
 ---
 
 # Post to WeChat Official Account

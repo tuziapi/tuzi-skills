@@ -1,6 +1,6 @@
 ---
 name: tuzi-article-illustrator
-description: Analyzes article structure, identifies positions requiring visual aids, generates illustrations with Type × Style two-dimension approach. Use when user asks to "illustrate article", "add images", "generate images for article", or "为文章配图".
+description: 分析文章结构，识别需要配图的位置，通过类型×风格二维方法生成插图。当用户要求"为文章配图"、"添加插图"、"生成文章图片"时使用。
 ---
 
 # Article Illustrator

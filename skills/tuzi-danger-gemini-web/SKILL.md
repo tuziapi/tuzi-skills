@@ -1,6 +1,6 @@
 ---
 name: tuzi-danger-gemini-web
-description: Generates images and text via reverse-engineered Gemini Web API. Supports text generation, image generation from prompts, reference images for vision input, and multi-turn conversations. Use when other skills need image generation backend, or when user requests "generate image with Gemini", "Gemini text generation", or needs vision-capable AI generation.
+description: 通过逆向工程的 Gemini Web API 生成图片和文本。支持文本生成、提示词生图、参考图片视觉输入和多轮对话。当其他技能需要图片生成后端，或用户要求"用Gemini生成图片"、"Gemini文本生成"时使用。
 ---
 
 # Gemini Web Client

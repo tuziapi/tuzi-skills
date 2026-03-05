@@ -1,6 +1,6 @@
 ---
 name: tuzi-slide-deck
-description: Generates professional slide deck images from content. Creates outlines with style instructions, then generates individual slide images. Use when user asks to "create slides", "make a presentation", "generate deck", "slide deck", or "PPT".
+description: 从内容生成专业幻灯片图片。创建带风格说明的大纲，然后逐张生成幻灯片图片。当用户要求"创建幻灯片"、"做PPT"、"生成演示文稿"、"slide deck"时使用。
 ---
 
 # Slide Deck Generator

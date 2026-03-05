@@ -1,6 +1,6 @@
 ---
 name: tuzi-xhs-images
-description: Generates Xiaohongshu (Little Red Book) infographic series with 10 visual styles and 8 layouts. Breaks content into 1-10 cartoon-style images optimized for XHS engagement. Use when user mentions "小红书图片", "XHS images", "RedNote infographics", "小红书种草", or wants social media infographics for Chinese platforms.
+description: 生成小红书信息图系列，包含 10 种视觉风格和 8 种布局。将内容拆分为 1-10 张卡通风格图片，针对小红书互动优化。当用户提到"小红书图片"、"XHS图片"、"小红书种草"、或需要中文社交媒体信息图时使用。
 ---
 
 # Xiaohongshu Infographic Series Generator

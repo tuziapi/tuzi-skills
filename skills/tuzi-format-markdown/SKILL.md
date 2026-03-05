@@ -1,6 +1,6 @@
 ---
 name: tuzi-format-markdown
-description: Formats plain text or markdown files with frontmatter, titles, summaries, headings, bold, lists, and code blocks. Use when user asks to "format markdown", "beautify article", "add formatting", or improve article layout. Outputs to {filename}-formatted.md.
+description: 格式化纯文本或 Markdown 文件，添加 frontmatter、标题、摘要、小标题、加粗、列表和代码块。当用户要求"格式化markdown"、"美化文章"、"添加格式"或改善文章排版时使用。输出到 {filename}-formatted.md。
 ---
 
 # Markdown Formatter

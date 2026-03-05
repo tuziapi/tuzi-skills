@@ -5,13 +5,13 @@
     "email": "liang@sydney-ai.com"
   },
   "metadata": {
-    "description": "AI content generation skills for Claude Code and OpenClaw, powered by Tuzi API (api.tu-zi.com)",
+    "description": "Claude Code / OpenClaw AI 内容生成技能集，由兔子API (api.tu-zi.com) 驱动",
     "version": "1.45.0"
   },
   "plugins": [
     {
       "name": "content-skills",
-      "description": "Content generation and publishing skills",
+      "description": "内容生成与发布技能",
       "source": "./",
       "strict": false,
       "skills": [
@@ -27,7 +27,7 @@
     },
     {
       "name": "ai-generation-skills",
-      "description": "AI-powered generation backends",
+      "description": "AI 生成后端",
       "source": "./",
       "strict": false,
       "skills": [
@@ -37,7 +37,7 @@
     },
     {
       "name": "utility-skills",
-      "description": "Utility tools for content processing",
+      "description": "内容处理工具",
       "source": "./",
       "strict": false,
       "skills": [

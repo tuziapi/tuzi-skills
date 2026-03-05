@@ -1,6 +1,6 @@
 ---
 name: tuzi-cover-image
-description: Generates article cover images with 5 dimensions (type, palette, rendering, text, mood) combining 9 color palettes and 6 rendering styles. Supports cinematic (2.35:1), widescreen (16:9), and square (1:1) aspects. Use when user asks to "generate cover image", "create article cover", or "make cover".
+description: 生成文章封面图片，包含 5 个维度（类型、色板、渲染、文字、氛围），组合 9 种色板和 6 种渲染风格。支持电影宽幅（2.35:1）、宽屏（16:9）和方形（1:1）比例。当用户要求"生成封面"、"创建文章封面"、"做封面图"时使用。
 ---
 
 # Cover Image Generator
