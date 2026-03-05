@@ -1,11 +1,11 @@
 {
-  "name": "baoyu-skills",
+  "name": "tuzi-skills",
   "owner": {
-    "name": "Jim Liu (宝玉)",
-    "email": "junminliu@gmail.com"
+    "name": "Tuzi API",
+    "email": "liang@sydney-ai.com"
   },
   "metadata": {
-    "description": "Skills shared by Baoyu for improving daily work efficiency",
+    "description": "AI content generation skills for Claude Code and OpenClaw, powered by Tuzi API (api.tu-zi.com)",
     "version": "1.45.0"
   },
   "plugins": [

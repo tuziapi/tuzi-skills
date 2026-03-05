@@ -1,8 +1,8 @@
-# baoyu-skills
+# tuzi-skills
 
 English | [中文](./README.zh.md)
 
-Skills shared by Baoyu for improving daily work efficiency with Claude Code.
+AI content generation skills for Claude Code and OpenClaw, powered by Tuzi API (api.tu-zi.com).
 
 ## Prerequisites
 
@@ -14,7 +14,7 @@ Skills shared by Baoyu for improving daily work efficiency with Claude Code.
 ### Quick Install (Recommended)
 
 ```bash
-npx skills add jimliu/baoyu-skills
+npx skills add tuziapi/tuzi-skills
 ```
 
 ### Register as Plugin Marketplace
@@ -22,7 +22,7 @@ npx skills add jimliu/baoyu-skills
 Run the following command in Claude Code:
 
 ```bash
-/plugin marketplace add jimliu/baoyu-skills
+/plugin marketplace add tuziapi/tuzi-skills
 ```
 
 ### Install Skills
@@ -30,7 +30,7 @@ Run the following command in Claude Code:
 **Option 1: Via Browse UI**
 
 1. Select **Browse and install plugins**
-2. Select **baoyu-skills**
+2. Select **tuzi-skills**
 3. Select the plugin(s) you want to install
 4. Select **Install now**
 
@@ -38,16 +38,16 @@ Run the following command in Claude Code:
 
 ```bash
 # Install specific plugin
-/plugin install content-skills@baoyu-skills
-/plugin install ai-generation-skills@baoyu-skills
-/plugin install utility-skills@baoyu-skills
+/plugin install content-skills@tuzi-skills
+/plugin install ai-generation-skills@tuzi-skills
+/plugin install utility-skills@tuzi-skills
 ```
 
 **Option 3: Ask the Agent**
 
 Simply tell Claude Code:
 
-> Please install Skills from github.com/JimLiu/baoyu-skills
+> Please install Skills from github.com/tuziapi/tuzi-skills
 
 ### Available Plugins
 
@@ -63,7 +63,7 @@ To update skills to the latest version:
 
 1. Run `/plugin` in Claude Code
 2. Switch to **Marketplaces** tab (use arrow keys or Tab)
-3. Select **baoyu-skills**
+3. Select **tuzi-skills**
 4. Choose **Update marketplace**
 
 You can also **Enable auto-update** to get the latest versions automatically.
@@ -564,26 +564,28 @@ AI-powered generation backends.
 
 #### baoyu-image-gen
 
-AI SDK-based image generation using official OpenAI, Google and DashScope (Aliyun Tongyi Wanxiang) APIs. Supports text-to-image, reference images, aspect ratios, and quality presets.
+Multi-provider AI image generation. Default provider: Tuzi API (api.tu-zi.com, nano-banana models). Also supports Google, OpenAI, DashScope and Replicate.
 
 ```bash
-# Basic generation (auto-detect provider)
+# Basic generation (uses Tuzi by default)
 /baoyu-image-gen --prompt "A cute cat" --image cat.png
 
 # With aspect ratio
 /baoyu-image-gen --prompt "A landscape" --image landscape.png --ar 16:9
 
-# High quality (2k)
+# With quality (Tuzi: 1k/2k/4k)
 /baoyu-image-gen --prompt "A banner" --image banner.png --quality 2k
 
-# Specific provider
-/baoyu-image-gen --prompt "A cat" --image cat.png --provider openai
+# 4K VIP model
+/baoyu-image-gen --prompt "A cat" --image cat.png --model gemini-3-pro-image-preview-4k-vip
 
-# DashScope (Aliyun Tongyi Wanxiang)
-/baoyu-image-gen --prompt "一只可爱的猫" --image cat.png --provider dashscope
-
-# With reference images (Google multimodal only)
+# With reference images
 /baoyu-image-gen --prompt "Make it blue" --image out.png --ref source.png
+
+# Other providers
+/baoyu-image-gen --prompt "A cat" --image cat.png --provider google
+/baoyu-image-gen --prompt "A cat" --image cat.png --provider openai
+/baoyu-image-gen --prompt "一只可爱的猫" --image cat.png --provider dashscope
 ```
 
 **Options**:
@@ -592,30 +594,42 @@ AI SDK-based image generation using official OpenAI, Google and DashScope (Aliyu
 | `--prompt`, `-p` | Prompt text |
 | `--promptfiles` | Read prompt from files (concatenated) |
 | `--image` | Output image path (required) |
-| `--provider` | `google`, `openai` or `dashscope` (default: google) |
+| `--provider` | `tuzi` (default), `google`, `openai`, `dashscope` or `replicate` |
 | `--model`, `-m` | Model ID |
 | `--ar` | Aspect ratio (e.g., `16:9`, `1:1`, `4:3`) |
-| `--size` | Size (e.g., `1024x1024`) |
-| `--quality` | `normal` or `2k` (default: normal) |
-| `--ref` | Reference images (Google multimodal only) |
+| `--size` | Size (e.g., `1024x1024`, `16x9`) |
+| `--quality` | `normal` or `2k` (default: 2k) |
+| `--imageSize` | `1K`, `2K` or `4K` (overrides quality) |
+| `--ref` | Reference images (all providers) |
+
+**Tuzi Models** (default provider):
+| Model | Alias | Notes |
+|-------|-------|-------|
+| `gemini-3.1-flash-image-preview` | nano-banana-2 | Default. `--quality` 1k/2k/4k, extended aspect ratios |
+| `gemini-3-pro-image-preview-vip` | nano-banana-pro-vip | High quality, VIP |
+| `gemini-3-pro-image-preview-2k-vip` | nano-banana-pro-2k-vip | 2K built-in, VIP |
+| `gemini-3-pro-image-preview-4k-vip` | nano-banana-pro-4k-vip | 4K built-in, VIP |
+| `gemini-2.5-flash-image-vip` | nano-banana-vip | Fastest, VIP |
 
 **Environment Variables** (see [Environment Configuration](#environment-configuration) for setup):
 | Variable | Description | Default |
 |----------|-------------|---------|
+| `TUZI_API_KEY` | Tuzi API key (https://api.tu-zi.com) | - |
+| `TUZI_IMAGE_MODEL` | Tuzi model | `gemini-3.1-flash-image-preview` |
+| `TUZI_BASE_URL` | Custom Tuzi endpoint | `https://api.tu-zi.com/v1` |
 | `OPENAI_API_KEY` | OpenAI API key | - |
 | `GOOGLE_API_KEY` | Google API key | - |
 | `DASHSCOPE_API_KEY` | DashScope API key (Aliyun) | - |
+| `REPLICATE_API_TOKEN` | Replicate API token | - |
 | `OPENAI_IMAGE_MODEL` | OpenAI model | `gpt-image-1.5` |
 | `GOOGLE_IMAGE_MODEL` | Google model | `gemini-3-pro-image-preview` |
 | `DASHSCOPE_IMAGE_MODEL` | DashScope model | `z-image-turbo` |
-| `OPENAI_BASE_URL` | Custom OpenAI endpoint | - |
-| `GOOGLE_BASE_URL` | Custom Google endpoint | - |
-| `DASHSCOPE_BASE_URL` | Custom DashScope endpoint | - |
+| `REPLICATE_IMAGE_MODEL` | Replicate model | `google/nano-banana-pro` |
 
 **Provider Auto-Selection**:
 1. If `--provider` specified → use it
 2. If only one API key available → use that provider
-3. If multiple available → default to Google
+3. If multiple available → default to Tuzi
 
 #### baoyu-danger-gemini-web
 
@@ -757,6 +771,11 @@ mkdir -p ~/.baoyu-skills
 
 # Create .env file
 cat > ~/.baoyu-skills/.env << 'EOF'
+# Tuzi API (default provider)
+TUZI_API_KEY=sk-xxx
+TUZI_IMAGE_MODEL=gemini-3.1-flash-image-preview
+# TUZI_BASE_URL=https://api.tu-zi.com/v1
+
 # OpenAI
 OPENAI_API_KEY=sk-xxx
 OPENAI_IMAGE_MODEL=gpt-image-1.5
@@ -771,6 +790,10 @@ GOOGLE_IMAGE_MODEL=gemini-3-pro-image-preview
 DASHSCOPE_API_KEY=sk-xxx
 DASHSCOPE_IMAGE_MODEL=z-image-turbo
 # DASHSCOPE_BASE_URL=https://dashscope.aliyuncs.com/api/v1
+
+# Replicate
+REPLICATE_API_TOKEN=r8_xxx
+REPLICATE_IMAGE_MODEL=google/nano-banana-pro
 EOF
 ```
 

@@ -1,11 +1,11 @@
 ---
 name: baoyu-image-gen
-description: AI image generation with OpenAI, Google, DashScope and Replicate APIs. Supports text-to-image, reference images, aspect ratios. Sequential by default; parallel generation available on request. Use when user asks to generate, create, or draw images.
+description: AI image generation via Tuzi API (nano-banana models), Google, OpenAI, DashScope and Replicate. Supports text-to-image, reference images, aspect ratios, model selection. Use when user asks to generate, create, or draw images.
 ---
 
 # Image Generation (AI SDK)
 
-Official API-based image generation. Supports OpenAI, Google, DashScope (阿里通义万象) and Replicate providers.
+Multi-provider image generation. Default provider: Tuzi (兔子API, api.tu-zi.com).
 
 ## Script Directory
 
@@ -43,35 +43,32 @@ Schema: `references/config/preferences-schema.md`
 ## Usage
 
 ```bash
-# Basic
+# Basic (uses Tuzi provider by default)
 npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image cat.png
 
 # With aspect ratio
 npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A landscape" --image out.png --ar 16:9
 
-# High quality
+# With quality (Tuzi: 1k/2k/4k)
 npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --quality 2k
+
+# 4K VIP model
+npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --model gemini-3-pro-image-preview-4k-vip
+
+# With reference images
+npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "Make it blue" --image out.png --ref source.png
 
 # From prompt files
 npx -y bun ${SKILL_DIR}/scripts/main.ts --promptfiles system.md content.md --image out.png
 
-# With reference images (Google multimodal or OpenAI edits)
-npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "Make blue" --image out.png --ref source.png
+# Async model (auto-polls)
+npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --model gemini-3-pro-image-preview-2k-async
 
-# With reference images (explicit provider/model)
-npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "Make blue" --image out.png --provider google --model gemini-3-pro-image-preview --ref source.png
-
-# Specific provider
+# Other providers
+npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --provider google
 npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --provider openai
-
-# DashScope (阿里通义万象)
 npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "一只可爱的猫" --image out.png --provider dashscope
-
-# Replicate (google/nano-banana-pro)
 npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --provider replicate
-
-# Replicate with specific model
-npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --provider replicate --model google/nano-banana
 ```
 
 ## Options
@@ -81,30 +78,101 @@ npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --provi
 | `--prompt <text>`, `-p` | Prompt text |
 | `--promptfiles <files...>` | Read prompt from files (concatenated) |
 | `--image <path>` | Output image path (required) |
-| `--provider google\|openai\|dashscope\|replicate` | Force provider (default: google) |
-| `--model <id>`, `-m` | Model ID (Google: `gemini-3-pro-image-preview`, `gemini-3.1-flash-image-preview`; OpenAI: `gpt-image-1.5`) |
-| `--ar <ratio>` | Aspect ratio (e.g., `16:9`, `1:1`, `4:3`) |
-| `--size <WxH>` | Size (e.g., `1024x1024`) |
-| `--quality normal\|2k` | Quality preset (default: 2k) |
-| `--imageSize 1K\|2K\|4K` | Image size for Google (default: from quality) |
-| `--ref <files...>` | Reference images. Supported by Google multimodal (`gemini-3-pro-image-preview`, `gemini-3-flash-preview`, `gemini-3.1-flash-image-preview`) and OpenAI edits (GPT Image models). If provider omitted: Google first, then OpenAI |
+| `--provider tuzi\|google\|openai\|dashscope\|replicate` | Force provider (default: auto-detect, Tuzi first) |
+| `--model <id>`, `-m` | Model ID (see Tuzi Models section for full list) |
+| `--ar <ratio>` | Aspect ratio (e.g., `16:9`, `1:1`, `4:3`). Tuzi converts to `NxN` format |
+| `--size <WxH>` | Size override (e.g., `1024x1024`, `16x9`) |
+| `--quality normal\|2k` | Quality preset. Tuzi: maps to 1k/2k. Google: maps to 1K/2K |
+| `--imageSize 1K\|2K\|4K` | Image size (Tuzi and Google). Overrides `--quality` |
+| `--ref <files...>` | Reference images. Tuzi: base64 in JSON body. Google: multimodal. OpenAI: edits API |
 | `--n <count>` | Number of images |
 | `--json` | JSON output |
+
+## Tuzi Models
+
+Tuzi API (api.tu-zi.com) is the default provider. Models differ in quality, speed, and supported parameters.
+
+### Recommended
+
+| Model ID | Alias | Quality | Notes |
+|----------|-------|---------|-------|
+| `gemini-3.1-flash-image-preview` | nano-banana-2 | `--quality` 1k/2k/4k | Default. Fast, supports extended aspect ratios |
+| `gemini-3-pro-image-preview-vip` | nano-banana-pro-vip | 1k built-in | High quality, VIP |
+| `gemini-3-pro-image-preview-2k-vip` | nano-banana-pro-2k-vip | 2k built-in | High quality 2K, VIP |
+| `gemini-3-pro-image-preview-4k-vip` | nano-banana-pro-4k-vip | 4k built-in | High quality 4K, VIP |
+| `gemini-2.5-flash-image-vip` | nano-banana-vip | 1k built-in | Fastest, VIP |
+
+### More Models
+
+| Model ID | Alias | Notes |
+|----------|-------|-------|
+| `gemini-3-pro-image-preview` | nano-banana-pro | `--quality` 1k/2k/4k |
+| `gemini-2.5-flash-image` | nano-banana | Fast |
+| `gemini-3-pro-image-preview-hd` | nano-banana-pro-hd | HD built-in |
+| `gemini-3-pro-image-preview-2k` | nano-banana-pro-2k | 2K built-in |
+| `gemini-3-pro-image-preview-4k` | nano-banana-pro-4k | 4K built-in |
+| `gpt-image-1.5` | — | Size: 1:1, 3:2, 2:3 only |
+| `bfl-flux-2-pro` | flux-2-pro | Flux |
+| `bfl-flux-2-max` | flux-2-max | Flux highest quality |
+| `flux-kontext-pro` | kontext-pro | Multi-ref editing |
+| `flux-kontext-max` | kontext-max | Multi-ref editing (max) |
+| `doubao-seedream-4-0-250828` | Seedream 4.0 | 2K/4K |
+| `doubao-seedream-4-5-251128` | Seedream 4.5 | 2K/4K |
+| `doubao-seedream-5-0-260128` | Seedream 5.0 lite | 2K/3K |
+
+### Async Models
+
+Auto-detected. Script submits task and polls until complete (5s interval, max 30min).
+
+| Model ID | Notes |
+|----------|-------|
+| `gemini-3-pro-image-preview-async` | 1K async |
+| `gemini-3-pro-image-preview-2k-async` | 2K async |
+| `gemini-3-pro-image-preview-4k-async` | 4K async |
+| `mj-imagine` | Midjourney, MJ params in prompt |
+
+### Model-Specific Parameters
+
+**Quality** (`--quality` or `--imageSize 1K|2K|4K`):
+
+| Applies to | Values | Notes |
+|------------|--------|-------|
+| `gemini-3.1-flash-image-preview` | 1k / 2k / 4k | Default model, quality adjustable |
+| `gemini-3-pro-image-preview` | 1k / 2k / 4k | Quality adjustable |
+| `*-2k-vip`, `*-4k-vip`, `*-hd` | — | Quality built into model name, param ignored |
+| Other models | — | Param ignored |
+
+**Aspect ratio** (`--ar`):
+
+| Applies to | Supported ratios |
+|------------|-----------------|
+| Gemini models (default) | 1:1, 16:9, 9:16, 3:2, 2:3, 4:3, 3:4, 5:4, 4:5, 21:9 |
+| `gemini-3.1-flash-image-preview` | Above + 1:4, 4:1, 1:8, 8:1 (extreme ratios) |
+| `gpt-image-1.5` | 1:1, 3:2, 2:3 |
+| Omitted | Model auto-decides |
+
+**Reference images** (`--ref`):
+- Sync models: base64 data URL in JSON `image` field
+- Async models: `input_reference` in FormData
+- All Tuzi models support reference images
 
 ## Environment Variables
 
 | Variable | Description |
 |----------|-------------|
-| `OPENAI_API_KEY` | OpenAI API key |
+| `TUZI_API_KEY` | Tuzi API key (https://api.tu-zi.com) |
+| `TUZI_IMAGE_MODEL` | Tuzi default model (default: gemini-3.1-flash-image-preview) |
+| `TUZI_BASE_URL` | Custom Tuzi endpoint (default: https://api.tu-zi.com/v1) |
 | `GOOGLE_API_KEY` | Google API key |
+| `OPENAI_API_KEY` | OpenAI API key |
 | `DASHSCOPE_API_KEY` | DashScope API key (阿里云) |
 | `REPLICATE_API_TOKEN` | Replicate API token |
-| `OPENAI_IMAGE_MODEL` | OpenAI model override |
 | `GOOGLE_IMAGE_MODEL` | Google model override |
-| `DASHSCOPE_IMAGE_MODEL` | DashScope model override (default: z-image-turbo) |
-| `REPLICATE_IMAGE_MODEL` | Replicate model override (default: google/nano-banana-pro) |
-| `OPENAI_BASE_URL` | Custom OpenAI endpoint |
+| `OPENAI_IMAGE_MODEL` | OpenAI model override |
+| `DASHSCOPE_IMAGE_MODEL` | DashScope model override |
+| `REPLICATE_IMAGE_MODEL` | Replicate model override |
 | `GOOGLE_BASE_URL` | Custom Google endpoint |
+| `OPENAI_BASE_URL` | Custom OpenAI endpoint |
 | `DASHSCOPE_BASE_URL` | Custom DashScope endpoint |
 | `REPLICATE_BASE_URL` | Custom Replicate endpoint |
 
@@ -112,93 +180,57 @@ npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --provi
 
 ## Model Resolution
 
-Model priority (highest → lowest), applies to all providers:
+Priority (highest → lowest), all providers:
 
-1. CLI flag: `--model <id>`
+1. CLI: `--model <id>`
 2. EXTEND.md: `default_model.[provider]`
-3. Env var: `<PROVIDER>_IMAGE_MODEL` (e.g., `GOOGLE_IMAGE_MODEL`)
+3. Env var: `<PROVIDER>_IMAGE_MODEL`
 4. Built-in default
-
-**EXTEND.md overrides env vars**. If both EXTEND.md `default_model.google: "gemini-3-pro-image-preview"` and env var `GOOGLE_IMAGE_MODEL=gemini-3.1-flash-image-preview` exist, EXTEND.md wins.
 
 **Agent MUST display model info** before each generation:
 - Show: `Using [provider] / [model]`
 - Show switch hint: `Switch model: --model <id> | EXTEND.md default_model.[provider] | env <PROVIDER>_IMAGE_MODEL`
 
-### Replicate Models
-
-Supported model formats:
-
-- `owner/name` (recommended for official models), e.g. `google/nano-banana-pro`
-- `owner/name:version` (community models by version), e.g. `stability-ai/sdxl:<version>`
-
-Examples:
-
-```bash
-# Use Replicate default model
-npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --provider replicate
-
-# Override model explicitly
-npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --provider replicate --model google/nano-banana
-```
-
 ## Provider Selection
 
-1. `--ref` provided + no `--provider` → auto-select Google first, then OpenAI, then Replicate
-2. `--provider` specified → use it (if `--ref`, must be `google`, `openai`, or `replicate`)
+1. `--provider` specified → use it
+2. `--ref` provided + no `--provider` → Tuzi > Google > OpenAI > Replicate
 3. Only one API key available → use that provider
-4. Multiple available → default to Google
+4. Multiple available → Tuzi first
 
 ## Quality Presets
 
-| Preset | Google imageSize | OpenAI Size | Use Case |
-|--------|------------------|-------------|----------|
-| `normal` | 1K | 1024px | Quick previews |
-| `2k` (default) | 2K | 2048px | Covers, illustrations, infographics |
+| Preset | Tuzi | Google | OpenAI |
+|--------|------|--------|--------|
+| `normal` | 1k | 1K | 1024px |
+| `2k` (default) | 2k | 2K | 2048px |
 
-**Google imageSize**: Can be overridden with `--imageSize 1K|2K|4K`
-
-## Aspect Ratios
-
-Supported: `1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `2.35:1`
-
-- Google multimodal: uses `imageConfig.aspectRatio`
-- Google Imagen: uses `aspectRatio` parameter
-- OpenAI: maps to closest supported size
+`--imageSize 1K|2K|4K` overrides quality for Tuzi and Google.
 
 ## Generation Mode
 
-**Default**: Sequential generation (one image at a time). This ensures stable output and easier debugging.
+**Default**: Sequential (one at a time).
 
-**Parallel Generation**: Only use when user explicitly requests parallel/concurrent generation.
-
-| Mode | When to Use |
-|------|-------------|
-| Sequential (default) | Normal usage, single images, small batches |
-| Parallel | User explicitly requests, large batches (10+) |
-
-**Parallel Settings** (when requested):
-
-| Setting | Value |
-|---------|-------|
-| Recommended concurrency | 4 subagents |
-| Max concurrency | 8 subagents |
-| Use case | Large batch generation when user requests parallel |
-
-**Agent Implementation** (parallel mode only):
-```
-# Launch multiple generations in parallel using Task tool
-# Each Task runs as background subagent with run_in_background=true
-# Collect results via TaskOutput when all complete
-```
+**Parallel**: Only when user explicitly requests. Use Task tool with `run_in_background=true`, recommended 4 subagents (max 8).
 
 ## Error Handling
 
 - Missing API key → error with setup instructions
 - Generation failure → auto-retry once
+- Tuzi `PROHIBITED_CONTENT` → content rejection error
+- Tuzi `NO_IMAGE` → prompt too vague, suggest more explicit prompt
+- Async timeout → error after 30 minutes
 - Invalid aspect ratio → warning, proceed with default
-- Reference images with unsupported provider/model → error with fix hint (switch to Google multimodal: `gemini-3-pro-image-preview`, `gemini-3.1-flash-image-preview`; or OpenAI GPT Image edits)
+
+## Replicate Models
+
+Format: `owner/name` or `owner/name:version`
+
+```bash
+npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --provider replicate
+npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --provider replicate --model google/nano-banana
+```
 
 ## Extension Support
 
-Custom configurations via EXTEND.md. See **Preferences** section for paths and supported options.
+Custom configurations via EXTEND.md. See **Step 0** for paths and supported options.

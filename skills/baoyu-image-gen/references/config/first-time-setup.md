@@ -43,7 +43,9 @@ Use AskUserQuestion with ALL questions in ONE call:
 header: "Provider"
 question: "Default image generation provider?"
 options:
-  - label: "Google (Recommended)"
+  - label: "Tuzi (Recommended)"
+    description: "兔子API - nano-banana models via api.tu-zi.com"
+  - label: "Google"
     description: "Gemini multimodal - high quality, reference images, flexible sizes"
   - label: "OpenAI"
     description: "GPT Image - consistent quality, reliable output"
@@ -114,6 +116,7 @@ default_model:
   openai: null
   dashscope: null
   replicate: null
+  tuzi: null
 ---
 ```
 
@@ -171,6 +174,26 @@ options:
     description: "Google's base image model on Replicate"
 ```
 
+### Tuzi Model Selection
+
+```yaml
+header: "Tuzi Model"
+question: "Choose a default Tuzi image generation model?"
+options:
+  - label: "gemini-3.1-flash-image-preview (Recommended)"
+    description: "nano-banana-2 - supports quality param (1k/2k/4k), extended aspect ratios"
+  - label: "gemini-3-pro-image-preview-vip"
+    description: "nano-banana-pro-vip - high quality, VIP"
+  - label: "gemini-3-pro-image-preview-2k-vip"
+    description: "nano-banana-pro-2k-vip - 2K built-in, VIP"
+  - label: "gemini-3-pro-image-preview-4k-vip"
+    description: "nano-banana-pro-4k-vip - 4K built-in, VIP"
+  - label: "gemini-3-pro-image-preview"
+    description: "nano-banana-pro - supports quality param (1k/2k/4k)"
+  - label: "gpt-image-1.5"
+    description: "GPT Image model, limited size options"
+```
+
 ### Update EXTEND.md
 
 After user selects a model:
@@ -185,6 +208,7 @@ default_model:
   openai: [value or null]
   dashscope: [value or null]
   replicate: [value or null]
+  tuzi: [value or null]
 ```
 
 Only set the selected provider's model; leave others as their current value or null.

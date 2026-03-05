@@ -1,8 +1,8 @@
-# baoyu-skills
+# tuzi-skills
 
 [English](./README.md) | 中文
 
-宝玉分享的 Claude Code 技能集，提升日常工作效率。
+AI 内容生成技能集，支持 Claude Code 和 OpenClaw，由兔子API (api.tu-zi.com) 驱动。
 
 ## 前置要求
 
@@ -14,7 +14,7 @@
 ### 快速安装（推荐）
 
 ```bash
-npx skills add jimliu/baoyu-skills
+npx skills add tuziapi/tuzi-skills
 ```
 
 ### 注册插件市场
@@ -22,7 +22,7 @@ npx skills add jimliu/baoyu-skills
 在 Claude Code 中运行：
 
 ```bash
-/plugin marketplace add jimliu/baoyu-skills
+/plugin marketplace add tuziapi/tuzi-skills
 ```
 
 ### 安装技能
@@ -30,7 +30,7 @@ npx skills add jimliu/baoyu-skills
 **方式一：通过浏览界面**
 
 1. 选择 **Browse and install plugins**
-2. 选择 **baoyu-skills**
+2. 选择 **tuzi-skills**
 3. 选择要安装的插件
 4. 选择 **Install now**
 
@@ -38,16 +38,16 @@ npx skills add jimliu/baoyu-skills
 
 ```bash
 # 安装指定插件
-/plugin install content-skills@baoyu-skills
-/plugin install ai-generation-skills@baoyu-skills
-/plugin install utility-skills@baoyu-skills
+/plugin install content-skills@tuzi-skills
+/plugin install ai-generation-skills@tuzi-skills
+/plugin install utility-skills@tuzi-skills
 ```
 
 **方式三：告诉 Agent**
 
 直接告诉 Claude Code：
 
-> 请帮我安装 github.com/JimLiu/baoyu-skills 中的 Skills
+> 请帮我安装 github.com/tuziapi/tuzi-skills 中的 Skills
 
 ### 可用插件
 
@@ -63,7 +63,7 @@ npx skills add jimliu/baoyu-skills
 
 1. 在 Claude Code 中运行 `/plugin`
 2. 切换到 **Marketplaces** 标签页（使用方向键或 Tab）
-3. 选择 **baoyu-skills**
+3. 选择 **tuzi-skills**
 4. 选择 **Update marketplace**
 
 也可以选择 **Enable auto-update** 启用自动更新，每次启动时自动获取最新版本。
@@ -564,26 +564,28 @@ AI 驱动的生成后端。
 
 #### baoyu-image-gen
 
-基于 AI SDK 的图像生成，使用官方 OpenAI、Google 和 DashScope（阿里通义万相）API。支持文生图、参考图、宽高比和质量预设。
+多服务商 AI 图像生成。默认服务商：兔子API (api.tu-zi.com, nano-banana 模型)。同时支持 Google、OpenAI、DashScope 和 Replicate。
 
 ```bash
-# 基础生成（自动检测服务商）
+# 基础生成（默认使用 Tuzi）
 /baoyu-image-gen --prompt "一只可爱的猫" --image cat.png
 
 # 指定宽高比
 /baoyu-image-gen --prompt "风景图" --image landscape.png --ar 16:9
 
-# 高质量（2k 分辨率）
+# 指定质量（Tuzi: 1k/2k/4k）
 /baoyu-image-gen --prompt "横幅图" --image banner.png --quality 2k
 
-# 指定服务商
-/baoyu-image-gen --prompt "一只猫" --image cat.png --provider openai
+# 4K VIP 模型
+/baoyu-image-gen --prompt "一只猫" --image cat.png --model gemini-3-pro-image-preview-4k-vip
 
-# DashScope（阿里通义万相）
-/baoyu-image-gen --prompt "一只可爱的猫" --image cat.png --provider dashscope
-
-# 带参考图（仅 Google 多模态支持）
+# 带参考图
 /baoyu-image-gen --prompt "把它变成蓝色" --image out.png --ref source.png
+
+# 其他服务商
+/baoyu-image-gen --prompt "一只猫" --image cat.png --provider google
+/baoyu-image-gen --prompt "一只猫" --image cat.png --provider openai
+/baoyu-image-gen --prompt "一只可爱的猫" --image cat.png --provider dashscope
 ```
 
 **选项**：
@@ -592,30 +594,42 @@ AI 驱动的生成后端。
 | `--prompt`, `-p` | 提示词文本 |
 | `--promptfiles` | 从文件读取提示词（多文件拼接） |
 | `--image` | 输出图片路径（必需） |
-| `--provider` | `google`、`openai` 或 `dashscope`（默认：google） |
+| `--provider` | `tuzi`（默认）、`google`、`openai`、`dashscope` 或 `replicate` |
 | `--model`, `-m` | 模型 ID |
 | `--ar` | 宽高比（如 `16:9`、`1:1`、`4:3`） |
-| `--size` | 尺寸（如 `1024x1024`） |
-| `--quality` | `normal` 或 `2k`（默认：normal） |
-| `--ref` | 参考图片（仅 Google 多模态支持） |
+| `--size` | 尺寸（如 `1024x1024`、`16x9`） |
+| `--quality` | `normal` 或 `2k`（默认：2k） |
+| `--imageSize` | `1K`、`2K` 或 `4K`（覆盖 quality） |
+| `--ref` | 参考图片（所有服务商支持） |
+
+**Tuzi 模型**（默认服务商）：
+| 模型 | 别名 | 说明 |
+|------|------|------|
+| `gemini-3.1-flash-image-preview` | nano-banana-2 | 默认。`--quality` 1k/2k/4k，支持扩展宽高比 |
+| `gemini-3-pro-image-preview-vip` | nano-banana-pro-vip | 高质量，VIP |
+| `gemini-3-pro-image-preview-2k-vip` | nano-banana-pro-2k-vip | 2K 内置，VIP |
+| `gemini-3-pro-image-preview-4k-vip` | nano-banana-pro-4k-vip | 4K 内置，VIP |
+| `gemini-2.5-flash-image-vip` | nano-banana-vip | 最快，VIP |
 
 **环境变量**（配置方法见[环境配置](#环境配置)）：
 | 变量 | 说明 | 默认值 |
 |------|------|--------|
+| `TUZI_API_KEY` | 兔子API 密钥 (https://api.tu-zi.com) | - |
+| `TUZI_IMAGE_MODEL` | Tuzi 模型 | `gemini-3.1-flash-image-preview` |
+| `TUZI_BASE_URL` | 自定义 Tuzi 端点 | `https://api.tu-zi.com/v1` |
 | `OPENAI_API_KEY` | OpenAI API 密钥 | - |
 | `GOOGLE_API_KEY` | Google API 密钥 | - |
 | `DASHSCOPE_API_KEY` | DashScope API 密钥（阿里云） | - |
+| `REPLICATE_API_TOKEN` | Replicate API token | - |
 | `OPENAI_IMAGE_MODEL` | OpenAI 模型 | `gpt-image-1.5` |
 | `GOOGLE_IMAGE_MODEL` | Google 模型 | `gemini-3-pro-image-preview` |
 | `DASHSCOPE_IMAGE_MODEL` | DashScope 模型 | `z-image-turbo` |
-| `OPENAI_BASE_URL` | 自定义 OpenAI 端点 | - |
-| `GOOGLE_BASE_URL` | 自定义 Google 端点 | - |
-| `DASHSCOPE_BASE_URL` | 自定义 DashScope 端点 | - |
+| `REPLICATE_IMAGE_MODEL` | Replicate 模型 | `google/nano-banana-pro` |
 
 **服务商自动选择**：
 1. 如果指定了 `--provider` → 使用指定的
 2. 如果只有一个 API 密钥 → 使用对应服务商
-3. 如果多个可用 → 默认使用 Google
+3. 如果多个可用 → 默认使用 Tuzi
 
 #### baoyu-danger-gemini-web
 
@@ -757,6 +771,11 @@ mkdir -p ~/.baoyu-skills
 
 # 创建 .env 文件
 cat > ~/.baoyu-skills/.env << 'EOF'
+# 兔子API（默认服务商）
+TUZI_API_KEY=sk-xxx
+TUZI_IMAGE_MODEL=gemini-3.1-flash-image-preview
+# TUZI_BASE_URL=https://api.tu-zi.com/v1
+
 # OpenAI
 OPENAI_API_KEY=sk-xxx
 OPENAI_IMAGE_MODEL=gpt-image-1.5
@@ -771,6 +790,10 @@ GOOGLE_IMAGE_MODEL=gemini-3-pro-image-preview
 DASHSCOPE_API_KEY=sk-xxx
 DASHSCOPE_IMAGE_MODEL=z-image-turbo
 # DASHSCOPE_BASE_URL=https://dashscope.aliyuncs.com/api/v1
+
+# Replicate
+REPLICATE_API_TOKEN=r8_xxx
+REPLICATE_IMAGE_MODEL=google/nano-banana-pro
 EOF
 ```
 
