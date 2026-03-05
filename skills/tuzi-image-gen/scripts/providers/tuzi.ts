@@ -2,7 +2,7 @@ import path from "node:path";
 import { readFile } from "node:fs/promises";
 import type { CliArgs } from "../types";
 
-const DEFAULT_MODEL = "gemini-3.1-flash-image-preview";
+const DEFAULT_MODEL = "gemini-3-pro-image-preview";
 const POLL_INTERVAL_MS = 5000;
 const MAX_POLL_ATTEMPTS = 360;
 

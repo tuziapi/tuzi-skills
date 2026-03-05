@@ -246,8 +246,10 @@ options:
 header: "Tuzi Model"
 question: "Choose a default Tuzi image generation model?"
 options:
-  - label: "gemini-3.1-flash-image-preview (Recommended)"
-    description: "nano-banana-2 - supports quality param (1k/2k/4k), extended aspect ratios"
+  - label: "gemini-3-pro-image-preview (Recommended)"
+    description: "nano-banana-pro - high quality, supports quality param (1k/2k/4k)"
+  - label: "gemini-3.1-flash-image-preview"
+    description: "nano-banana-2 - fast, supports quality param (1k/2k/4k), extended aspect ratios"
   - label: "gemini-3-pro-image-preview-vip"
     description: "nano-banana-pro-vip - high quality, VIP"
   - label: "gemini-3-pro-image-preview-2k-vip"

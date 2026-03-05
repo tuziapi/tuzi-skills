@@ -605,7 +605,8 @@ Multi-provider AI image generation. Default provider: Tuzi API (api.tu-zi.com, n
 **Tuzi Models** (default provider):
 | Model | Alias | Notes |
 |-------|-------|-------|
-| `gemini-3.1-flash-image-preview` | nano-banana-2 | Default. `--quality` 1k/2k/4k, extended aspect ratios |
+| `gemini-3-pro-image-preview` | nano-banana-pro | Default. High quality, `--quality` 1k/2k/4k |
+| `gemini-3.1-flash-image-preview` | nano-banana-2 | Fast, `--quality` 1k/2k/4k, extended aspect ratios |
 | `gemini-3-pro-image-preview-vip` | nano-banana-pro-vip | High quality, VIP |
 | `gemini-3-pro-image-preview-2k-vip` | nano-banana-pro-2k-vip | 2K built-in, VIP |
 | `gemini-3-pro-image-preview-4k-vip` | nano-banana-pro-4k-vip | 4K built-in, VIP |
@@ -615,7 +616,7 @@ Multi-provider AI image generation. Default provider: Tuzi API (api.tu-zi.com, n
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `TUZI_API_KEY` | Tuzi API key (https://api.tu-zi.com) | - |
-| `TUZI_IMAGE_MODEL` | Tuzi model | `gemini-3.1-flash-image-preview` |
+| `TUZI_IMAGE_MODEL` | Tuzi model | `gemini-3-pro-image-preview` |
 | `TUZI_BASE_URL` | Custom Tuzi endpoint | `https://api.tu-zi.com/v1` |
 | `OPENAI_API_KEY` | OpenAI API key | - |
 | `GOOGLE_API_KEY` | Google API key | - |
@@ -773,7 +774,7 @@ mkdir -p ~/.tuzi-skills
 cat > ~/.tuzi-skills/.env << 'EOF'
 # Tuzi API (default provider)
 TUZI_API_KEY=sk-xxx
-TUZI_IMAGE_MODEL=gemini-3.1-flash-image-preview
+TUZI_IMAGE_MODEL=gemini-3-pro-image-preview
 # TUZI_BASE_URL=https://api.tu-zi.com/v1
 
 # OpenAI

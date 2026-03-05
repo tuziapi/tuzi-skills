@@ -115,7 +115,8 @@ Tuzi API (api.tu-zi.com) is the default provider. Models differ in quality, spee
 
 | Model ID | Alias | Quality | Notes |
 |----------|-------|---------|-------|
-| `gemini-3.1-flash-image-preview` | nano-banana-2 | `--quality` 1k/2k/4k | Default. Fast, supports extended aspect ratios |
+| `gemini-3-pro-image-preview` | nano-banana-pro | `--quality` 1k/2k/4k | Default. High quality, supports quality param |
+| `gemini-3.1-flash-image-preview` | nano-banana-2 | `--quality` 1k/2k/4k | Fast, supports extended aspect ratios |
 | `gemini-3-pro-image-preview-vip` | nano-banana-pro-vip | 1k built-in | High quality, VIP |
 | `gemini-3-pro-image-preview-2k-vip` | nano-banana-pro-2k-vip | 2k built-in | High quality 2K, VIP |
 | `gemini-3-pro-image-preview-4k-vip` | nano-banana-pro-4k-vip | 4k built-in | High quality 4K, VIP |
@@ -180,7 +181,7 @@ Auto-detected. Script submits task and polls until complete (5s interval, max 30
 | Variable | Description |
 |----------|-------------|
 | `TUZI_API_KEY` | Tuzi API key (https://api.tu-zi.com) |
-| `TUZI_IMAGE_MODEL` | Tuzi default model (default: gemini-3.1-flash-image-preview) |
+| `TUZI_IMAGE_MODEL` | Tuzi default model (default: gemini-3-pro-image-preview) |
 | `TUZI_BASE_URL` | Custom Tuzi endpoint (default: https://api.tu-zi.com/v1) |
 | `GOOGLE_API_KEY` | Google API key |
 | `OPENAI_API_KEY` | OpenAI API key |

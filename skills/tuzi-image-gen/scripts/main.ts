@@ -27,7 +27,7 @@ Options:
 
 Environment variables:
   TUZI_API_KEY              Tuzi API key (https://api.tu-zi.com)
-  TUZI_IMAGE_MODEL          Default Tuzi model (gemini-3.1-flash-image-preview)
+  TUZI_IMAGE_MODEL          Default Tuzi model (gemini-3-pro-image-preview)
   TUZI_BASE_URL             Custom Tuzi endpoint
   OPENAI_API_KEY            OpenAI API key
   GOOGLE_API_KEY            Google API key

@@ -67,6 +67,6 @@ default_model:
   openai: "gpt-image-1.5"
   dashscope: "z-image-turbo"
   replicate: "google/nano-banana-pro"
-  tuzi: "gemini-3.1-flash-image-preview"
+  tuzi: "gemini-3-pro-image-preview"
 ---
 ```

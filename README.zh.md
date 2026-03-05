@@ -605,7 +605,8 @@ AI 驱动的生成后端。
 **Tuzi 模型**（默认服务商）：
 | 模型 | 别名 | 说明 |
 |------|------|------|
-| `gemini-3.1-flash-image-preview` | nano-banana-2 | 默认。`--quality` 1k/2k/4k，支持扩展宽高比 |
+| `gemini-3-pro-image-preview` | nano-banana-pro | 默认。高质量，`--quality` 1k/2k/4k |
+| `gemini-3.1-flash-image-preview` | nano-banana-2 | 快速，`--quality` 1k/2k/4k，支持扩展宽高比 |
 | `gemini-3-pro-image-preview-vip` | nano-banana-pro-vip | 高质量，VIP |
 | `gemini-3-pro-image-preview-2k-vip` | nano-banana-pro-2k-vip | 2K 内置，VIP |
 | `gemini-3-pro-image-preview-4k-vip` | nano-banana-pro-4k-vip | 4K 内置，VIP |
@@ -615,7 +616,7 @@ AI 驱动的生成后端。
 | 变量 | 说明 | 默认值 |
 |------|------|--------|
 | `TUZI_API_KEY` | 兔子API 密钥 (https://api.tu-zi.com) | - |
-| `TUZI_IMAGE_MODEL` | Tuzi 模型 | `gemini-3.1-flash-image-preview` |
+| `TUZI_IMAGE_MODEL` | Tuzi 模型 | `gemini-3-pro-image-preview` |
 | `TUZI_BASE_URL` | 自定义 Tuzi 端点 | `https://api.tu-zi.com/v1` |
 | `OPENAI_API_KEY` | OpenAI API 密钥 | - |
 | `GOOGLE_API_KEY` | Google API 密钥 | - |
@@ -773,7 +774,7 @@ mkdir -p ~/.tuzi-skills
 cat > ~/.tuzi-skills/.env << 'EOF'
 # 兔子API（默认服务商）
 TUZI_API_KEY=sk-xxx
-TUZI_IMAGE_MODEL=gemini-3.1-flash-image-preview
+TUZI_IMAGE_MODEL=gemini-3-pro-image-preview
 # TUZI_BASE_URL=https://api.tu-zi.com/v1
 
 # OpenAI
