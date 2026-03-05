@@ -449,7 +449,7 @@ function parseArgs(argv: string[]): CliArgs {
   }
 
   if (!args.filePath) {
-    console.error("Error: File path required");
+    console.error("错误: 需要文件路径");
     process.exit(1);
   }
 
@@ -520,7 +520,7 @@ async function main(): Promise<void> {
   }
 
   if (!title) {
-    console.error("Error: No title found. Provide via --title, frontmatter, or <title> tag.");
+    console.error("错误: 未找到标题。请通过 --title、frontmatter 或 <title> 标签提供。");
     process.exit(1);
   }
 
@@ -585,12 +585,12 @@ async function main(): Promise<void> {
   }
 
   if (args.articleType === "news" && !thumbMediaId) {
-    console.error("Error: No cover image. Provide via --cover, frontmatter.coverImage, or include an image in content.");
+    console.error("错误: 缺少封面图片。请通过 --cover、frontmatter.coverImage 或在内容中包含图片提供。");
     process.exit(1);
   }
 
   if (args.articleType === "newspic" && allMediaIds.length === 0) {
-    console.error("Error: newspic requires at least one image in content.");
+    console.error("错误: 图文消息需要内容中至少包含一张图片。");
     process.exit(1);
   }
 

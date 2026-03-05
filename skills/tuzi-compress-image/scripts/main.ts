@@ -178,16 +178,16 @@ function collectFiles(dir: string, recursive: boolean): string[] {
 }
 
 function printHelp() {
-  console.log(`Usage: bun main.ts <input> [options]
+  console.log(`用法: bun main.ts <输入文件> [选项]
 
-Options:
-  -o, --output <path>   Output path
-  -f, --format <fmt>    Output format: webp, png, jpeg (default: webp)
-  -q, --quality <n>     Quality 0-100 (default: 80)
-  -k, --keep            Keep original file
-  -r, --recursive       Process directories recursively
-      --json            JSON output
-  -h, --help            Show help`);
+选项:
+  -o, --output <path>   输出路径
+  -f, --format <fmt>    输出格式: webp, png, jpeg（默认: webp）
+  -q, --quality <n>     质量 0-100（默认: 80）
+  -k, --keep            保留原始文件
+  -r, --recursive       递归处理目录
+      --json            JSON 输出
+  -h, --help            显示帮助`);
 }
 
 function parseArgs(args: string[]): Options | null {
@@ -212,13 +212,13 @@ function parseArgs(args: string[]): Options | null {
       if (fmt === "webp" || fmt === "png" || fmt === "jpeg" || fmt === "jpg") {
         opts.format = fmt === "jpg" ? "jpeg" : (fmt as Format);
       } else {
-        console.error(`Invalid format: ${fmt}`);
+        console.error(`无效的格式: ${fmt}`);
         return null;
       }
     } else if (arg === "-q" || arg === "--quality") {
       const q = parseInt(args[++i], 10);
       if (isNaN(q) || q < 0 || q > 100) {
-        console.error(`Invalid quality: ${args[i]}`);
+        console.error(`无效的质量参数: ${args[i]}`);
         return null;
       }
       opts.quality = q;
@@ -234,7 +234,7 @@ function parseArgs(args: string[]): Options | null {
   }
 
   if (!opts.input) {
-    console.error("Error: Input file or directory required");
+    console.error("错误: 需要输入文件或目录");
     printHelp();
     return null;
   }
@@ -249,7 +249,7 @@ async function main() {
 
   const input = resolve(opts.input);
   if (!existsSync(input)) {
-    console.error(`Error: ${input} not found`);
+    console.error(`错误: ${input} 未找到`);
     process.exit(1);
   }
 
@@ -259,7 +259,7 @@ async function main() {
   if (isDir) {
     const files = collectFiles(input, opts.recursive);
     if (files.length === 0) {
-      console.error("No supported images found");
+      console.error("未找到支持的图片文件");
       process.exit(1);
     }
 
@@ -270,10 +270,10 @@ async function main() {
         results.push(r);
         if (!opts.json) {
           const reduction = Math.round((1 - r.ratio) * 100);
-          console.log(`${r.input} → ${r.output} (${formatSize(r.inputSize)} → ${formatSize(r.outputSize)}, ${reduction}% reduction)`);
+          console.log(`${r.input} → ${r.output} (${formatSize(r.inputSize)} → ${formatSize(r.outputSize)}, 压缩 ${reduction}%)`);
         }
       } catch (e) {
-        if (!opts.json) console.error(`Error processing ${file}: ${(e as Error).message}`);
+        if (!opts.json) console.error(`处理 ${file} 出错: ${(e as Error).message}`);
       }
     }
 
@@ -296,7 +296,7 @@ async function main() {
       const totalInput = results.reduce((s, r) => s + r.inputSize, 0);
       const totalOutput = results.reduce((s, r) => s + r.outputSize, 0);
       const reduction = Math.round((1 - totalOutput / totalInput) * 100);
-      console.log(`\nProcessed ${results.length} files: ${formatSize(totalInput)} → ${formatSize(totalOutput)} (${reduction}% reduction)`);
+      console.log(`\n已处理 ${results.length} 个文件: ${formatSize(totalInput)} → ${formatSize(totalOutput)} (压缩 ${reduction}%)`);
     }
   } else {
     try {
@@ -305,10 +305,10 @@ async function main() {
         console.log(JSON.stringify(r, null, 2));
       } else {
         const reduction = Math.round((1 - r.ratio) * 100);
-        console.log(`${r.input} → ${r.output} (${formatSize(r.inputSize)} → ${formatSize(r.outputSize)}, ${reduction}% reduction)`);
+        console.log(`${r.input} → ${r.output} (${formatSize(r.inputSize)} → ${formatSize(r.outputSize)}, 压缩 ${reduction}%)`);
       }
     } catch (e) {
-      console.error(`Error: ${(e as Error).message}`);
+      console.error(`错误: ${(e as Error).message}`);
       process.exit(1);
     }
   }

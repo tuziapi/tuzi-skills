@@ -11,21 +11,21 @@ import { loadExtendConfig } from "./extend-config.js";
 export function printUsage(): void {
   console.error(
     [
-      "Usage:",
-      "  npx tsx src/md/render.ts <markdown_file> [options]",
+      "用法:",
+      "  npx tsx src/md/render.ts <markdown_file> [选项]",
       "",
-      "Options:",
-      `  --theme <name>        Theme (${THEME_NAMES.join(", ")})`,
-      `  --color <name|hex>    Primary color: ${Object.keys(COLOR_PRESETS).join(", ")}, or hex`,
-      `  --font-family <name>  Font: ${Object.keys(FONT_FAMILY_MAP).join(", ")}, or CSS value`,
-      `  --font-size <N>       Font size: ${FONT_SIZE_OPTIONS.join(", ")} (default: 16px)`,
-      `  --code-theme <name>   Code highlight theme (default: github)`,
-      `  --mac-code-block      Show Mac-style code block header`,
-      `  --line-number         Show line numbers in code blocks`,
-      `  --cite                Enable footnote citations`,
-      `  --count               Show reading time / word count`,
-      `  --legend <value>      Image caption: title-alt, alt-title, title, alt, none`,
-      `  --keep-title          Keep the first heading in output`,
+      "选项:",
+      `  --theme <name>        主题 (${THEME_NAMES.join(", ")})`,
+      `  --color <name|hex>    主色调: ${Object.keys(COLOR_PRESETS).join(", ")}, 或十六进制值`,
+      `  --font-family <name>  字体: ${Object.keys(FONT_FAMILY_MAP).join(", ")}, 或 CSS 值`,
+      `  --font-size <N>       字号: ${FONT_SIZE_OPTIONS.join(", ")}（默认: 16px）`,
+      `  --code-theme <name>   代码高亮主题（默认: github）`,
+      `  --mac-code-block      显示 Mac 风格代码块头部`,
+      `  --line-number         显示代码行号`,
+      `  --cite                启用脚注引用`,
+      `  --count               显示阅读时间/字数统计`,
+      `  --legend <value>      图片说明: title-alt, alt-title, title, alt, none`,
+      `  --keep-title          保留输出中的第一个标题`,
     ].join("\n")
   );
 }
@@ -84,7 +84,7 @@ export function parseArgs(argv: string[]): CliOptions | null {
 
     if (arg === "--theme" || arg.startsWith("--theme=")) {
       const val = parseArgValue(argv, i, "--theme");
-      if (!val) { console.error("Missing value for --theme"); return null; }
+      if (!val) { console.error("缺少 --theme 的值"); return null; }
       theme = val as ThemeName;
       if (!arg.includes("=")) i += 1;
       continue;
@@ -92,7 +92,7 @@ export function parseArgs(argv: string[]): CliOptions | null {
 
     if (arg === "--color" || arg.startsWith("--color=")) {
       const val = parseArgValue(argv, i, "--color");
-      if (!val) { console.error("Missing value for --color"); return null; }
+      if (!val) { console.error("缺少 --color 的值"); return null; }
       primaryColor = resolveColor(val);
       if (!arg.includes("=")) i += 1;
       continue;
@@ -100,7 +100,7 @@ export function parseArgs(argv: string[]): CliOptions | null {
 
     if (arg === "--font-family" || arg.startsWith("--font-family=")) {
       const val = parseArgValue(argv, i, "--font-family");
-      if (!val) { console.error("Missing value for --font-family"); return null; }
+      if (!val) { console.error("缺少 --font-family 的值"); return null; }
       fontFamily = resolveFontFamily(val);
       if (!arg.includes("=")) i += 1;
       continue;
@@ -108,10 +108,10 @@ export function parseArgs(argv: string[]): CliOptions | null {
 
     if (arg === "--font-size" || arg.startsWith("--font-size=")) {
       const val = parseArgValue(argv, i, "--font-size");
-      if (!val) { console.error("Missing value for --font-size"); return null; }
+      if (!val) { console.error("缺少 --font-size 的值"); return null; }
       fontSize = val.endsWith("px") ? val : `${val}px`;
       if (!FONT_SIZE_OPTIONS.includes(fontSize)) {
-        console.error(`Invalid font size: ${fontSize}. Valid: ${FONT_SIZE_OPTIONS.join(", ")}`);
+        console.error(`无效的字号: ${fontSize}。可选: ${FONT_SIZE_OPTIONS.join(", ")}`);
         return null;
       }
       if (!arg.includes("=")) i += 1;
@@ -120,10 +120,10 @@ export function parseArgs(argv: string[]): CliOptions | null {
 
     if (arg === "--code-theme" || arg.startsWith("--code-theme=")) {
       const val = parseArgValue(argv, i, "--code-theme");
-      if (!val) { console.error("Missing value for --code-theme"); return null; }
+      if (!val) { console.error("缺少 --code-theme 的值"); return null; }
       codeTheme = val;
       if (!CODE_BLOCK_THEMES.includes(codeTheme)) {
-        console.error(`Unknown code theme: ${codeTheme}`);
+        console.error(`未知的代码主题: ${codeTheme}`);
         return null;
       }
       if (!arg.includes("=")) i += 1;
@@ -132,10 +132,10 @@ export function parseArgs(argv: string[]): CliOptions | null {
 
     if (arg === "--legend" || arg.startsWith("--legend=")) {
       const val = parseArgValue(argv, i, "--legend");
-      if (!val) { console.error("Missing value for --legend"); return null; }
+      if (!val) { console.error("缺少 --legend 的值"); return null; }
       const valid = ["title-alt", "alt-title", "title", "alt", "none"];
       if (!valid.includes(val)) {
-        console.error(`Invalid legend: ${val}. Valid: ${valid.join(", ")}`);
+        console.error(`无效的图片说明: ${val}。可选: ${valid.join(", ")}`);
         return null;
       }
       legend = val;
@@ -143,7 +143,7 @@ export function parseArgs(argv: string[]): CliOptions | null {
       continue;
     }
 
-    console.error(`Unknown argument: ${arg}`);
+    console.error(`未知参数: ${arg}`);
     return null;
   }
 
@@ -152,7 +152,7 @@ export function parseArgs(argv: string[]): CliOptions | null {
   }
 
   if (!THEME_NAMES.includes(theme)) {
-    console.error(`Unknown theme: ${theme}`);
+    console.error(`未知主题: ${theme}`);
     return null;
   }
 

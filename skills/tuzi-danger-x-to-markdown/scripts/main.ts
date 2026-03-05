@@ -32,20 +32,20 @@ const DISCLAIMER_VERSION = "1.0";
 
 function printUsage(exitCode: number): never {
   const cmd = "npx -y bun skills/tuzi-danger-x-to-markdown/scripts/main.ts";
-  console.log(`X (Twitter) to Markdown
+  console.log(`X (Twitter) 转 Markdown
 
-Usage:
+用法:
   ${cmd} <url>
   ${cmd} --url <url>
 
-Options:
-  --output <path>, -o  Output path (file or dir). Default: ./x-to-markdown/<slug>/
-  --json               Output as JSON
-  --download-media     Download images/videos to local ./imgs and ./videos next to markdown
-  --login              Refresh cookies only, then exit
-  --help, -h           Show help
+选项:
+  --output <path>, -o  输出路径（文件或目录）。默认: ./x-to-markdown/<slug>/
+  --json               JSON 输出
+  --download-media     下载图片/视频到 Markdown 旁的 ./imgs 和 ./videos 目录
+  --login              仅刷新 Cookie 后退出
+  --help, -h           显示帮助
 
-Examples:
+示例:
   ${cmd} https://x.com/username/status/1234567890
   ${cmd} https://x.com/i/article/1234567890 -o ./article.md
   ${cmd} https://x.com/username/status/1234567890 -o ./out/
@@ -93,20 +93,20 @@ function parseArgs(argv: string[]): CliArgs {
 
     if (a === "--url") {
       const v = argv[++i];
-      if (!v) throw new Error("Missing value for --url");
+      if (!v) throw new Error("缺少 --url 的值");
       out.url = v;
       continue;
     }
 
     if (a === "--output" || a === "-o") {
       const v = argv[++i];
-      if (!v) throw new Error(`Missing value for ${a}`);
+      if (!v) throw new Error(`缺少 ${a} 的值`);
       out.output = v;
       continue;
     }
 
     if (a.startsWith("-")) {
-      throw new Error(`Unknown option: ${a}`);
+      throw new Error(`未知选项: ${a}`);
     }
 
     positional.push(a);
@@ -445,13 +445,13 @@ Risks:
 
   if (!process.stdin.isTTY) {
     throw new Error(
-      `Consent required. Run in a TTY or create ${consentPath} with accepted: true and disclaimerVersion: ${DISCLAIMER_VERSION}`
+      `需要用户同意。请在 TTY 中运行，或创建 ${consentPath} 文件（内容: accepted: true, disclaimerVersion: ${DISCLAIMER_VERSION}）`
     );
   }
 
   const accepted = await promptYesNo("Do you accept these terms and wish to continue? (y/N): ");
   if (!accepted) {
-    throw new Error("User declined the disclaimer. Exiting.");
+    throw new Error("用户拒绝了免责声明，退出。");
   }
 
   await mkdir(path.dirname(consentPath), { recursive: true });
@@ -473,7 +473,7 @@ async function convertArticleToMarkdown(
   log("[x-to-markdown] Loading cookies...");
   const cookieMap = await loadXCookies(log);
   if (!hasRequiredXCookies(cookieMap)) {
-    throw new Error("Missing auth cookies. Provide X_AUTH_TOKEN and X_CT0 or log in via Chrome.");
+    throw new Error("缺少认证 Cookie。请提供 X_AUTH_TOKEN 和 X_CT0，或通过 Chrome 登录。");
   }
 
   log(`[x-to-markdown] Fetching article ${articleId}...`);
@@ -504,7 +504,7 @@ async function main(): Promise<void> {
     log("[x-to-markdown] Refreshing cookies via browser login...");
     const cookieMap = await refreshXCookies(log);
     if (!hasRequiredXCookies(cookieMap)) {
-      throw new Error("Missing auth cookies after login. Please ensure you are logged in to X.");
+      throw new Error("登录后仍缺少认证 Cookie。请确保已登录 X。");
     }
     log("[x-to-markdown] Cookies refreshed.");
     return;
@@ -514,7 +514,7 @@ async function main(): Promise<void> {
   const articleId = parseArticleId(normalizedUrl);
   const tweetId = parseTweetId(normalizedUrl);
   if (!articleId && !tweetId) {
-    throw new Error("Invalid X url. Examples: https://x.com/<user>/status/<id> or https://x.com/i/article/<id>");
+    throw new Error("无效的 X 链接。示例: https://x.com/<user>/status/<id> 或 https://x.com/i/article/<id>");
   }
 
   const kind = articleId ? ("article" as const) : ("tweet" as const);

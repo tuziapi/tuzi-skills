@@ -100,7 +100,7 @@ function parseFrontMatterAndContent(markdownText: string): ParseResult {
       readingTime: readingTimeResult,
     };
   } catch (error) {
-    console.error("Error parsing front-matter:", error);
+    console.error("解析 front-matter 出错:", error);
     return {
       yamlData: {},
       markdownContent: markdownText,

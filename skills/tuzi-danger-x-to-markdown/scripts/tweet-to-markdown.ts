@@ -178,8 +178,8 @@ export async function tweetToMarkdown(
 async function main() {
   const { url } = parseArgs();
   if (!url) {
-    console.error("Usage:");
-    console.error("  npx -y bun skills/tuzi-danger-x-to-markdown/scripts/tweet-to-markdown.ts <tweet url>");
+    console.error("用法:");
+    console.error("  npx -y bun skills/tuzi-danger-x-to-markdown/scripts/tweet-to-markdown.ts <推文链接>");
     process.exit(1);
   }
 

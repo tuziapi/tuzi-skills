@@ -1,107 +1,107 @@
 # tuzi-skills
 
-English | [中文](./README.zh.md)
+[English](./README.md) | 中文
 
-AI content generation skills for Claude Code and OpenClaw, powered by Tuzi API (api.tu-zi.com).
+AI 内容生成技能集，支持 Claude Code 和 OpenClaw，由兔子API (api.tu-zi.com) 驱动。
 
-## Prerequisites
+## 前置要求
 
-- Node.js environment installed
-- Ability to run `npx bun` commands
+- 已安装 Node.js 环境
+- 能够运行 `npx bun` 命令
 
-## Installation
+## 安装
 
-### Quick Install (Recommended)
+### 快速安装（推荐）
 
 ```bash
 npx skills add tuziapi/tuzi-skills
 ```
 
-### Register as Plugin Marketplace
+### 注册插件市场
 
-Run the following command in Claude Code:
+在 Claude Code 中运行：
 
 ```bash
 /plugin marketplace add tuziapi/tuzi-skills
 ```
 
-### Install Skills
+### 安装技能
 
-**Option 1: Via Browse UI**
+**方式一：通过浏览界面**
 
-1. Select **Browse and install plugins**
-2. Select **tuzi-skills**
-3. Select the plugin(s) you want to install
-4. Select **Install now**
+1. 选择 **Browse and install plugins**
+2. 选择 **tuzi-skills**
+3. 选择要安装的插件
+4. 选择 **Install now**
 
-**Option 2: Direct Install**
+**方式二：直接安装**
 
 ```bash
-# Install specific plugin
+# 安装指定插件
 /plugin install content-skills@tuzi-skills
 /plugin install ai-generation-skills@tuzi-skills
 /plugin install utility-skills@tuzi-skills
 ```
 
-**Option 3: Ask the Agent**
+**方式三：告诉 Agent**
 
-Simply tell Claude Code:
+直接告诉 Claude Code：
 
-> Please install Skills from github.com/tuziapi/tuzi-skills
+> 请帮我安装 github.com/tuziapi/tuzi-skills 中的 Skills
 
-### Available Plugins
+### 可用插件
 
-| Plugin | Description | Skills |
-|--------|-------------|--------|
-| **content-skills** | Content generation and publishing | [xhs-images](#tuzi-xhs-images), [infographic](#tuzi-infographic), [cover-image](#tuzi-cover-image), [slide-deck](#tuzi-slide-deck), [comic](#tuzi-comic), [article-illustrator](#tuzi-article-illustrator), [post-to-x](#tuzi-post-to-x), [post-to-wechat](#tuzi-post-to-wechat) |
-| **ai-generation-skills** | AI-powered generation backends | [image-gen](#tuzi-image-gen), [danger-gemini-web](#tuzi-danger-gemini-web) |
-| **utility-skills** | Utility tools for content processing | [url-to-markdown](#tuzi-url-to-markdown), [danger-x-to-markdown](#tuzi-danger-x-to-markdown), [compress-image](#tuzi-compress-image), [format-markdown](#tuzi-format-markdown) |
+| 插件 | 说明 | 包含技能 |
+|------|------|----------|
+| **content-skills** | 内容生成和发布 | [xhs-images](#tuzi-xhs-images), [infographic](#tuzi-infographic), [cover-image](#tuzi-cover-image), [slide-deck](#tuzi-slide-deck), [comic](#tuzi-comic), [article-illustrator](#tuzi-article-illustrator), [post-to-x](#tuzi-post-to-x), [post-to-wechat](#tuzi-post-to-wechat) |
+| **ai-generation-skills** | AI 生成后端 | [image-gen](#tuzi-image-gen), [danger-gemini-web](#tuzi-danger-gemini-web) |
+| **utility-skills** | 内容处理工具 | [url-to-markdown](#tuzi-url-to-markdown), [danger-x-to-markdown](#tuzi-danger-x-to-markdown), [compress-image](#tuzi-compress-image), [format-markdown](#tuzi-format-markdown) |
 
-## Update Skills
+## 更新技能
 
-To update skills to the latest version:
+更新技能到最新版本：
 
-1. Run `/plugin` in Claude Code
-2. Switch to **Marketplaces** tab (use arrow keys or Tab)
-3. Select **tuzi-skills**
-4. Choose **Update marketplace**
+1. 在 Claude Code 中运行 `/plugin`
+2. 切换到 **Marketplaces** 标签页（使用方向键或 Tab）
+3. 选择 **tuzi-skills**
+4. 选择 **Update marketplace**
 
-You can also **Enable auto-update** to get the latest versions automatically.
+也可以选择 **Enable auto-update** 启用自动更新，每次启动时自动获取最新版本。
 
-![Update Skills](./screenshots/update-plugins.png)
+![更新技能](./screenshots/update-plugins.png)
 
-## Available Skills
+## 可用技能
 
-Skills are organized into three categories:
+技能分为三大类：
 
-### Content Skills
+### 内容技能 (Content Skills)
 
-Content generation and publishing skills.
+内容生成和发布技能。
 
 #### tuzi-xhs-images
 
-Xiaohongshu (RedNote) infographic series generator. Breaks down content into 1-10 cartoon-style infographics with **Style × Layout** two-dimensional system.
+小红书信息图系列生成器。将内容拆解为 1-10 张卡通风格信息图，支持 **风格 × 布局** 二维系统。
 
 ```bash
-# Auto-select style and layout
+# 自动选择风格和布局
 /tuzi-xhs-images posts/ai-future/article.md
 
-# Specify style
+# 指定风格
 /tuzi-xhs-images posts/ai-future/article.md --style notion
 
-# Specify layout
+# 指定布局
 /tuzi-xhs-images posts/ai-future/article.md --layout dense
 
-# Combine style and layout
+# 组合风格和布局
 /tuzi-xhs-images posts/ai-future/article.md --style tech --layout list
 
-# Direct content input
+# 直接输入内容
 /tuzi-xhs-images 今日星座运势
 ```
 
-**Styles** (visual aesthetics): `cute` (default), `fresh`, `warm`, `bold`, `minimal`, `retro`, `pop`, `notion`, `chalkboard`
+**风格**（视觉美学）：`cute`（默认）、`fresh`、`warm`、`bold`、`minimal`、`retro`、`pop`、`notion`、`chalkboard`
 
-**Style Previews**:
+**风格预览**：
 
 | | | |
 |:---:|:---:|:---:|
@@ -112,17 +112,17 @@ Xiaohongshu (RedNote) infographic series generator. Breaks down content into 1-1
 | ![pop](./screenshots/xhs-images-styles/pop.webp) | ![notion](./screenshots/xhs-images-styles/notion.webp) | ![chalkboard](./screenshots/xhs-images-styles/chalkboard.webp) |
 | pop | notion | chalkboard |
 
-**Layouts** (information density):
-| Layout | Density | Best for |
-|--------|---------|----------|
-| `sparse` | 1-2 pts | Covers, quotes |
-| `balanced` | 3-4 pts | Regular content |
-| `dense` | 5-8 pts | Knowledge cards, cheat sheets |
-| `list` | 4-7 items | Checklists, rankings |
-| `comparison` | 2 sides | Before/after, pros/cons |
-| `flow` | 3-6 steps | Processes, timelines |
+**布局**（信息密度）：
+| 布局 | 密度 | 适用场景 |
+|------|------|----------|
+| `sparse` | 1-2 点 | 封面、金句 |
+| `balanced` | 3-4 点 | 常规内容 |
+| `dense` | 5-8 点 | 知识卡片、干货总结 |
+| `list` | 4-7 项 | 清单、排行 |
+| `comparison` | 双栏 | 对比、优劣 |
+| `flow` | 3-6 步 | 流程、时间线 |
 
-**Layout Previews**:
+**布局预览**：
 
 | | | |
 |:---:|:---:|:---:|
@@ -133,59 +133,59 @@ Xiaohongshu (RedNote) infographic series generator. Breaks down content into 1-1
 
 #### tuzi-infographic
 
-Generate professional infographics with 20 layout types and 17 visual styles. Analyzes content, recommends layout×style combinations, and generates publication-ready infographics.
+专业信息图生成器，支持 20 种布局和 17 种视觉风格。分析内容后推荐布局×风格组合，生成可发布的信息图。
 
 ```bash
-# Auto-recommend combinations based on content
+# 根据内容自动推荐组合
 /tuzi-infographic path/to/content.md
 
-# Specify layout
+# 指定布局
 /tuzi-infographic path/to/content.md --layout pyramid
 
-# Specify style (default: craft-handmade)
+# 指定风格（默认：craft-handmade）
 /tuzi-infographic path/to/content.md --style technical-schematic
 
-# Specify both
+# 同时指定布局和风格
 /tuzi-infographic path/to/content.md --layout funnel --style corporate-memphis
 
-# With aspect ratio
+# 指定比例
 /tuzi-infographic path/to/content.md --aspect portrait
 ```
 
-**Options**:
-| Option | Description |
-|--------|-------------|
-| `--layout <name>` | Information layout (20 options) |
-| `--style <name>` | Visual style (17 options, default: craft-handmade) |
-| `--aspect <ratio>` | landscape (16:9), portrait (9:16), square (1:1) |
-| `--lang <code>` | Output language (en, zh, ja, etc.) |
+**选项**：
+| 选项 | 说明 |
+|------|------|
+| `--layout <name>` | 信息布局（20 种选项） |
+| `--style <name>` | 视觉风格（17 种选项，默认：craft-handmade） |
+| `--aspect <ratio>` | landscape (16:9)、portrait (9:16)、square (1:1) |
+| `--lang <code>` | 输出语言（en、zh、ja 等） |
 
-**Layouts** (information structure):
+**布局**（信息结构）：
 
-| Layout | Best For |
-|--------|----------|
-| `bridge` | Problem-solution, gap-crossing |
-| `circular-flow` | Cycles, recurring processes |
-| `comparison-table` | Multi-factor comparisons |
-| `do-dont` | Correct vs incorrect practices |
-| `equation` | Formula breakdown, input-output |
-| `feature-list` | Product features, bullet points |
-| `fishbone` | Root cause analysis |
-| `funnel` | Conversion processes, filtering |
-| `grid-cards` | Multiple topics, overview |
-| `iceberg` | Surface vs hidden aspects |
-| `journey-path` | Customer journey, milestones |
-| `layers-stack` | Technology stack, layers |
-| `mind-map` | Brainstorming, idea mapping |
-| `nested-circles` | Levels of influence, scope |
-| `priority-quadrants` | Eisenhower matrix, 2x2 |
-| `pyramid` | Hierarchy, Maslow's needs |
-| `scale-balance` | Pros vs cons, weighing |
-| `timeline-horizontal` | History, chronological events |
-| `tree-hierarchy` | Org charts, taxonomy |
-| `venn` | Overlapping concepts |
+| 布局 | 适用场景 |
+|------|----------|
+| `bridge` | 问题→解决方案、跨越鸿沟 |
+| `circular-flow` | 循环、周期性流程 |
+| `comparison-table` | 多因素对比 |
+| `do-dont` | 正确 vs 错误做法 |
+| `equation` | 公式分解、输入→输出 |
+| `feature-list` | 产品功能、要点列表 |
+| `fishbone` | 根因分析、鱼骨图 |
+| `funnel` | 转化漏斗、筛选过程 |
+| `grid-cards` | 多主题概览、卡片网格 |
+| `iceberg` | 表面 vs 隐藏层面 |
+| `journey-path` | 用户旅程、里程碑 |
+| `layers-stack` | 技术栈、分层结构 |
+| `mind-map` | 头脑风暴、思维导图 |
+| `nested-circles` | 影响层级、范围圈 |
+| `priority-quadrants` | 四象限矩阵、优先级 |
+| `pyramid` | 层级金字塔、马斯洛需求 |
+| `scale-balance` | 利弊权衡、天平对比 |
+| `timeline-horizontal` | 历史、时间线事件 |
+| `tree-hierarchy` | 组织架构、分类树 |
+| `venn` | 重叠概念、韦恩图 |
 
-**Layout Previews**:
+**布局预览**：
 
 | | | |
 |:---:|:---:|:---:|
@@ -204,29 +204,29 @@ Generate professional infographics with 20 layout types and 17 visual styles. An
 | ![tree-hierarchy](./screenshots/infographic-layouts/tree-hierarchy.webp) | ![venn](./screenshots/infographic-layouts/venn.webp) | |
 | tree-hierarchy | venn | |
 
-**Styles** (visual aesthetics):
+**风格**（视觉美学）：
 
-| Style | Description |
-|-------|-------------|
-| `craft-handmade` (Default) | Hand-drawn illustration, paper craft aesthetic |
-| `claymation` | 3D clay figures, playful stop-motion |
-| `kawaii` | Japanese cute, big eyes, pastel colors |
-| `storybook-watercolor` | Soft painted illustrations, whimsical |
-| `chalkboard` | Colorful chalk on black board |
-| `cyberpunk-neon` | Neon glow on dark, futuristic |
-| `bold-graphic` | Comic style, halftone dots, high contrast |
-| `aged-academia` | Vintage science, sepia sketches |
-| `corporate-memphis` | Flat vector people, vibrant fills |
-| `technical-schematic` | Blueprint, isometric 3D, engineering |
-| `origami` | Folded paper forms, geometric |
-| `pixel-art` | Retro 8-bit, nostalgic gaming |
-| `ui-wireframe` | Grayscale boxes, interface mockup |
-| `subway-map` | Transit diagram, colored lines |
-| `ikea-manual` | Minimal line art, assembly style |
-| `knolling` | Organized flat-lay, top-down |
-| `lego-brick` | Toy brick construction, playful |
+| 风格 | 描述 |
+|------|------|
+| `craft-handmade`（默认） | 手绘插画、纸艺风格 |
+| `claymation` | 3D 黏土人物、定格动画感 |
+| `kawaii` | 日系可爱、大眼睛、粉彩色 |
+| `storybook-watercolor` | 柔和水彩、童话绘本 |
+| `chalkboard` | 彩色粉笔、黑板风格 |
+| `cyberpunk-neon` | 霓虹灯光、暗色未来感 |
+| `bold-graphic` | 漫画风格、网点、高对比 |
+| `aged-academia` | 复古科学、泛黄素描 |
+| `corporate-memphis` | 扁平矢量人物、鲜艳填充 |
+| `technical-schematic` | 蓝图、等距 3D、工程图 |
+| `origami` | 折纸形态、几何感 |
+| `pixel-art` | 复古 8-bit、怀旧游戏 |
+| `ui-wireframe` | 灰度框图、界面原型 |
+| `subway-map` | 地铁图、彩色线路 |
+| `ikea-manual` | 极简线条、组装说明风 |
+| `knolling` | 整齐平铺、俯视图 |
+| `lego-brick` | 乐高积木、童趣拼搭 |
 
-**Style Previews**:
+**风格预览**：
 
 | | | |
 |:---:|:---:|:---:|
@@ -245,104 +245,104 @@ Generate professional infographics with 20 layout types and 17 visual styles. An
 
 #### tuzi-cover-image
 
-Generate cover images for articles with 5 dimensions: Type × Palette × Rendering × Text × Mood. Combines 9 color palettes with 6 rendering styles for 54 unique combinations.
+为文章生成封面图，支持五维定制系统：类型 × 配色 × 渲染 × 文字 × 氛围。9 种配色方案与 6 种渲染风格组合，提供 54 种独特效果。
 
 ```bash
-# Auto-select all dimensions based on content
+# 根据内容自动选择所有维度
 /tuzi-cover-image path/to/article.md
 
-# Quick mode: skip confirmation, use auto-selection
+# 快速模式：跳过确认，使用自动选择
 /tuzi-cover-image path/to/article.md --quick
 
-# Specify dimensions (5D system)
+# 指定维度（5D 系统）
 /tuzi-cover-image path/to/article.md --type conceptual --palette cool --rendering digital
 /tuzi-cover-image path/to/article.md --text title-subtitle --mood bold
 
-# Style presets (backward-compatible shorthand)
+# 风格预设（向后兼容的简写方式）
 /tuzi-cover-image path/to/article.md --style blueprint
 
-# Specify aspect ratio (default: 16:9)
+# 指定宽高比（默认：16:9）
 /tuzi-cover-image path/to/article.md --aspect 2.35:1
 
-# Visual only (no title text)
+# 纯视觉（不含标题文字）
 /tuzi-cover-image path/to/article.md --no-title
 ```
 
-**Five Dimensions**:
-- **Type**: `hero`, `conceptual`, `typography`, `metaphor`, `scene`, `minimal`
-- **Palette**: `warm`, `elegant`, `cool`, `dark`, `earth`, `vivid`, `pastel`, `mono`, `retro`
-- **Rendering**: `flat-vector`, `hand-drawn`, `painterly`, `digital`, `pixel`, `chalk`
-- **Text**: `none`, `title-only` (default), `title-subtitle`, `text-rich`
-- **Mood**: `subtle`, `balanced` (default), `bold`
+**五个维度**：
+- **类型 (Type)**：`hero`、`conceptual`、`typography`、`metaphor`、`scene`、`minimal`
+- **配色 (Palette)**：`warm`、`elegant`、`cool`、`dark`、`earth`、`vivid`、`pastel`、`mono`、`retro`
+- **渲染 (Rendering)**：`flat-vector`、`hand-drawn`、`painterly`、`digital`、`pixel`、`chalk`
+- **文字 (Text)**：`none`、`title-only`（默认）、`title-subtitle`、`text-rich`
+- **氛围 (Mood)**：`subtle`、`balanced`（默认）、`bold`
 
 #### tuzi-slide-deck
 
-Generate professional slide deck images from content. Creates comprehensive outlines with style instructions, then generates individual slide images.
+从内容生成专业的幻灯片图片。先创建包含样式说明的完整大纲，然后逐页生成幻灯片图片。
 
 ```bash
-# From markdown file
+# 从 markdown 文件生成
 /tuzi-slide-deck path/to/article.md
 
-# With style and audience
+# 指定风格和受众
 /tuzi-slide-deck path/to/article.md --style corporate
 /tuzi-slide-deck path/to/article.md --audience executives
 
-# Target slide count
+# 指定页数
 /tuzi-slide-deck path/to/article.md --slides 15
 
-# Outline only (no image generation)
+# 仅生成大纲（不生成图片）
 /tuzi-slide-deck path/to/article.md --outline-only
 
-# With language
+# 指定语言
 /tuzi-slide-deck path/to/article.md --lang zh
 ```
 
-**Options**:
+**选项**：
 
-| Option | Description |
-|--------|-------------|
-| `--style <name>` | Visual style: preset name or `custom` |
-| `--audience <type>` | Target: beginners, intermediate, experts, executives, general |
-| `--lang <code>` | Output language (en, zh, ja, etc.) |
-| `--slides <number>` | Target slide count (8-25 recommended, max 30) |
-| `--outline-only` | Generate outline only, skip images |
-| `--prompts-only` | Generate outline + prompts, skip images |
-| `--images-only` | Generate images from existing prompts |
-| `--regenerate <N>` | Regenerate specific slide(s): `3` or `2,5,8` |
+| 选项 | 说明 |
+|------|------|
+| `--style <name>` | 视觉风格：预设名称或 `custom` |
+| `--audience <type>` | 目标受众：beginners、intermediate、experts、executives、general |
+| `--lang <code>` | 输出语言（en、zh、ja 等） |
+| `--slides <number>` | 目标页数（推荐 8-25，最多 30） |
+| `--outline-only` | 仅生成大纲，跳过图片 |
+| `--prompts-only` | 生成大纲 + 提示词，跳过图片 |
+| `--images-only` | 从现有提示词生成图片 |
+| `--regenerate <N>` | 重新生成指定页：`3` 或 `2,5,8` |
 
-**Style System**:
+**风格系统**：
 
-Styles are built from 4 dimensions: **Texture** × **Mood** × **Typography** × **Density**
+风格由 4 个维度组合而成：**纹理** × **氛围** × **字体** × **密度**
 
-| Dimension | Options |
-|-----------|---------|
-| Texture | clean, grid, organic, pixel, paper |
-| Mood | professional, warm, cool, vibrant, dark, neutral |
-| Typography | geometric, humanist, handwritten, editorial, technical |
-| Density | minimal, balanced, dense |
+| 维度 | 选项 |
+|------|------|
+| 纹理 | clean 纯净、grid 网格、organic 有机、pixel 像素、paper 纸张 |
+| 氛围 | professional 专业、warm 温暖、cool 冷静、vibrant 鲜艳、dark 暗色、neutral 中性 |
+| 字体 | geometric 几何、humanist 人文、handwritten 手写、editorial 编辑、technical 技术 |
+| 密度 | minimal 极简、balanced 均衡、dense 密集 |
 
-**Presets** (pre-configured dimension combinations):
+**预设**（预配置的维度组合）：
 
-| Preset | Dimensions | Best For |
-|--------|------------|----------|
-| `blueprint` (default) | grid + cool + technical + balanced | Architecture, system design |
-| `chalkboard` | organic + warm + handwritten + balanced | Education, tutorials |
-| `corporate` | clean + professional + geometric + balanced | Investor decks, proposals |
-| `minimal` | clean + neutral + geometric + minimal | Executive briefings |
-| `sketch-notes` | organic + warm + handwritten + balanced | Educational, tutorials |
-| `watercolor` | organic + warm + humanist + minimal | Lifestyle, wellness |
-| `dark-atmospheric` | clean + dark + editorial + balanced | Entertainment, gaming |
-| `notion` | clean + neutral + geometric + dense | Product demos, SaaS |
-| `bold-editorial` | clean + vibrant + editorial + balanced | Product launches, keynotes |
-| `editorial-infographic` | clean + cool + editorial + dense | Tech explainers, research |
-| `fantasy-animation` | organic + vibrant + handwritten + minimal | Educational storytelling |
-| `intuition-machine` | clean + cool + technical + dense | Technical docs, academic |
-| `pixel-art` | pixel + vibrant + technical + balanced | Gaming, developer talks |
-| `scientific` | clean + cool + technical + dense | Biology, chemistry, medical |
-| `vector-illustration` | clean + vibrant + humanist + balanced | Creative, children's content |
-| `vintage` | paper + warm + editorial + balanced | Historical, heritage |
+| 预设 | 维度组合 | 适用场景 |
+|------|----------|----------|
+| `blueprint`（默认） | grid + cool + technical + balanced | 架构设计、系统设计 |
+| `chalkboard` | organic + warm + handwritten + balanced | 教育、教程 |
+| `corporate` | clean + professional + geometric + balanced | 投资者演示、提案 |
+| `minimal` | clean + neutral + geometric + minimal | 高管简报 |
+| `sketch-notes` | organic + warm + handwritten + balanced | 教育、教程 |
+| `watercolor` | organic + warm + humanist + minimal | 生活方式、健康 |
+| `dark-atmospheric` | clean + dark + editorial + balanced | 娱乐、游戏 |
+| `notion` | clean + neutral + geometric + dense | 产品演示、SaaS |
+| `bold-editorial` | clean + vibrant + editorial + balanced | 产品发布、主题演讲 |
+| `editorial-infographic` | clean + cool + editorial + dense | 科技解说、研究 |
+| `fantasy-animation` | organic + vibrant + handwritten + minimal | 教育故事 |
+| `intuition-machine` | clean + cool + technical + dense | 技术文档、学术 |
+| `pixel-art` | pixel + vibrant + technical + balanced | 游戏、开发者 |
+| `scientific` | clean + cool + technical + dense | 生物、化学、医学 |
+| `vector-illustration` | clean + vibrant + humanist + balanced | 创意、儿童内容 |
+| `vintage` | paper + warm + editorial + balanced | 历史、传记 |
 
-**Style Previews**:
+**风格预览**：
 
 | | | |
 |:---:|:---:|:---:|
@@ -359,86 +359,86 @@ Styles are built from 4 dimensions: **Texture** × **Mood** × **Typography** ×
 | ![watercolor](./screenshots/slide-deck-styles/watercolor.webp) | | |
 | watercolor | | |
 
-After generation, slides are automatically merged into `.pptx` and `.pdf` files for easy sharing.
+生成完成后，所有幻灯片会自动合并为 `.pptx` 和 `.pdf` 文件，方便分享。
 
 #### tuzi-comic
 
-Knowledge comic creator with flexible art style × tone combinations. Creates original educational comics with detailed panel layouts and sequential image generation.
+知识漫画创作器，支持画风 × 基调灵活组合。创作带有详细分镜布局的原创教育漫画，逐页生成图片。
 
 ```bash
-# From source material (auto-selects art + tone)
+# 从素材文件生成（自动选择画风 + 基调）
 /tuzi-comic posts/turing-story/source.md
 
-# Specify art style and tone
+# 指定画风和基调
 /tuzi-comic posts/turing-story/source.md --art manga --tone warm
 /tuzi-comic posts/turing-story/source.md --art ink-brush --tone dramatic
 
-# Use preset (includes special rules)
+# 使用预设（包含特殊规则）
 /tuzi-comic posts/turing-story/source.md --style ohmsha
 /tuzi-comic posts/turing-story/source.md --style wuxia
 
-# Specify layout and aspect ratio
+# 指定布局和比例
 /tuzi-comic posts/turing-story/source.md --layout cinematic
 /tuzi-comic posts/turing-story/source.md --aspect 16:9
 
-# Specify language
+# 指定语言
 /tuzi-comic posts/turing-story/source.md --lang zh
 
-# Direct content input
-/tuzi-comic "The story of Alan Turing and the birth of computer science"
+# 直接输入内容
+/tuzi-comic "图灵的故事与计算机科学的诞生"
 ```
 
-**Options**:
-| Option | Values |
-|--------|--------|
-| `--art` | `ligne-claire` (default), `manga`, `realistic`, `ink-brush`, `chalk` |
-| `--tone` | `neutral` (default), `warm`, `dramatic`, `romantic`, `energetic`, `vintage`, `action` |
-| `--style` | `ohmsha`, `wuxia`, `shoujo` (presets with special rules) |
-| `--layout` | `standard` (default), `cinematic`, `dense`, `splash`, `mixed`, `webtoon` |
-| `--aspect` | `3:4` (default, portrait), `4:3` (landscape), `16:9` (widescreen) |
-| `--lang` | `auto` (default), `zh`, `en`, `ja`, etc. |
+**选项**：
+| 选项 | 取值 |
+|------|------|
+| `--art` | `ligne-claire`（默认）、`manga`、`realistic`、`ink-brush`、`chalk` |
+| `--tone` | `neutral`（默认）、`warm`、`dramatic`、`romantic`、`energetic`、`vintage`、`action` |
+| `--style` | `ohmsha`、`wuxia`、`shoujo`（预设，含特殊规则） |
+| `--layout` | `standard`（默认）、`cinematic`、`dense`、`splash`、`mixed`、`webtoon` |
+| `--aspect` | `3:4`（默认，竖版）、`4:3`（横版）、`16:9`（宽屏） |
+| `--lang` | `auto`（默认）、`zh`、`en`、`ja` 等 |
 
-**Art Styles** (rendering technique):
+**画风**（渲染技法）：
 
-| Art Style | Description |
-|-----------|-------------|
-| `ligne-claire` | Uniform lines, flat colors, European comic tradition (Tintin, Logicomix) |
-| `manga` | Large eyes, manga conventions, expressive emotions |
-| `realistic` | Digital painting, realistic proportions, sophisticated |
-| `ink-brush` | Chinese brush strokes, ink wash effects |
-| `chalk` | Chalkboard aesthetic, hand-drawn warmth |
+| 画风 | 描述 |
+|------|------|
+| `ligne-claire` | 统一线条、平涂色彩，欧洲漫画传统（丁丁、Logicomix） |
+| `manga` | 大眼睛、日漫风格、表情丰富 |
+| `realistic` | 数字绘画、写实比例、精致细腻 |
+| `ink-brush` | 中国水墨笔触、水墨晕染效果 |
+| `chalk` | 黑板粉笔风格、手绘温暖感 |
 
-**Tones** (mood/atmosphere):
+**基调**（氛围/情绪）：
 
-| Tone | Description |
-|------|-------------|
-| `neutral` | Balanced, rational, educational |
-| `warm` | Nostalgic, personal, comforting |
-| `dramatic` | High contrast, intense, powerful |
-| `romantic` | Soft, beautiful, decorative elements |
-| `energetic` | Bright, dynamic, exciting |
-| `vintage` | Historical, aged, period authenticity |
-| `action` | Speed lines, impact effects, combat |
+| 基调 | 描述 |
+|------|------|
+| `neutral` | 平衡、理性、教育性 |
+| `warm` | 怀旧、个人化、温馨 |
+| `dramatic` | 高对比、紧张、有力 |
+| `romantic` | 柔和、唯美、装饰性元素 |
+| `energetic` | 明亮、动感、活力 |
+| `vintage` | 历史感、做旧、时代真实性 |
+| `action` | 速度线、冲击效果、战斗 |
 
-**Presets** (art + tone + special rules):
+**预设**（画风 + 基调 + 特殊规则）：
 
-| Preset | Equivalent | Special Rules |
-|--------|-----------|---------------|
-| `ohmsha` | manga + neutral | Visual metaphors, NO talking heads, gadget reveals |
-| `wuxia` | ink-brush + action | Qi effects, combat visuals, atmospheric elements |
-| `shoujo` | manga + romantic | Decorative elements, eye details, romantic beats |
+| 预设 | 等价于 | 特殊规则 |
+|------|--------|----------|
+| `ohmsha` | manga + neutral | 视觉比喻、禁止大头对话、道具揭秘 |
+| `wuxia` | ink-brush + action | 气功特效、战斗视觉、氛围元素 |
+| `shoujo` | manga + romantic | 装饰元素、眼睛细节、浪漫情节 |
 
-**Layouts** (panel arrangement):
-| Layout | Panels/Page | Best for |
-|--------|-------------|----------|
-| `standard` | 4-6 | Dialogue, narrative flow |
-| `cinematic` | 2-4 | Dramatic moments, establishing shots |
-| `dense` | 6-9 | Technical explanations, timelines |
-| `splash` | 1-2 large | Key moments, revelations |
-| `mixed` | 3-7 varies | Complex narratives, emotional arcs |
-| `webtoon` | 3-5 vertical | Ohmsha tutorials, mobile reading |
+**布局**（分镜排列）：
+| 布局 | 每页分镜数 | 适用场景 |
+|------|-----------|----------|
+| `standard` | 4-6 | 对话、叙事推进 |
+| `cinematic` | 2-4 | 戏剧性时刻、建立镜头 |
+| `dense` | 6-9 | 技术说明、时间线 |
+| `splash` | 1-2 大图 | 关键时刻、揭示 |
+| `mixed` | 3-7 不等 | 复杂叙事、情感弧线 |
+| `webtoon` | 3-5 竖向 | 欧姆社教程、手机阅读 |
 
-**Layout Previews**:
+**布局预览**：
 
 | | | |
 |:---:|:---:|:---:|
@@ -449,47 +449,47 @@ Knowledge comic creator with flexible art style × tone combinations. Creates or
 
 #### tuzi-article-illustrator
 
-Smart article illustration skill with Type × Style two-dimension approach. Analyzes article structure, identifies positions requiring visual aids, and generates illustrations.
+智能文章插图技能，采用类型 × 风格二维系统。分析文章结构，识别需要视觉辅助的位置，生成插图。
 
 ```bash
-# Auto-select type and style based on content
+# 根据内容自动选择类型和风格
 /tuzi-article-illustrator path/to/article.md
 
-# Specify type
+# 指定类型
 /tuzi-article-illustrator path/to/article.md --type infographic
 
-# Specify style
+# 指定风格
 /tuzi-article-illustrator path/to/article.md --style blueprint
 
-# Combine type and style
+# 组合类型和风格
 /tuzi-article-illustrator path/to/article.md --type flowchart --style notion
 ```
 
-**Types** (information structure):
+**类型**（信息结构）：
 
-| Type | Description | Best For |
-|------|-------------|----------|
-| `infographic` | Data visualization, charts, metrics | Technical articles, data analysis |
-| `scene` | Atmospheric illustration, mood rendering | Narrative, personal stories |
-| `flowchart` | Process diagrams, step visualization | Tutorials, workflows |
-| `comparison` | Side-by-side, before/after contrast | Product comparisons |
-| `framework` | Concept maps, relationship diagrams | Methodologies, architecture |
-| `timeline` | Chronological progression | History, project progress |
+| 类型 | 描述 | 适用场景 |
+|------|------|----------|
+| `infographic` | 数据可视化、图表、指标 | 技术文章、数据分析 |
+| `scene` | 氛围插图、情绪渲染 | 叙事、个人故事 |
+| `flowchart` | 流程图、步骤可视化 | 教程、工作流 |
+| `comparison` | 并排对比、前后对照 | 产品比较 |
+| `framework` | 概念图、关系图 | 方法论、架构 |
+| `timeline` | 时间线进展 | 历史、项目进度 |
 
-**Styles** (visual aesthetics):
+**风格**（视觉美学）：
 
-| Style | Description | Best For |
-|-------|-------------|----------|
-| `notion` (default) | Minimalist hand-drawn line art | Knowledge sharing, SaaS, productivity |
-| `elegant` | Refined, sophisticated | Business, thought leadership |
-| `warm` | Friendly, approachable | Personal growth, lifestyle |
-| `minimal` | Ultra-clean, zen-like | Philosophy, minimalism |
-| `blueprint` | Technical schematics | Architecture, system design |
-| `watercolor` | Soft artistic with natural warmth | Lifestyle, travel, creative |
-| `editorial` | Magazine-style infographic | Tech explainers, journalism |
-| `scientific` | Academic precise diagrams | Biology, chemistry, technical |
+| 风格 | 描述 | 适用场景 |
+|------|------|----------|
+| `notion`（默认） | 极简手绘线条画 | 知识分享、SaaS、生产力 |
+| `elegant` | 精致、优雅 | 商业、思想领导力 |
+| `warm` | 友好、亲切 | 个人成长、生活方式 |
+| `minimal` | 极简、禅意 | 哲学、极简主义 |
+| `blueprint` | 技术蓝图 | 架构、系统设计 |
+| `watercolor` | 柔和艺术感、自然温暖 | 生活方式、旅行、创意 |
+| `editorial` | 杂志风格信息图 | 科技解说、新闻 |
+| `scientific` | 学术精确图表 | 生物、化学、技术 |
 
-**Style Previews**:
+**风格预览**：
 
 | | | |
 |:---:|:---:|:---:|
@@ -502,24 +502,24 @@ Smart article illustration skill with Type × Style two-dimension approach. Anal
 
 #### tuzi-post-to-x
 
-Post content and articles to X (Twitter). Supports regular posts with images and X Articles (long-form Markdown). Uses real Chrome with CDP to bypass anti-automation.
+发布内容和文章到 X (Twitter)。支持带图片的普通帖子和 X 文章（长篇 Markdown）。使用真实 Chrome + CDP 绕过反自动化检测。
 
 ```bash
-# Post with text
+# 发布文字
 /tuzi-post-to-x "Hello from Claude Code!"
 
-# Post with images
-/tuzi-post-to-x "Check this out" --image photo.png
+# 发布带图片
+/tuzi-post-to-x "看看这个" --image photo.png
 
-# Post X Article
+# 发布 X 文章
 /tuzi-post-to-x --article path/to/article.md
 ```
 
 #### tuzi-post-to-wechat
 
-Post content to WeChat Official Account (微信公众号). Two modes available:
+发布内容到微信公众号，支持两种模式：
 
-**Image-Text (贴图)** - Multiple images with short title/content:
+**贴图模式** - 多图配短标题和正文：
 
 ```bash
 /tuzi-post-to-wechat 贴图 --markdown article.md --images ./photos/
@@ -527,7 +527,7 @@ Post content to WeChat Official Account (微信公众号). Two modes available:
 /tuzi-post-to-wechat 贴图 --title "标题" --content "内容" --image img1.png --submit
 ```
 
-**Article (文章)** - Full markdown/HTML with rich formatting:
+**文章模式** - 完整 markdown/HTML 富文本格式：
 
 ```bash
 /tuzi-post-to-wechat 文章 --markdown article.md
@@ -535,182 +535,182 @@ Post content to WeChat Official Account (微信公众号). Two modes available:
 /tuzi-post-to-wechat 文章 --html article.html
 ```
 
-**Publishing Methods**:
+**发布方式**：
 
-| Method | Speed | Requirements |
-|--------|-------|--------------|
-| API (Recommended) | Fast | API credentials |
-| Browser | Slow | Chrome, login session |
+| 方式 | 速度 | 要求 |
+|------|------|------|
+| API（推荐） | 快 | API 凭证 |
+| 浏览器 | 慢 | Chrome，登录会话 |
 
-**API Configuration** (for faster publishing):
+**API 配置**（更快的发布方式）：
 
 ```bash
-# Add to .tuzi-skills/.env (project-level) or ~/.tuzi-skills/.env (user-level)
-WECHAT_APP_ID=your_app_id
-WECHAT_APP_SECRET=your_app_secret
+# 添加到 .tuzi-skills/.env（项目级）或 ~/.tuzi-skills/.env（用户级）
+WECHAT_APP_ID=你的AppID
+WECHAT_APP_SECRET=你的AppSecret
 ```
 
-To obtain credentials:
-1. Visit https://developers.weixin.qq.com/platform/
-2. Go to: 我的业务 → 公众号 → 开发密钥
-3. Create development key and copy AppID/AppSecret
-4. Add your machine's IP to the whitelist
+获取凭证方法：
+1. 访问 https://developers.weixin.qq.com/platform/
+2. 进入：我的业务 → 公众号 → 开发密钥
+3. 添加开发密钥，复制 AppID 和 AppSecret
+4. 将你操作的机器 IP 加入白名单
 
-**Browser Method** (no API setup needed): Requires Google Chrome. First run opens browser for QR code login (session preserved).
+**浏览器方式**（无需 API 配置）：需已安装 Google Chrome，首次运行需扫码登录（登录状态会保存）
 
-### AI Generation Skills
+### AI 生成技能 (AI Generation Skills)
 
-AI-powered generation backends.
+AI 驱动的生成后端。
 
 #### tuzi-image-gen
 
-Multi-provider AI image generation. Default provider: Tuzi API (api.tu-zi.com, nano-banana models). Also supports Google, OpenAI, DashScope and Replicate.
+多服务商 AI 图像生成。默认服务商：兔子API (api.tu-zi.com, nano-banana 模型)。同时支持 Google、OpenAI、DashScope 和 Replicate。
 
 ```bash
-# Basic generation (uses Tuzi by default)
-/tuzi-image-gen --prompt "A cute cat" --image cat.png
+# 基础生成（默认使用 Tuzi）
+/tuzi-image-gen --prompt "一只可爱的猫" --image cat.png
 
-# With aspect ratio
-/tuzi-image-gen --prompt "A landscape" --image landscape.png --ar 16:9
+# 指定宽高比
+/tuzi-image-gen --prompt "风景图" --image landscape.png --ar 16:9
 
-# With quality (Tuzi: 1k/2k/4k)
-/tuzi-image-gen --prompt "A banner" --image banner.png --quality 2k
+# 指定质量（Tuzi: 1k/2k/4k）
+/tuzi-image-gen --prompt "横幅图" --image banner.png --quality 2k
 
-# 4K VIP model
-/tuzi-image-gen --prompt "A cat" --image cat.png --model gemini-3-pro-image-preview-4k-vip
+# 4K VIP 模型
+/tuzi-image-gen --prompt "一只猫" --image cat.png --model gemini-3-pro-image-preview-4k-vip
 
-# With reference images
-/tuzi-image-gen --prompt "Make it blue" --image out.png --ref source.png
+# 带参考图
+/tuzi-image-gen --prompt "把它变成蓝色" --image out.png --ref source.png
 
-# Other providers
-/tuzi-image-gen --prompt "A cat" --image cat.png --provider google
-/tuzi-image-gen --prompt "A cat" --image cat.png --provider openai
+# 其他服务商
+/tuzi-image-gen --prompt "一只猫" --image cat.png --provider google
+/tuzi-image-gen --prompt "一只猫" --image cat.png --provider openai
 /tuzi-image-gen --prompt "一只可爱的猫" --image cat.png --provider dashscope
 ```
 
-**Options**:
-| Option | Description |
-|--------|-------------|
-| `--prompt`, `-p` | Prompt text |
-| `--promptfiles` | Read prompt from files (concatenated) |
-| `--image` | Output image path (required) |
-| `--provider` | `tuzi` (default), `google`, `openai`, `dashscope` or `replicate` |
-| `--model`, `-m` | Model ID |
-| `--ar` | Aspect ratio (e.g., `16:9`, `1:1`, `4:3`) |
-| `--size` | Size (e.g., `1024x1024`, `16x9`) |
-| `--quality` | `normal` or `2k` (default: 2k) |
-| `--imageSize` | `1K`, `2K` or `4K` (overrides quality) |
-| `--ref` | Reference images (all providers) |
+**选项**：
+| 选项 | 说明 |
+|------|------|
+| `--prompt`, `-p` | 提示词文本 |
+| `--promptfiles` | 从文件读取提示词（多文件拼接） |
+| `--image` | 输出图片路径（必需） |
+| `--provider` | `tuzi`（默认）、`google`、`openai`、`dashscope` 或 `replicate` |
+| `--model`, `-m` | 模型 ID |
+| `--ar` | 宽高比（如 `16:9`、`1:1`、`4:3`） |
+| `--size` | 尺寸（如 `1024x1024`、`16x9`） |
+| `--quality` | `normal` 或 `2k`（默认：2k） |
+| `--imageSize` | `1K`、`2K` 或 `4K`（覆盖 quality） |
+| `--ref` | 参考图片（所有服务商支持） |
 
-**Tuzi Models** (default provider):
-| Model | Alias | Notes |
-|-------|-------|-------|
-| `gemini-3-pro-image-preview` | nano-banana-pro | Default. High quality, `--quality` 1k/2k/4k |
-| `gemini-3.1-flash-image-preview` | nano-banana-2 | Fast, `--quality` 1k/2k/4k, extended aspect ratios |
-| `gemini-3-pro-image-preview-vip` | nano-banana-pro-vip | High quality, VIP |
-| `gemini-3-pro-image-preview-2k-vip` | nano-banana-pro-2k-vip | 2K built-in, VIP |
-| `gemini-3-pro-image-preview-4k-vip` | nano-banana-pro-4k-vip | 4K built-in, VIP |
-| `gemini-2.5-flash-image-vip` | nano-banana-vip | Fastest, VIP |
+**Tuzi 模型**（默认服务商）：
+| 模型 | 别名 | 说明 |
+|------|------|------|
+| `gemini-3-pro-image-preview` | nano-banana-pro | 默认。高质量，`--quality` 1k/2k/4k |
+| `gemini-3.1-flash-image-preview` | nano-banana-2 | 快速，`--quality` 1k/2k/4k，支持扩展宽高比 |
+| `gemini-3-pro-image-preview-vip` | nano-banana-pro-vip | 高质量，VIP |
+| `gemini-3-pro-image-preview-2k-vip` | nano-banana-pro-2k-vip | 2K 内置，VIP |
+| `gemini-3-pro-image-preview-4k-vip` | nano-banana-pro-4k-vip | 4K 内置，VIP |
+| `gemini-2.5-flash-image-vip` | nano-banana-vip | 最快，VIP |
 
-**Environment Variables** (see [Environment Configuration](#environment-configuration) for setup):
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `TUZI_API_KEY` | Tuzi API key (https://api.tu-zi.com) | - |
-| `TUZI_IMAGE_MODEL` | Tuzi model | `gemini-3-pro-image-preview` |
-| `TUZI_BASE_URL` | Custom Tuzi endpoint | `https://api.tu-zi.com/v1` |
-| `OPENAI_API_KEY` | OpenAI API key | - |
-| `GOOGLE_API_KEY` | Google API key | - |
-| `DASHSCOPE_API_KEY` | DashScope API key (Aliyun) | - |
+**环境变量**（配置方法见[环境配置](#环境配置)）：
+| 变量 | 说明 | 默认值 |
+|------|------|--------|
+| `TUZI_API_KEY` | 兔子API 密钥 (https://api.tu-zi.com) | - |
+| `TUZI_IMAGE_MODEL` | Tuzi 模型 | `gemini-3-pro-image-preview` |
+| `TUZI_BASE_URL` | 自定义 Tuzi 端点 | `https://api.tu-zi.com/v1` |
+| `OPENAI_API_KEY` | OpenAI API 密钥 | - |
+| `GOOGLE_API_KEY` | Google API 密钥 | - |
+| `DASHSCOPE_API_KEY` | DashScope API 密钥（阿里云） | - |
 | `REPLICATE_API_TOKEN` | Replicate API token | - |
-| `OPENAI_IMAGE_MODEL` | OpenAI model | `gpt-image-1.5` |
-| `GOOGLE_IMAGE_MODEL` | Google model | `gemini-3-pro-image-preview` |
-| `DASHSCOPE_IMAGE_MODEL` | DashScope model | `z-image-turbo` |
-| `REPLICATE_IMAGE_MODEL` | Replicate model | `google/nano-banana-pro` |
+| `OPENAI_IMAGE_MODEL` | OpenAI 模型 | `gpt-image-1.5` |
+| `GOOGLE_IMAGE_MODEL` | Google 模型 | `gemini-3-pro-image-preview` |
+| `DASHSCOPE_IMAGE_MODEL` | DashScope 模型 | `z-image-turbo` |
+| `REPLICATE_IMAGE_MODEL` | Replicate 模型 | `google/nano-banana-pro` |
 
-**Provider Auto-Selection**:
-1. If `--provider` specified → use it
-2. If only one API key available → use that provider
-3. If multiple available → default to Tuzi
+**服务商自动选择**：
+1. 如果指定了 `--provider` → 使用指定的
+2. 如果只有一个 API 密钥 → 使用对应服务商
+3. 如果多个可用 → 默认使用 Tuzi
 
 #### tuzi-danger-gemini-web
 
-Interacts with Gemini Web to generate text and images.
+与 Gemini Web 交互，生成文本和图片。
 
-**Text Generation:**
+**文本生成：**
 
 ```bash
-/tuzi-danger-gemini-web "Hello, Gemini"
-/tuzi-danger-gemini-web --prompt "Explain quantum computing"
+/tuzi-danger-gemini-web "你好，Gemini"
+/tuzi-danger-gemini-web --prompt "解释量子计算"
 ```
 
-**Image Generation:**
+**图片生成：**
 
 ```bash
-/tuzi-danger-gemini-web --prompt "A cute cat" --image cat.png
+/tuzi-danger-gemini-web --prompt "一只可爱的猫" --image cat.png
 /tuzi-danger-gemini-web --promptfiles system.md content.md --image out.png
 ```
 
-### Utility Skills
+### 工具技能 (Utility Skills)
 
-Utility tools for content processing.
+内容处理工具。
 
 #### tuzi-url-to-markdown
 
-Fetch any URL via Chrome CDP and convert to clean markdown. Supports two capture modes for different scenarios.
+通过 Chrome CDP 抓取任意 URL 并转换为干净的 Markdown。支持两种抓取模式，适应不同场景。
 
 ```bash
-# Auto mode (default) - capture when page loads
+# 自动模式（默认）- 页面加载后立即抓取
 /tuzi-url-to-markdown https://example.com/article
 
-# Wait mode - for login-required pages
+# 等待模式 - 适用于需要登录的页面
 /tuzi-url-to-markdown https://example.com/private --wait
 
-# Save to specific file
+# 保存到指定文件
 /tuzi-url-to-markdown https://example.com/article -o output.md
 ```
 
-**Capture Modes**:
-| Mode | Description | Best For |
-|------|-------------|----------|
-| Auto (default) | Captures immediately after page load | Public pages, static content |
-| Wait (`--wait`) | Waits for user signal before capture | Login-required, dynamic content |
+**抓取模式**：
+| 模式 | 说明 | 适用场景 |
+|------|------|----------|
+| 自动（默认） | 页面加载后立即抓取 | 公开页面、静态内容 |
+| 等待（`--wait`） | 等待用户信号后抓取 | 需登录页面、动态内容 |
 
-**Options**:
-| Option | Description |
-|--------|-------------|
-| `<url>` | URL to fetch |
-| `-o <path>` | Output file path |
-| `--wait` | Wait for user signal before capturing |
-| `--timeout <ms>` | Page load timeout (default: 30000) |
+**选项**：
+| 选项 | 说明 |
+|------|------|
+| `<url>` | 要抓取的 URL |
+| `-o <path>` | 输出文件路径 |
+| `--wait` | 等待用户信号后抓取 |
+| `--timeout <ms>` | 页面加载超时（默认：30000） |
 
 #### tuzi-danger-x-to-markdown
 
-Converts X (Twitter) content to markdown format. Supports tweet threads and X Articles.
+将 X (Twitter) 内容转换为 markdown 格式。支持推文串和 X 文章。
 
 ```bash
-# Convert tweet to markdown
+# 将推文转换为 markdown
 /tuzi-danger-x-to-markdown https://x.com/username/status/123456
 
-# Save to specific file
+# 保存到指定文件
 /tuzi-danger-x-to-markdown https://x.com/username/status/123456 -o output.md
 
-# JSON output
+# JSON 输出
 /tuzi-danger-x-to-markdown https://x.com/username/status/123456 --json
 
-# Download media (images/videos) to local files
+# 下载媒体文件（图片/视频）到本地
 /tuzi-danger-x-to-markdown https://x.com/username/status/123456 --download-media
 ```
 
-**Supported URLs:**
+**支持的 URL：**
 - `https://x.com/<user>/status/<id>`
 - `https://twitter.com/<user>/status/<id>`
 - `https://x.com/i/article/<id>`
 
-**Authentication:** Uses environment variables (`X_AUTH_TOKEN`, `X_CT0`) or Chrome login for cookie-based auth.
+**身份验证：** 使用环境变量（`X_AUTH_TOKEN`、`X_CT0`）或 Chrome 登录进行 cookie 认证。
 
 #### tuzi-compress-image
 
-Compress images to reduce file size while maintaining quality.
+压缩图片以减小文件大小，同时保持质量。
 
 ```bash
 /tuzi-compress-image path/to/image.png
@@ -719,60 +719,60 @@ Compress images to reduce file size while maintaining quality.
 
 #### tuzi-format-markdown
 
-Format plain text or markdown files with proper frontmatter, titles, summaries, headings, bold, lists, and code blocks.
+格式化纯文本或 Markdown 文件，添加 frontmatter、标题、摘要、层级标题、加粗、列表和代码块。
 
 ```bash
-# Format a markdown file
+# 格式化 markdown 文件
 /tuzi-format-markdown path/to/article.md
 
-# Format with specific output
+# 格式化指定文件
 /tuzi-format-markdown path/to/draft.md
 ```
 
-**Workflow**:
-1. Read source file and analyze content structure
-2. Check/create YAML frontmatter (title, slug, summary, coverImage)
-3. Handle title: use existing, extract from H1, or generate candidates
-4. Apply formatting: headings, bold, lists, code blocks, quotes
-5. Save to `{filename}-formatted.md`
-6. Run typography script: ASCII→fullwidth quotes, CJK spacing, autocorrect
+**工作流程**：
+1. 读取源文件并分析内容结构
+2. 检查/创建 YAML frontmatter（title、slug、summary、coverImage）
+3. 处理标题：使用现有标题、提取 H1 或生成候选标题
+4. 应用格式：层级标题、加粗、列表、代码块、引用
+5. 保存为 `{文件名}-formatted.md`
+6. 运行排版脚本：半角引号→全角引号、中英文空格、autocorrect
 
-**Frontmatter Fields**:
-| Field | Processing |
-|-------|------------|
-| `title` | Use existing, extract H1, or generate candidates |
-| `slug` | Infer from file path or generate from title |
-| `summary` | Generate engaging summary (100-150 chars) |
-| `coverImage` | Check for `imgs/cover.png` in same directory |
+**Frontmatter 字段**：
+| 字段 | 处理方式 |
+|------|----------|
+| `title` | 使用现有、提取 H1 或生成候选 |
+| `slug` | 从文件路径推断或根据标题生成 |
+| `summary` | 生成吸引人的摘要（100-150 字） |
+| `coverImage` | 检查同目录下 `imgs/cover.png` |
 
-**Formatting Rules**:
-| Element | Format |
-|---------|--------|
-| Titles | `#`, `##`, `###` hierarchy |
-| Key points | `**bold**` |
-| Parallel items | `-` unordered or `1.` ordered lists |
-| Code/commands | `` `inline` `` or ` ```block``` ` |
-| Quotes | `>` blockquote |
+**格式化规则**：
+| 元素 | 格式 |
+|------|------|
+| 标题 | `#`、`##`、`###` 层级 |
+| 重点内容 | `**加粗**` |
+| 并列要点 | `-` 无序列表或 `1.` 有序列表 |
+| 代码/命令 | `` `行内` `` 或 ` ```代码块``` ` |
+| 引用 | `>` 引用块 |
 
-## Environment Configuration
+## 环境配置
 
-Some skills require API keys or custom configuration. Environment variables can be set in `.env` files:
+部分技能需要 API 密钥或自定义配置。环境变量可以在 `.env` 文件中设置：
 
-**Load Priority** (higher priority overrides lower):
-1. CLI environment variables (e.g., `OPENAI_API_KEY=xxx /tuzi-image-gen ...`)
-2. `process.env` (system environment)
-3. `<cwd>/.tuzi-skills/.env` (project-level)
-4. `~/.tuzi-skills/.env` (user-level)
+**加载优先级**（高优先级覆盖低优先级）：
+1. 命令行环境变量（如 `OPENAI_API_KEY=xxx /tuzi-image-gen ...`）
+2. `process.env`（系统环境变量）
+3. `<cwd>/.tuzi-skills/.env`（项目级）
+4. `~/.tuzi-skills/.env`（用户级）
 
-**Setup**:
+**配置方法**：
 
 ```bash
-# Create user-level config directory
+# 创建用户级配置目录
 mkdir -p ~/.tuzi-skills
 
-# Create .env file
+# 创建 .env 文件
 cat > ~/.tuzi-skills/.env << 'EOF'
-# Tuzi API (default provider)
+# 兔子API（默认服务商）
 TUZI_API_KEY=sk-xxx
 TUZI_IMAGE_MODEL=gemini-3-pro-image-preview
 # TUZI_BASE_URL=https://api.tu-zi.com/v1
@@ -787,7 +787,7 @@ GOOGLE_API_KEY=xxx
 GOOGLE_IMAGE_MODEL=gemini-3-pro-image-preview
 # GOOGLE_BASE_URL=https://generativelanguage.googleapis.com/v1beta
 
-# DashScope (Aliyun Tongyi Wanxiang)
+# DashScope（阿里通义万相）
 DASHSCOPE_API_KEY=sk-xxx
 DASHSCOPE_IMAGE_MODEL=z-image-turbo
 # DASHSCOPE_BASE_URL=https://dashscope.aliyuncs.com/api/v1
@@ -798,74 +798,74 @@ REPLICATE_IMAGE_MODEL=google/nano-banana-pro
 EOF
 ```
 
-**Project-level config** (for team sharing):
+**项目级配置**（团队共享）：
 
 ```bash
 mkdir -p .tuzi-skills
-# Add .tuzi-skills/.env to .gitignore to avoid committing secrets
+# 将 .tuzi-skills/.env 添加到 .gitignore 避免提交密钥
 echo ".tuzi-skills/.env" >> .gitignore
 ```
 
-## Customization
+## 自定义扩展
 
-All skills support customization via `EXTEND.md` files. Create an extension file to override default styles, add custom configurations, or define your own presets.
+所有技能支持通过 `EXTEND.md` 文件自定义。创建扩展文件可覆盖默认样式、添加自定义配置或定义个人预设。
 
-**Extension paths** (checked in priority order):
-1. `.tuzi-skills/<skill-name>/EXTEND.md` - Project-level (for team/project-specific settings)
-2. `~/.tuzi-skills/<skill-name>/EXTEND.md` - User-level (for personal preferences)
+**扩展路径**（按优先级检查）：
+1. `.tuzi-skills/<skill-name>/EXTEND.md` - 项目级（团队/项目特定设置）
+2. `~/.tuzi-skills/<skill-name>/EXTEND.md` - 用户级（个人偏好设置）
 
-**Example**: To customize `tuzi-cover-image` with your brand colors:
+**示例**：为 `tuzi-cover-image` 自定义品牌配色：
 
 ```bash
 mkdir -p .tuzi-skills/tuzi-cover-image
 ```
 
-Then create `.tuzi-skills/tuzi-cover-image/EXTEND.md`:
+然后创建 `.tuzi-skills/tuzi-cover-image/EXTEND.md`：
 
 ```markdown
-## Custom Palettes
+## 自定义配色
 
 ### corporate-tech
-- Primary colors: #1a73e8, #4A90D9
-- Background: #F5F7FA
-- Accent colors: #00B4D8, #48CAE4
-- Decorative hints: Clean lines, subtle gradients
-- Best for: SaaS, enterprise, technical
+- 主色：#1a73e8、#4A90D9
+- 背景色：#F5F7FA
+- 强调色：#00B4D8、#48CAE4
+- 装饰提示：简洁线条、渐变效果
+- 适用于：SaaS、企业、技术内容
 ```
 
-The extension content will be loaded before skill execution and override defaults.
+扩展内容会在技能执行前加载，并覆盖默认设置。
 
-## Disclaimer
+## 免责声明
 
 ### tuzi-danger-gemini-web
 
-This skill uses the Gemini Web API (reverse-engineered).
+此技能使用 Gemini Web API（逆向工程）。
 
-**Warning:** This project uses unofficial API access via browser cookies. Use at your own risk.
+**警告：** 本项目通过浏览器 cookies 使用非官方 API。使用风险自负。
 
-- First run opens a browser to authenticate with Google
-- Cookies are cached for subsequent runs
-- No guarantees on API stability or availability
+- 首次运行会打开浏览器进行 Google 身份验证
+- Cookies 会被缓存供后续使用
+- 不保证 API 的稳定性或可用性
 
-**Supported browsers** (auto-detected): Google Chrome, Chrome Canary/Beta, Chromium, Microsoft Edge
+**支持的浏览器**（自动检测）：Google Chrome、Chrome Canary/Beta、Chromium、Microsoft Edge
 
-**Proxy configuration**: If you need a proxy to access Google services (e.g., in China), set environment variables inline:
+**代理配置**：如果需要通过代理访问 Google 服务（如中国大陆用户），请在命令前设置环境变量：
 
 ```bash
-HTTP_PROXY=http://127.0.0.1:7890 HTTPS_PROXY=http://127.0.0.1:7890 /tuzi-danger-gemini-web "Hello"
+HTTP_PROXY=http://127.0.0.1:7890 HTTPS_PROXY=http://127.0.0.1:7890 /tuzi-danger-gemini-web "你好"
 ```
 
 ### tuzi-danger-x-to-markdown
 
-This skill uses a reverse-engineered X (Twitter) API.
+此技能使用逆向工程的 X (Twitter) API。
 
-**Warning:** This is NOT an official API. Use at your own risk.
+**警告：** 这不是官方 API。使用风险自负。
 
-- May break without notice if X changes their API
-- Account restrictions possible if API usage detected
-- First use requires consent acknowledgment
-- Authentication via environment variables or Chrome login
+- 如果 X 更改其 API，可能会无预警失效
+- 如检测到 API 使用，账号可能受限
+- 首次使用需确认免责声明
+- 通过环境变量或 Chrome 登录进行身份验证
 
-## License
+## 许可证
 
 MIT

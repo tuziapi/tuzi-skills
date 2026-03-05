@@ -68,7 +68,7 @@ export async function generateImage(
   const baseURL = process.env.OPENAI_BASE_URL || "https://api.openai.com/v1";
   const apiKey = process.env.OPENAI_API_KEY;
 
-  if (!apiKey) throw new Error("OPENAI_API_KEY is required");
+  if (!apiKey) throw new Error("OPENAI_API_KEY 未配置");
 
   if (process.env.OPENAI_IMAGE_USE_CHAT === "true") {
     return generateWithChatCompletions(baseURL, apiKey, prompt, model);
@@ -79,7 +79,7 @@ export async function generateImage(
   if (args.referenceImages.length > 0) {
     if (model.includes("dall-e-2") || model.includes("dall-e-3")) {
       throw new Error(
-        "Reference images with OpenAI in this skill require GPT Image models. Use --model gpt-image-1.5 (or another gpt-image model)."
+        "OpenAI 参考图片需要 GPT Image 模型。请使用 --model gpt-image-1.5（或其他 gpt-image 模型）。"
       );
     }
     return generateWithOpenAIEdits(baseURL, apiKey, prompt, model, size, args.referenceImages, args.quality);
@@ -108,7 +108,7 @@ async function generateWithChatCompletions(
 
   if (!res.ok) {
     const err = await res.text();
-    throw new Error(`OpenAI API error: ${err}`);
+    throw new Error(`OpenAI API 错误: ${err}`);
   }
 
   const result = (await res.json()) as { choices: Array<{ message: { content: string } }> };
@@ -119,7 +119,7 @@ async function generateWithChatCompletions(
     return Uint8Array.from(Buffer.from(match[1]!, "base64"));
   }
 
-  throw new Error("No image found in chat completions response");
+  throw new Error("聊天补全响应中未找到图片");
 }
 
 async function generateWithOpenAIGenerations(
@@ -147,7 +147,7 @@ async function generateWithOpenAIGenerations(
 
   if (!res.ok) {
     const err = await res.text();
-    throw new Error(`OpenAI API error: ${err}`);
+    throw new Error(`OpenAI API 错误: ${err}`);
   }
 
   const result = (await res.json()) as OpenAIImageResponse;
@@ -190,7 +190,7 @@ async function generateWithOpenAIEdits(
 
   if (!res.ok) {
     const err = await res.text();
-    throw new Error(`OpenAI edits API error: ${err}`);
+    throw new Error(`OpenAI 编辑 API 错误: ${err}`);
   }
 
   const result = (await res.json()) as OpenAIImageResponse;
@@ -214,10 +214,10 @@ async function extractImageFromResponse(result: OpenAIImageResponse): Promise<Ui
 
   if (img?.url) {
     const imgRes = await fetch(img.url);
-    if (!imgRes.ok) throw new Error("Failed to download image");
+    if (!imgRes.ok) throw new Error("图片下载失败");
     const buf = await imgRes.arrayBuffer();
     return new Uint8Array(buf);
   }
 
-  throw new Error("No image in response");
+  throw new Error("响应中无图片数据");
 }

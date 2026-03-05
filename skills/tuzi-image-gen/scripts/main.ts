@@ -5,46 +5,46 @@ import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import type { CliArgs, Provider, ExtendConfig } from "./types";
 
 function printUsage(): void {
-  console.log(`Usage:
-  npx -y bun scripts/main.ts --prompt "A cat" --image cat.png
-  npx -y bun scripts/main.ts --prompt "A landscape" --image landscape.png --ar 16:9
+  console.log(`用法:
+  npx -y bun scripts/main.ts --prompt "一只猫" --image cat.png
+  npx -y bun scripts/main.ts --prompt "风景画" --image landscape.png --ar 16:9
   npx -y bun scripts/main.ts --promptfiles system.md content.md --image out.png
 
-Options:
-  -p, --prompt <text>       Prompt text
-  --promptfiles <files...>  Read prompt from files (concatenated)
-  --image <path>            Output image path (required)
-  --provider tuzi|google|openai|dashscope|replicate  Force provider (auto-detect by default)
-  -m, --model <id>          Model ID
-  --ar <ratio>              Aspect ratio (e.g., 16:9, 1:1, 4:3)
-  --size <WxH>              Size (e.g., 1024x1024)
-  --quality normal|2k       Quality preset (default: 2k)
-  --imageSize 1K|2K|4K      Image size for Google (default: from quality)
-  --ref <files...>          Reference images (Google multimodal or OpenAI edits)
-  --n <count>               Number of images (default: 1)
-  --json                    JSON output
-  -h, --help                Show help
+选项:
+  -p, --prompt <text>       提示词文本
+  --promptfiles <files...>  从文件读取提示词（多文件拼接）
+  --image <path>            输出图片路径（必填）
+  --provider tuzi|google|openai|dashscope|replicate  指定服务商（默认自动检测）
+  -m, --model <id>          模型 ID
+  --ar <ratio>              宽高比（如 16:9、1:1、4:3）
+  --size <WxH>              尺寸（如 1024x1024）
+  --quality normal|2k       质量预设（默认: 2k）
+  --imageSize 1K|2K|4K      图片尺寸（默认: 由 quality 决定）
+  --ref <files...>          参考图片
+  --n <count>               生成数量（默认: 1）
+  --json                    JSON 输出
+  -h, --help                显示帮助
 
-Environment variables:
-  TUZI_API_KEY              Tuzi API key (https://api.tu-zi.com)
-  TUZI_IMAGE_MODEL          Default Tuzi model (gemini-3-pro-image-preview)
-  TUZI_BASE_URL             Custom Tuzi endpoint
-  OPENAI_API_KEY            OpenAI API key
-  GOOGLE_API_KEY            Google API key
-  GEMINI_API_KEY            Gemini API key (alias for GOOGLE_API_KEY)
-  DASHSCOPE_API_KEY         DashScope API key (阿里云通义万象)
-  REPLICATE_API_TOKEN       Replicate API token
-  OPENAI_IMAGE_MODEL        Default OpenAI model (gpt-image-1.5)
-  GOOGLE_IMAGE_MODEL        Default Google model (gemini-3-pro-image-preview)
-  DASHSCOPE_IMAGE_MODEL     Default DashScope model (z-image-turbo)
-  REPLICATE_IMAGE_MODEL     Default Replicate model (google/nano-banana-pro)
-  OPENAI_BASE_URL           Custom OpenAI endpoint
-  OPENAI_IMAGE_USE_CHAT     Use /chat/completions instead of /images/generations (true|false)
-  GOOGLE_BASE_URL           Custom Google endpoint
-  DASHSCOPE_BASE_URL        Custom DashScope endpoint
-  REPLICATE_BASE_URL        Custom Replicate endpoint
+环境变量:
+  TUZI_API_KEY              Tuzi API 密钥（https://api.tu-zi.com）
+  TUZI_IMAGE_MODEL          Tuzi 默认模型（gemini-3-pro-image-preview）
+  TUZI_BASE_URL             自定义 Tuzi 端点
+  OPENAI_API_KEY            OpenAI API 密钥
+  GOOGLE_API_KEY            Google API 密钥
+  GEMINI_API_KEY            Gemini API 密钥（GOOGLE_API_KEY 别名）
+  DASHSCOPE_API_KEY         DashScope API 密钥（阿里云通义万象）
+  REPLICATE_API_TOKEN       Replicate API 令牌
+  OPENAI_IMAGE_MODEL        OpenAI 默认模型（gpt-image-1.5）
+  GOOGLE_IMAGE_MODEL        Google 默认模型（gemini-3-pro-image-preview）
+  DASHSCOPE_IMAGE_MODEL     DashScope 默认模型（z-image-turbo）
+  REPLICATE_IMAGE_MODEL     Replicate 默认模型（google/nano-banana-pro）
+  OPENAI_BASE_URL           自定义 OpenAI 端点
+  OPENAI_IMAGE_USE_CHAT     使用 /chat/completions 替代 /images/generations（true|false）
+  GOOGLE_BASE_URL           自定义 Google 端点
+  DASHSCOPE_BASE_URL        自定义 DashScope 端点
+  REPLICATE_BASE_URL        自定义 Replicate 端点
 
-Env file load order: CLI args > EXTEND.md > process.env > <cwd>/.tuzi-skills/.env > ~/.tuzi-skills/.env`);
+加载优先级: 命令行参数 > EXTEND.md > 环境变量 > <cwd>/.tuzi-skills/.env > ~/.tuzi-skills/.env`);
 }
 
 function parseArgs(argv: string[]): CliArgs {
@@ -93,14 +93,14 @@ function parseArgs(argv: string[]): CliArgs {
 
     if (a === "--prompt" || a === "-p") {
       const v = argv[++i];
-      if (!v) throw new Error(`Missing value for ${a}`);
+      if (!v) throw new Error(`缺少 ${a} 的值`);
       out.prompt = v;
       continue;
     }
 
     if (a === "--promptfiles") {
       const { items, next } = takeMany(i);
-      if (items.length === 0) throw new Error("Missing files for --promptfiles");
+      if (items.length === 0) throw new Error("--promptfiles 缺少文件参数");
       out.promptFiles.push(...items);
       i = next;
       continue;
@@ -108,56 +108,56 @@ function parseArgs(argv: string[]): CliArgs {
 
     if (a === "--image") {
       const v = argv[++i];
-      if (!v) throw new Error("Missing value for --image");
+      if (!v) throw new Error("缺少 --image 的值");
       out.imagePath = v;
       continue;
     }
 
     if (a === "--provider") {
       const v = argv[++i];
-      if (v !== "google" && v !== "openai" && v !== "dashscope" && v !== "replicate" && v !== "tuzi") throw new Error(`Invalid provider: ${v}`);
+      if (v !== "google" && v !== "openai" && v !== "dashscope" && v !== "replicate" && v !== "tuzi") throw new Error(`无效的服务商: ${v}`);
       out.provider = v;
       continue;
     }
 
     if (a === "--model" || a === "-m") {
       const v = argv[++i];
-      if (!v) throw new Error(`Missing value for ${a}`);
+      if (!v) throw new Error(`缺少 ${a} 的值`);
       out.model = v;
       continue;
     }
 
     if (a === "--ar") {
       const v = argv[++i];
-      if (!v) throw new Error("Missing value for --ar");
+      if (!v) throw new Error("缺少 --ar 的值");
       out.aspectRatio = v;
       continue;
     }
 
     if (a === "--size") {
       const v = argv[++i];
-      if (!v) throw new Error("Missing value for --size");
+      if (!v) throw new Error("缺少 --size 的值");
       out.size = v;
       continue;
     }
 
     if (a === "--quality") {
       const v = argv[++i];
-      if (v !== "normal" && v !== "2k") throw new Error(`Invalid quality: ${v}`);
+      if (v !== "normal" && v !== "2k") throw new Error(`无效的质量参数: ${v}`);
       out.quality = v;
       continue;
     }
 
     if (a === "--imageSize") {
       const v = argv[++i]?.toUpperCase();
-      if (v !== "1K" && v !== "2K" && v !== "4K") throw new Error(`Invalid imageSize: ${v}`);
+      if (v !== "1K" && v !== "2K" && v !== "4K") throw new Error(`无效的图片尺寸: ${v}`);
       out.imageSize = v;
       continue;
     }
 
     if (a === "--ref" || a === "--reference") {
       const { items, next } = takeMany(i);
-      if (items.length === 0) throw new Error(`Missing files for ${a}`);
+      if (items.length === 0) throw new Error(`缺少 ${a} 的文件参数`);
       out.referenceImages.push(...items);
       i = next;
       continue;
@@ -165,14 +165,14 @@ function parseArgs(argv: string[]): CliArgs {
 
     if (a === "--n") {
       const v = argv[++i];
-      if (!v) throw new Error("Missing value for --n");
+      if (!v) throw new Error("缺少 --n 的值");
       out.n = parseInt(v, 10);
-      if (isNaN(out.n) || out.n < 1) throw new Error(`Invalid count: ${v}`);
+      if (isNaN(out.n) || out.n < 1) throw new Error(`无效的数量: ${v}`);
       continue;
     }
 
     if (a.startsWith("-")) {
-      throw new Error(`Unknown option: ${a}`);
+      throw new Error(`未知选项: ${a}`);
     }
 
     positional.push(a);
@@ -332,7 +332,7 @@ function normalizeOutputImagePath(p: string): string {
 function detectProvider(args: CliArgs): Provider {
   if (args.referenceImages.length > 0 && args.provider && args.provider !== "google" && args.provider !== "openai" && args.provider !== "replicate" && args.provider !== "tuzi") {
     throw new Error(
-      "Reference images require a ref-capable provider. Use --provider google (Gemini multimodal), --provider openai (GPT Image edits), --provider replicate, or --provider tuzi."
+      "参考图片需要支持该功能的服务商。请使用 --provider google（Gemini 多模态）、--provider openai（GPT Image 编辑）、--provider replicate 或 --provider tuzi。"
     );
   }
 
@@ -350,7 +350,7 @@ function detectProvider(args: CliArgs): Provider {
     if (hasOpenai) return "openai";
     if (hasReplicate) return "replicate";
     throw new Error(
-      "Reference images require Tuzi, Google, OpenAI or Replicate. Set TUZI_API_KEY, GOOGLE_API_KEY/GEMINI_API_KEY, OPENAI_API_KEY, or REPLICATE_API_TOKEN, or remove --ref."
+      "参考图片需要 Tuzi、Google、OpenAI 或 Replicate。请设置 TUZI_API_KEY、GOOGLE_API_KEY/GEMINI_API_KEY、OPENAI_API_KEY 或 REPLICATE_API_TOKEN，或移除 --ref。"
     );
   }
 
@@ -360,8 +360,8 @@ function detectProvider(args: CliArgs): Provider {
   if (available.length > 1) return available[0]!;
 
   throw new Error(
-    "No API key found. Set TUZI_API_KEY, GOOGLE_API_KEY, GEMINI_API_KEY, OPENAI_API_KEY, DASHSCOPE_API_KEY, or REPLICATE_API_TOKEN.\n" +
-      "Create ~/.tuzi-skills/.env or <cwd>/.tuzi-skills/.env with your keys."
+    "未找到 API 密钥。请设置 TUZI_API_KEY、GOOGLE_API_KEY、GEMINI_API_KEY、OPENAI_API_KEY、DASHSCOPE_API_KEY 或 REPLICATE_API_TOKEN。\n" +
+      "在 ~/.tuzi-skills/.env 或 <cwd>/.tuzi-skills/.env 中配置密钥。"
   );
 }
 
@@ -371,7 +371,7 @@ async function validateReferenceImages(referenceImages: string[]): Promise<void>
     try {
       await access(fullPath);
     } catch {
-      throw new Error(`Reference image not found: ${fullPath}`);
+      throw new Error(`参考图片未找到: ${fullPath}`);
     }
   }
 }
@@ -428,14 +428,14 @@ async function main(): Promise<void> {
   if (!prompt) prompt = await readPromptFromStdin();
 
   if (!prompt) {
-    console.error("Error: Prompt is required");
+    console.error("错误: 提示词不能为空");
     printUsage();
     process.exitCode = 1;
     return;
   }
 
   if (!mergedArgs.imagePath) {
-    console.error("Error: --image is required");
+    console.error("错误: --image 参数必填");
     printUsage();
     process.exitCode = 1;
     return;
@@ -470,7 +470,7 @@ async function main(): Promise<void> {
     } catch (e) {
       if (!retried && isRetryableGenerationError(e)) {
         retried = true;
-        console.error("Generation failed, retrying...");
+        console.error("生成失败，正在重试...");
         continue;
       }
       throw e;

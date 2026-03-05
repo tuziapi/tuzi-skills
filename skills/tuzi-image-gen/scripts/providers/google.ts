@@ -86,7 +86,7 @@ async function postGoogleJsonViaCurl<T>(
   const parsed = JSON.parse(result.toString()) as any;
   if (parsed.error) {
     throw new Error(
-      `Google API error (${parsed.error.code}): ${parsed.error.message}`,
+      `Google API 错误 (${parsed.error.code}): ${parsed.error.message}`,
     );
   }
   return parsed as T;
@@ -108,7 +108,7 @@ async function postGoogleJsonViaFetch<T>(
 
   if (!res.ok) {
     const err = await res.text();
-    throw new Error(`Google API error (${res.status}): ${err}`);
+    throw new Error(`Google API 错误 (${res.status}): ${err}`);
   }
 
   return (await res.json()) as T;
@@ -116,7 +116,7 @@ async function postGoogleJsonViaFetch<T>(
 
 async function postGoogleJson<T>(pathname: string, body: unknown): Promise<T> {
   const apiKey = getGoogleApiKey();
-  if (!apiKey) throw new Error("GOOGLE_API_KEY or GEMINI_API_KEY is required");
+  if (!apiKey) throw new Error("GOOGLE_API_KEY 或 GEMINI_API_KEY 未配置");
 
   const url = buildGoogleUrl(pathname);
   const proxy = getHttpProxy();
@@ -224,7 +224,7 @@ async function generateWithGemini(
     imageSize: getGoogleImageSize(args),
   };
 
-  console.log("Generating image with Gemini...", imageConfig);
+  console.log("正在使用 Gemini 生成图片...", imageConfig);
   const response = await postGoogleJson<{
     candidates?: Array<{
       content?: { parts?: Array<{ inlineData?: { data?: string } }> };
@@ -241,12 +241,12 @@ async function generateWithGemini(
       imageConfig,
     },
   });
-  console.log("Generation completed.");
+  console.log("生成完成。");
 
   const imageData = extractInlineImageData(response);
   if (imageData) return Uint8Array.from(Buffer.from(imageData, "base64"));
 
-  throw new Error("No image in response");
+  throw new Error("响应中无图片数据");
 }
 
 async function generateWithImagen(
@@ -262,7 +262,7 @@ async function generateWithImagen(
   const imageSize = getGoogleImageSize(args);
   if (imageSize === "4K") {
     console.error(
-      "Warning: Imagen models do not support 4K imageSize, using 2K instead.",
+      "警告：Imagen 模型不支持 4K 图片尺寸，将使用 2K 代替。",
     );
   }
 
@@ -293,7 +293,7 @@ async function generateWithImagen(
   const imageData = extractPredictedImageData(response);
   if (imageData) return Uint8Array.from(Buffer.from(imageData, "base64"));
 
-  throw new Error("No image in response");
+  throw new Error("响应中无图片数据");
 }
 
 export async function generateImage(
@@ -304,7 +304,7 @@ export async function generateImage(
   if (isGoogleImagen(model)) {
     if (args.referenceImages.length > 0) {
       throw new Error(
-        "Reference images are not supported with Imagen models. Use gemini-3-pro-image-preview, gemini-3-flash-preview, or gemini-3.1-flash-image-preview.",
+        "Imagen 模型不支持参考图片。请使用 gemini-3-pro-image-preview、gemini-3-flash-preview 或 gemini-3.1-flash-image-preview。",
       );
     }
     return generateWithImagen(prompt, model, args);
@@ -312,7 +312,7 @@ export async function generateImage(
 
   if (!isGoogleMultimodal(model) && args.referenceImages.length > 0) {
     throw new Error(
-      "Reference images are only supported with Gemini multimodal models. Use gemini-3-pro-image-preview, gemini-3-flash-preview, or gemini-3.1-flash-image-preview.",
+      "参考图片仅支持 Gemini 多模态模型。请使用 gemini-3-pro-image-preview、gemini-3-flash-preview 或 gemini-3.1-flash-image-preview。",
     );
   }
 

@@ -81,11 +81,11 @@ export async function generateImage(
   args: CliArgs
 ): Promise<Uint8Array> {
   const apiKey = getApiKey();
-  if (!apiKey) throw new Error("DASHSCOPE_API_KEY is required");
+  if (!apiKey) throw new Error("DASHSCOPE_API_KEY 未配置");
 
   if (args.referenceImages.length > 0) {
     throw new Error(
-      "Reference images are not supported with DashScope provider in tuzi-image-gen. Use --provider google with a Gemini multimodal model."
+      "DashScope 不支持参考图片。请使用 --provider google 配合 Gemini 多模态模型。"
     );
   }
 
@@ -108,7 +108,7 @@ export async function generateImage(
     },
   };
 
-  console.log(`Generating image with DashScope (${model})...`, { size });
+  console.log(`正在使用 DashScope 生成图片 (${model})...`, { size });
 
   const res = await fetch(url, {
     method: "POST",
@@ -121,7 +121,7 @@ export async function generateImage(
 
   if (!res.ok) {
     const err = await res.text();
-    throw new Error(`DashScope API error (${res.status}): ${err}`);
+    throw new Error(`DashScope API 错误 (${res.status}): ${err}`);
   }
 
   const result = await res.json() as {
@@ -150,13 +150,13 @@ export async function generateImage(
   }
 
   if (!imageData) {
-    console.error("Response:", JSON.stringify(result, null, 2));
-    throw new Error("No image in response");
+    console.error("响应:", JSON.stringify(result, null, 2));
+    throw new Error("响应中无图片数据");
   }
 
   if (imageData.startsWith("http://") || imageData.startsWith("https://")) {
     const imgRes = await fetch(imageData);
-    if (!imgRes.ok) throw new Error("Failed to download image");
+    if (!imgRes.ok) throw new Error("图片下载失败");
     const buf = await imgRes.arrayBuffer();
     return new Uint8Array(buf);
   }

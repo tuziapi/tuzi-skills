@@ -81,7 +81,7 @@ async function generateOutputPath(url: string, title: string): Promise<string> {
 }
 
 async function waitForUserSignal(): Promise<void> {
-  console.log("Page opened. Press Enter when ready to capture...");
+  console.log("页面已打开。准备好后按回车键开始抓取...");
   const rl = createInterface({ input: process.stdin, output: process.stdout });
   await new Promise<void>((resolve) => {
     rl.once("line", () => { rl.close(); resolve(); });
@@ -99,7 +99,7 @@ async function captureUrl(args: Args): Promise<ConversionResult> {
 
     const targets = await cdp.send<{ targetInfos: Array<{ targetId: string; type: string; url: string }> }>("Target.getTargets");
     const pageTarget = targets.targetInfos.find(t => t.type === "page" && t.url.startsWith("http"));
-    if (!pageTarget) throw new Error("No page target found");
+    if (!pageTarget) throw new Error("未找到页面目标");
 
     const { sessionId } = await cdp.send<{ sessionId: string }>("Target.attachToTarget", { targetId: pageTarget.targetId, flatten: true });
     await cdp.send("Network.enable", {}, { sessionId });
@@ -108,19 +108,19 @@ async function captureUrl(args: Args): Promise<ConversionResult> {
     if (args.wait) {
       await waitForUserSignal();
     } else {
-      console.log("Waiting for page to load...");
+      console.log("正在等待页面加载...");
       await Promise.race([
         waitForPageLoad(cdp, sessionId, 15_000),
         sleep(8_000)
       ]);
       await waitForNetworkIdle(cdp, sessionId, NETWORK_IDLE_TIMEOUT_MS);
       await sleep(POST_LOAD_DELAY_MS);
-      console.log("Scrolling to trigger lazy load...");
+      console.log("正在滚动页面以触发懒加载...");
       await autoScroll(cdp, sessionId, SCROLL_MAX_STEPS, SCROLL_STEP_WAIT_MS);
       await sleep(POST_LOAD_DELAY_MS);
     }
 
-    console.log("Capturing page content...");
+    console.log("正在抓取页面内容...");
     const { html } = await evaluateScript<{ html: string }>(
       cdp, sessionId, absolutizeUrlsScript, args.timeout
     );
@@ -138,19 +138,19 @@ async function captureUrl(args: Args): Promise<ConversionResult> {
 async function main(): Promise<void> {
   const args = parseArgs(process.argv);
   if (!args.url) {
-    console.error("Usage: bun main.ts <url> [-o output.md] [--wait] [--timeout ms]");
+    console.error("用法: bun main.ts <url> [-o output.md] [--wait] [--timeout ms]");
     process.exit(1);
   }
 
   try {
     new URL(args.url);
   } catch {
-    console.error(`Invalid URL: ${args.url}`);
+    console.error(`无效的 URL: ${args.url}`);
     process.exit(1);
   }
 
-  console.log(`Fetching: ${args.url}`);
-  console.log(`Mode: ${args.wait ? "wait" : "auto"}`);
+  console.log(`正在获取: ${args.url}`);
+  console.log(`模式: ${args.wait ? "等待用户" : "自动"}`);
 
   const result = await captureUrl(args);
   const outputPath = args.output || await generateOutputPath(args.url, result.metadata.title);
@@ -166,22 +166,22 @@ async function main(): Promise<void> {
     });
     document = mediaResult.markdown;
     if (mediaResult.downloadedImages > 0 || mediaResult.downloadedVideos > 0) {
-      console.log(`Downloaded: ${mediaResult.downloadedImages} images, ${mediaResult.downloadedVideos} videos`);
+      console.log(`已下载: ${mediaResult.downloadedImages} 张图片, ${mediaResult.downloadedVideos} 个视频`);
     }
   } else {
     const { images, videos } = countRemoteMedia(document);
     if (images > 0 || videos > 0) {
-      console.log(`Remote media found: ${images} images, ${videos} videos`);
+      console.log(`发现远程媒体: ${images} 张图片, ${videos} 个视频`);
     }
   }
 
   await writeFile(outputPath, document, "utf-8");
 
-  console.log(`Saved: ${outputPath}`);
-  console.log(`Title: ${result.metadata.title || "(no title)"}`);
+  console.log(`已保存: ${outputPath}`);
+  console.log(`标题: ${result.metadata.title || "(无标题)"}`);
 }
 
 main().catch((err) => {
-  console.error("Error:", err instanceof Error ? err.message : String(err));
+  console.error("错误:", err instanceof Error ? err.message : String(err));
   process.exit(1);
 });

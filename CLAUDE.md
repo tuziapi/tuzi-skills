@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Claude Code marketplace plugin providing AI-powered content generation skills. Skills use Gemini Web API (reverse-engineered) for text/image generation and Chrome CDP for browser automation.
+Claude Code marketplace plugin providing AI-powered content generation skills. Skills use Tuzi API (api.tu-zi.com) as the default image generation backend, with Gemini Web API (reverse-engineered) as an alternative for text/image generation, and Chrome CDP for browser automation.
 
 ## Architecture
 
@@ -225,6 +225,18 @@ Skills that require image generation MUST delegate to available image generation
 1. Read `skills/tuzi-image-gen/SKILL.md` for parameters and capabilities
 2. If user explicitly requests a different skill, check `skills/` directory for alternatives
 3. Only ask user to choose when they haven't specified and multiple viable options exist
+
+### API Key Requirement
+
+**CRITICAL**: The default image generation provider is Tuzi API. When any skill needs to generate images:
+
+1. **Always check `TUZI_API_KEY` first** — this is the primary/default API key
+2. Do NOT prompt for `GOOGLE_API_KEY`, `OPENAI_API_KEY`, or other provider keys unless the user explicitly requests a different provider
+3. If `TUZI_API_KEY` is missing, guide the user:
+   - Obtain key at: https://api.tu-zi.com/token
+   - Video tutorial: https://www.bilibili.com/video/BV1k4PqzPEKz/
+   - Store in `.tuzi-skills/.env` (project) or `~/.tuzi-skills/.env` (user)
+4. Follow the full setup flow in `skills/tuzi-image-gen/references/config/first-time-setup.md`
 
 ### Generation Flow Template
 

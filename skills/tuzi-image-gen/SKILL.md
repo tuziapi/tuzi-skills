@@ -235,7 +235,7 @@ Priority (highest → lowest), all providers:
 
 ## Error Handling
 
-- Missing API key → error with setup instructions
+- Missing API key → ⛔ MUST run API key setup from Step 0.1 (guide user to https://api.tu-zi.com/token, store in .tuzi-skills/.env). Do NOT suggest GOOGLE_API_KEY or other provider keys unless user explicitly chose a different provider.
 - Generation failure → auto-retry once
 - Tuzi `PROHIBITED_CONTENT` → content rejection error
 - Tuzi `NO_IMAGE` → prompt too vague, suggest more explicit prompt

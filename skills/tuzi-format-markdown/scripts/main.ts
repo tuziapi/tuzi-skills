@@ -112,10 +112,10 @@ export function formatMarkdown(
     }
 
     result.success = true;
-    console.log(`✓ Formatted: ${filePath}`);
+    console.log(`✓ 已格式化: ${filePath}`);
   } catch (error) {
     result.error = error instanceof Error ? error.message : String(error);
-    console.error(`✗ Format failed: ${result.error}`);
+    console.error(`✗ 格式化失败: ${result.error}`);
   }
 
   return result;
@@ -141,16 +141,16 @@ function parseArgs(args: string[]): { filePath: string; options: FormatOptions }
     } else if (arg === "--no-emphasis") {
       options.emphasis = false;
     } else if (arg === "--help" || arg === "-h") {
-      console.log(`Usage: npx -y bun scripts/main.ts <file.md> [options]
+      console.log(`用法: npx -y bun scripts/main.ts <file.md> [选项]
 
-Options:
-  -q, --quotes       Replace ASCII quotes with fullwidth quotes (default: false)
-      --no-quotes    Do not replace quotes
-  -s, --spacing      Add CJK/English spacing via autocorrect (default: true)
-      --no-spacing   Do not add CJK/English spacing
-  -e, --emphasis     Fix CJK emphasis punctuation issues (default: true)
-      --no-emphasis  Do not fix CJK emphasis issues
-  -h, --help         Show this help message`);
+选项:
+  -q, --quotes       将 ASCII 引号替换为全角引号（默认: false）
+      --no-quotes    不替换引号
+  -s, --spacing      添加中英文间距（默认: true）
+      --no-spacing   不添加中英文间距
+  -e, --emphasis     修复中文强调标点问题（默认: true）
+      --no-emphasis  不修复中文强调问题
+  -h, --help         显示帮助信息`);
       process.exit(0);
     } else if (!arg.startsWith("-")) {
       filePath = arg;
@@ -164,8 +164,8 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const { filePath, options } = parseArgs(process.argv.slice(2));
 
   if (!filePath) {
-    console.error("Usage: npx -y bun scripts/main.ts <file.md> [options]");
-    console.error("Use --help for more information.");
+    console.error("用法: npx -y bun scripts/main.ts <file.md> [选项]");
+    console.error("使用 --help 查看更多信息。");
     process.exit(1);
   }
 

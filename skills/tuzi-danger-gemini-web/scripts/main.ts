@@ -60,32 +60,32 @@ function normalizeSessionMetadata(input: unknown): Array<string | null> {
 }
 
 function printUsage(cookiePath: string, profileDir: string): void {
-  console.log(`Usage:
-  npx -y bun skills/tuzi-danger-gemini-web/scripts/main.ts --prompt "Hello"
-  npx -y bun skills/tuzi-danger-gemini-web/scripts/main.ts "Hello"
-  npx -y bun skills/tuzi-danger-gemini-web/scripts/main.ts --prompt "A cute cat" --image generated.png
+  console.log(`用法:
+  npx -y bun skills/tuzi-danger-gemini-web/scripts/main.ts --prompt "你好"
+  npx -y bun skills/tuzi-danger-gemini-web/scripts/main.ts "你好"
+  npx -y bun skills/tuzi-danger-gemini-web/scripts/main.ts --prompt "一只可爱的猫" --image generated.png
   npx -y bun skills/tuzi-danger-gemini-web/scripts/main.ts --promptfiles system.md content.md --image out.png
 
-Multi-turn conversation (agent generates unique sessionId):
-  npx -y bun skills/tuzi-danger-gemini-web/scripts/main.ts "Remember 42" --sessionId abc123
-  npx -y bun skills/tuzi-danger-gemini-web/scripts/main.ts "What number?" --sessionId abc123
+多轮对话（agent 生成唯一 sessionId）:
+  npx -y bun skills/tuzi-danger-gemini-web/scripts/main.ts "记住 42" --sessionId abc123
+  npx -y bun skills/tuzi-danger-gemini-web/scripts/main.ts "什么数字?" --sessionId abc123
 
-Options:
-  -p, --prompt <text>       Prompt text
-  --promptfiles <files...>  Read prompt from one or more files (concatenated in order)
-  -m, --model <id>          gemini-3-pro | gemini-3-flash | gemini-3-flash-thinking | gemini-3.1-pro-preview (default: gemini-3-pro)
-  --json                    Output JSON
-  --image [path]            Generate an image and save it (default: ./generated.png)
-  --reference <files...>    Reference images for vision input
-  --ref <files...>          Alias for --reference
-  --sessionId <id>          Session ID for multi-turn conversation (agent should generate unique ID)
-  --list-sessions           List saved sessions (max 100, sorted by update time)
-  --login                   Only refresh cookies, then exit
-  --cookie-path <path>      Cookie file path (default: ${cookiePath})
-  --profile-dir <path>      Chrome profile dir (default: ${profileDir})
-  -h, --help                Show help
+选项:
+  -p, --prompt <text>       提示词文本
+  --promptfiles <files...>  从文件读取提示词（多文件按顺序拼接）
+  -m, --model <id>          gemini-3-pro | gemini-3-flash | gemini-3-flash-thinking | gemini-3.1-pro-preview（默认: gemini-3-pro）
+  --json                    JSON 输出
+  --image [path]            生成图片并保存（默认: ./generated.png）
+  --reference <files...>    参考图片（视觉输入）
+  --ref <files...>          --reference 的别名
+  --sessionId <id>          多轮对话的会话 ID（agent 应生成唯一 ID）
+  --list-sessions           列出已保存的会话（最多 100 个，按更新时间排序）
+  --login                   仅刷新 Cookie 后退出
+  --cookie-path <path>      Cookie 文件路径（默认: ${cookiePath}）
+  --profile-dir <path>      Chrome 配置目录（默认: ${profileDir}）
+  -h, --help                显示帮助
 
-Env overrides:
+环境变量:
   GEMINI_WEB_DATA_DIR, GEMINI_WEB_COOKIE_PATH, GEMINI_WEB_CHROME_PROFILE_DIR, GEMINI_WEB_CHROME_PATH`);
 }
 
@@ -144,14 +144,14 @@ function parseArgs(argv: string[]): CliArgs {
 
     if (a === '--prompt' || a === '-p') {
       const v = argv[++i];
-      if (!v) throw new Error(`Missing value for ${a}`);
+      if (!v) throw new Error(`缺少 ${a} 的值`);
       out.prompt = v;
       continue;
     }
 
     if (a === '--promptfiles') {
       const { items, next } = takeMany(i);
-      if (items.length === 0) throw new Error('Missing files for --promptfiles');
+      if (items.length === 0) throw new Error('--promptfiles 缺少文件参数');
       out.promptFiles.push(...items);
       i = next;
       continue;
@@ -159,28 +159,28 @@ function parseArgs(argv: string[]): CliArgs {
 
     if (a === '--model' || a === '-m') {
       const v = argv[++i];
-      if (!v) throw new Error(`Missing value for ${a}`);
+      if (!v) throw new Error(`缺少 ${a} 的值`);
       out.modelId = v;
       continue;
     }
 
     if (a === '--sessionId') {
       const v = argv[++i];
-      if (!v) throw new Error('Missing value for --sessionId');
+      if (!v) throw new Error('缺少 --sessionId 的值');
       out.sessionId = v;
       continue;
     }
 
     if (a === '--cookie-path') {
       const v = argv[++i];
-      if (!v) throw new Error('Missing value for --cookie-path');
+      if (!v) throw new Error('缺少 --cookie-path 的值');
       out.cookiePath = v;
       continue;
     }
 
     if (a === '--profile-dir') {
       const v = argv[++i];
-      if (!v) throw new Error('Missing value for --profile-dir');
+      if (!v) throw new Error('缺少 --profile-dir 的值');
       out.profileDir = v;
       continue;
     }
@@ -203,14 +203,14 @@ function parseArgs(argv: string[]): CliArgs {
 
     if (a === '--reference' || a === '--ref') {
       const { items, next } = takeMany(i);
-      if (items.length === 0) throw new Error(`Missing files for ${a}`);
+      if (items.length === 0) throw new Error(`缺少 ${a} 的文件参数`);
       out.referenceImages.push(...items);
       i = next;
       continue;
     }
 
     if (a.startsWith('-')) {
-      throw new Error(`Unknown option: ${a}`);
+      throw new Error(`未知选项: ${a}`);
     }
 
     positional.push(a);
@@ -404,7 +404,7 @@ async function main(): Promise<void> {
     const c = new GeminiClient();
     await c.init({ verbose: true });
     await c.close();
-    if (!args.json) console.log(`Cookie refreshed: ${cookiePath}`);
+    if (!args.json) console.log(`Cookie 已刷新: ${cookiePath}`);
     else console.log(JSON.stringify({ ok: true, cookiePath }, null, 2));
     return;
   }
@@ -452,7 +452,7 @@ async function main(): Promise<void> {
 
       const img = out.images[0];
       if (!img) {
-        throw new Error('No image returned in response.');
+        throw new Error('响应中未返回图片。');
       }
 
       const fn = path.basename(p);

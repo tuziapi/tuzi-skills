@@ -23,7 +23,7 @@ function parseArgs(): { dir: string; output?: string } {
   }
 
   if (!dir) {
-    console.error("Usage: bun merge-to-pptx.ts <slide-deck-dir> [--output filename.pptx]");
+    console.error("用法: bun merge-to-pptx.ts <slide-deck-dir> [--output filename.pptx]");
     process.exit(1);
   }
 
@@ -32,7 +32,7 @@ function parseArgs(): { dir: string; output?: string } {
 
 function findSlideImages(dir: string): SlideInfo[] {
   if (!existsSync(dir)) {
-    console.error(`Directory not found: ${dir}`);
+    console.error(`目录未找到: ${dir}`);
     process.exit(1);
   }
 
@@ -58,8 +58,8 @@ function findSlideImages(dir: string): SlideInfo[] {
     .sort((a, b) => a.index - b.index);
 
   if (slides.length === 0) {
-    console.error(`No slide images found in: ${dir}`);
-    console.error("Expected format: 01-slide-*.png, 02-slide-*.png, etc.");
+    console.error(`未找到幻灯片图片: ${dir}`);
+    console.error("期望格式: 01-slide-*.png, 02-slide-*.png 等");
     process.exit(1);
   }
 
@@ -108,14 +108,14 @@ async function createPptx(slides: SlideInfo[], outputPath: string) {
       notesCount++;
     }
 
-    console.log(`Added: ${slide.filename}${slide.promptPath ? " (with notes)" : ""}`);
+    console.log(`已添加: ${slide.filename}${slide.promptPath ? "（含备注）" : ""}`);
   }
 
   await pptx.writeFile({ fileName: outputPath });
-  console.log(`\nCreated: ${outputPath}`);
-  console.log(`Total slides: ${slides.length}`);
+  console.log(`\n已创建: ${outputPath}`);
+  console.log(`总幻灯片数: ${slides.length}`);
   if (notesCount > 0) {
-    console.log(`Slides with notes: ${notesCount}${basePrompt ? " (includes base prompt)" : ""}`);
+    console.log(`含备注的幻灯片: ${notesCount}${basePrompt ? "（包含基础提示词）" : ""}`);
   }
 }
 
@@ -126,12 +126,12 @@ async function main() {
   const dirName = basename(dir) === "slide-deck" ? basename(join(dir, "..")) : basename(dir);
   const outputPath = output || join(dir, `${dirName}.pptx`);
 
-  console.log(`Found ${slides.length} slides in: ${dir}\n`);
+  console.log(`在 ${dir} 中找到 ${slides.length} 张幻灯片\n`);
 
   await createPptx(slides, outputPath);
 }
 
 main().catch((err) => {
-  console.error("Error:", err.message);
+  console.error("错误:", err.message);
   process.exit(1);
 });

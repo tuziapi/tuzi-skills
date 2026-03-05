@@ -25,7 +25,7 @@ function parseModelId(model: string): { owner: string; name: string; version: st
   const parts = ownerName!.split("/");
   if (parts.length !== 2 || !parts[0] || !parts[1]) {
     throw new Error(
-      `Invalid Replicate model format: "${model}". Expected "owner/name" or "owner/name:version".`
+      `Replicate 模型格式无效: "${model}"。应为 "owner/name" 或 "owner/name:version"。`
     );
   }
   return { owner: parts[0], name: parts[1], version: version || null };
@@ -110,7 +110,7 @@ async function createPrediction(
 
   if (!res.ok) {
     const err = await res.text();
-    throw new Error(`Replicate API error (${res.status}): ${err}`);
+    throw new Error(`Replicate API 错误 (${res.status}): ${err}`);
   }
 
   return (await res.json()) as PredictionResponse;
@@ -126,20 +126,20 @@ async function pollPrediction(apiToken: string, getUrl: string): Promise<Predict
 
     if (!res.ok) {
       const err = await res.text();
-      throw new Error(`Replicate poll error (${res.status}): ${err}`);
+      throw new Error(`Replicate 轮询错误 (${res.status}): ${err}`);
     }
 
     const prediction = (await res.json()) as PredictionResponse;
 
     if (prediction.status === "succeeded") return prediction;
     if (prediction.status === "failed" || prediction.status === "canceled") {
-      throw new Error(`Replicate prediction ${prediction.status}: ${prediction.error || "unknown error"}`);
+      throw new Error(`Replicate 预测${prediction.status === "failed" ? "失败" : "已取消"}: ${prediction.error || "未知错误"}`);
     }
 
     await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
   }
 
-  throw new Error(`Replicate prediction timed out after ${MAX_POLL_MS / 1000}s`);
+  throw new Error(`Replicate 预测超时，已等待 ${MAX_POLL_MS / 1000} 秒`);
 }
 
 function extractOutputUrl(prediction: PredictionResponse): string {
@@ -157,12 +157,12 @@ function extractOutputUrl(prediction: PredictionResponse): string {
     if (typeof url === "string") return url;
   }
 
-  throw new Error(`Unexpected Replicate output format: ${JSON.stringify(output)}`);
+  throw new Error(`Replicate 输出格式异常: ${JSON.stringify(output)}`);
 }
 
 async function downloadImage(url: string): Promise<Uint8Array> {
   const res = await fetch(url);
-  if (!res.ok) throw new Error(`Failed to download image from Replicate: ${res.status}`);
+  if (!res.ok) throw new Error(`从 Replicate 下载图片失败: ${res.status}`);
   const buf = await res.arrayBuffer();
   return new Uint8Array(buf);
 }
@@ -173,7 +173,7 @@ export async function generateImage(
   args: CliArgs
 ): Promise<Uint8Array> {
   const apiToken = getApiToken();
-  if (!apiToken) throw new Error("REPLICATE_API_TOKEN is required. Get one at https://replicate.com/account/api-tokens");
+  if (!apiToken) throw new Error("REPLICATE_API_TOKEN 未配置。请前往 https://replicate.com/account/api-tokens 获取");
 
   const parsedModel = parseModelId(model);
 
@@ -184,19 +184,19 @@ export async function generateImage(
 
   const input = buildInput(prompt, args, refDataUrls);
 
-  console.log(`Generating image with Replicate (${model})...`);
+  console.log(`正在使用 Replicate 生成图片 (${model})...`);
 
   let prediction = await createPrediction(apiToken, parsedModel, input, true);
 
   if (prediction.status !== "succeeded") {
     if (!prediction.urls?.get) {
-      throw new Error("Replicate prediction did not return a poll URL");
+      throw new Error("Replicate 预测未返回轮询 URL");
     }
-    console.log("Waiting for prediction to complete...");
+    console.log("正在等待预测完成...");
     prediction = await pollPrediction(apiToken, prediction.urls.get);
   }
 
-  console.log("Generation completed.");
+  console.log("生成完成。");
 
   const outputUrl = extractOutputUrl(prediction);
   return downloadImage(outputUrl);

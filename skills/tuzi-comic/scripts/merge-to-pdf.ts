@@ -23,7 +23,7 @@ function parseArgs(): { dir: string; output?: string } {
   }
 
   if (!dir) {
-    console.error("Usage: bun merge-to-pdf.ts <comic-dir> [--output filename.pdf]");
+    console.error("用法: bun merge-to-pdf.ts <comic-dir> [--output filename.pdf]");
     process.exit(1);
   }
 
@@ -32,7 +32,7 @@ function parseArgs(): { dir: string; output?: string } {
 
 function findComicPages(dir: string): PageInfo[] {
   if (!existsSync(dir)) {
-    console.error(`Directory not found: ${dir}`);
+    console.error(`目录未找到: ${dir}`);
     process.exit(1);
   }
 
@@ -58,8 +58,8 @@ function findComicPages(dir: string): PageInfo[] {
     .sort((a, b) => a.index - b.index);
 
   if (pages.length === 0) {
-    console.error(`No comic pages found in: ${dir}`);
-    console.error("Expected format: 00-cover-slug.png, 01-page-slug.png, etc.");
+    console.error(`未找到漫画页面: ${dir}`);
+    console.error("期望格式: 00-cover-slug.png, 01-page-slug.png 等");
     process.exit(1);
   }
 
@@ -88,14 +88,14 @@ async function createPdf(pages: PageInfo[], outputPath: string) {
       height,
     });
 
-    console.log(`Added: ${page.filename}${page.promptPath ? " (prompt available)" : ""}`);
+    console.log(`已添加: ${page.filename}${page.promptPath ? "（含提示词）" : ""}`);
   }
 
   const pdfBytes = await pdfDoc.save();
   await Bun.write(outputPath, pdfBytes);
 
-  console.log(`\nCreated: ${outputPath}`);
-  console.log(`Total pages: ${pages.length}`);
+  console.log(`\n已创建: ${outputPath}`);
+  console.log(`总页数: ${pages.length}`);
 }
 
 async function main() {
@@ -105,12 +105,12 @@ async function main() {
   const dirName = basename(dir) === "comic" ? basename(join(dir, "..")) : basename(dir);
   const outputPath = output || join(dir, `${dirName}.pdf`);
 
-  console.log(`Found ${pages.length} pages in: ${dir}\n`);
+  console.log(`在 ${dir} 中找到 ${pages.length} 个页面\n`);
 
   await createPdf(pages, outputPath);
 }
 
 main().catch((err) => {
-  console.error("Error:", err.message);
+  console.error("错误:", err.message);
   process.exit(1);
 });

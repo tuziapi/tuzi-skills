@@ -88,7 +88,7 @@ async function resolveImagePath(imagePath: string, baseDir: string, tempDir: str
     const localPath = path.join(tempDir, `remote_${hash}.${ext}`);
 
     if (!fs.existsSync(localPath)) {
-      console.error(`[markdown-to-html] Downloading: ${imagePath}`);
+      console.error(`[markdown-to-html] 正在下载: ${imagePath}`);
       await downloadFile(imagePath, localPath);
     }
     return localPath;
@@ -191,7 +191,7 @@ export async function convertMarkdown(markdownPath: string, options?: { title?: 
 
   const modifiedMarkdown = `---\n${Object.entries(frontmatter).map(([k, v]) => `${k}: ${v}`).join('\n')}\n---\n${modifiedBody}`;
 
-  console.error(`[markdown-to-html] Rendering with theme: ${theme}, keepTitle: ${keepTitle}`);
+  console.error(`[markdown-to-html] 使用主题渲染: ${theme}, 保留标题: ${keepTitle}`);
 
   const themeDefaults = THEME_STYLE_DEFAULTS[theme] ?? {};
   const style: StyleConfig = { ...DEFAULT_STYLE, ...themeDefaults };
@@ -214,7 +214,7 @@ export async function convertMarkdown(markdownPath: string, options?: { title?: 
 
   if (fs.existsSync(finalHtmlPath)) {
     backupPath = `${finalHtmlPath}.bak-${formatTimestamp()}`;
-    console.error(`[markdown-to-html] Backing up existing file to: ${backupPath}`);
+    console.error(`[markdown-to-html] 正在备份已有文件到: ${backupPath}`);
     fs.renameSync(finalHtmlPath, backupPath);
   }
 
@@ -242,7 +242,7 @@ export async function convertMarkdown(markdownPath: string, options?: { title?: 
   }
   fs.writeFileSync(finalHtmlPath, finalContent, 'utf-8');
 
-  console.error(`[markdown-to-html] HTML saved to: ${finalHtmlPath}`);
+  console.error(`[markdown-to-html] HTML 已保存到: ${finalHtmlPath}`);
 
   return {
     title,
@@ -255,33 +255,33 @@ export async function convertMarkdown(markdownPath: string, options?: { title?: 
 }
 
 function printUsage(): never {
-  console.log(`Convert Markdown to styled HTML
+  console.log(`将 Markdown 转换为带样式的 HTML
 
-Usage:
-  npx -y bun main.ts <markdown_file> [options]
+用法:
+  npx -y bun main.ts <markdown_file> [选项]
 
-Options:
-  --title <title>     Override title
-  --theme <name>      Theme name (default, grace, simple). Default: default
-  --keep-title        Keep the first heading in content. Default: false (removed)
-  --help              Show this help
+选项:
+  --title <title>     覆盖标题
+  --theme <name>      主题名称（default, grace, simple）。默认: default
+  --keep-title        保留内容中的第一个标题。默认: false（移除）
+  --help              显示帮助
 
-Output:
-  HTML file saved to same directory as input markdown file.
-  Example: article.md -> article.html
+输出:
+  HTML 文件保存到与输入 Markdown 文件相同的目录。
+  示例: article.md -> article.html
 
-  If HTML file already exists, it will be backed up first:
+  如果 HTML 文件已存在，会先备份:
   article.html -> article.html.bak-YYYYMMDDHHMMSS
 
-Output JSON format:
+输出 JSON 格式:
 {
-  "title": "Article Title",
+  "title": "文章标题",
   "htmlPath": "/path/to/article.html",
   "backupPath": "/path/to/article.html.bak-20260128180000",
   "contentImages": [...]
 }
 
-Example:
+示例:
   npx -y bun main.ts article.md
   npx -y bun main.ts article.md --theme grace
 `);
@@ -313,12 +313,12 @@ async function main(): Promise<void> {
   }
 
   if (!markdownPath) {
-    console.error('Error: Markdown file path is required');
+    console.error('错误: 需要 Markdown 文件路径');
     process.exit(1);
   }
 
   if (!fs.existsSync(markdownPath)) {
-    console.error(`Error: File not found: ${markdownPath}`);
+    console.error(`错误: 文件未找到: ${markdownPath}`);
     process.exit(1);
   }
 
@@ -327,6 +327,6 @@ async function main(): Promise<void> {
 }
 
 await main().catch((err) => {
-  console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
+  console.error(`错误: ${err instanceof Error ? err.message : String(err)}`);
   process.exit(1);
 });

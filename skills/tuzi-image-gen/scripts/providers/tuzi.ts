@@ -62,25 +62,25 @@ type AsyncPollResponse = { id: string; status: string; progress?: number; video_
 
 async function downloadImage(url: string): Promise<Uint8Array> {
   const res = await fetch(url);
-  if (!res.ok) throw new Error(`Failed to download image: ${res.status}`);
+  if (!res.ok) throw new Error(`图片下载失败: ${res.status}`);
   return new Uint8Array(await res.arrayBuffer());
 }
 
 function extractSyncUrl(result: SyncResponse): string {
   const img = result.data?.[0];
   if (img?.revised_prompt?.includes("PROHIBITED_CONTENT")) {
-    throw new Error("Content rejected: contains prohibited content");
+    throw new Error("内容被拒绝：包含违规内容");
   }
   if (img?.revised_prompt?.includes("NO_IMAGE")) {
-    throw new Error("Model did not generate an image. Try a more explicit prompt.");
+    throw new Error("模型未生成图片，请尝试更明确的提示词。");
   }
   if (img?.url) return img.url;
   if (img?.b64_json) return `data:image/png;base64,${img.b64_json}`;
-  throw new Error("No image in response");
+  throw new Error("响应中无图片数据");
 }
 
 function parseError(error: unknown): string {
-  if (!error) return "Unknown error";
+  if (!error) return "未知错误";
   if (typeof error === "string") return error;
   if (typeof error === "object" && error !== null) {
     const e = error as Record<string, unknown>;
@@ -106,7 +106,7 @@ export async function generateImage(
   args: CliArgs
 ): Promise<Uint8Array> {
   const apiKey = getApiKey();
-  if (!apiKey) throw new Error("TUZI_API_KEY is required. Get one at https://api.tu-zi.com/token (video tutorial: https://www.bilibili.com/video/BV1k4PqzPEKz/)");
+  if (!apiKey) throw new Error("TUZI_API_KEY 未配置。请前往 https://api.tu-zi.com/token 获取（视频教程：https://www.bilibili.com/video/BV1k4PqzPEKz/）");
 
   const baseURL = getBaseUrl();
 
@@ -147,7 +147,7 @@ async function generateSync(
 
   if (args.n > 1) body.n = args.n;
 
-  console.log(`Generating image with Tuzi (${model})...`);
+  console.log(`正在使用 Tuzi 生成图片 (${model})...`);
 
   const res = await fetch(`${baseURL}/images/generations`, {
     method: "POST",
@@ -160,13 +160,13 @@ async function generateSync(
 
   if (!res.ok) {
     const err = await res.text();
-    throw new Error(`Tuzi API error (${res.status}): ${err}`);
+    throw new Error(`Tuzi API 错误 (${res.status}): ${err}`);
   }
 
   const result = (await res.json()) as SyncResponse;
   const url = extractSyncUrl(result);
 
-  console.log("Generation completed.");
+  console.log("生成完成。");
 
   if (url.startsWith("data:")) {
     const b64 = url.split(",")[1]!;
@@ -199,7 +199,7 @@ async function generateAsync(
     }
   }
 
-  console.log(`Submitting async image task with Tuzi (${model})...`);
+  console.log(`正在提交 Tuzi 异步图片任务 (${model})...`);
 
   const submitRes = await fetch(`${normalizedBase}/v1/videos`, {
     method: "POST",
@@ -209,7 +209,7 @@ async function generateAsync(
 
   if (!submitRes.ok) {
     const err = await submitRes.text();
-    throw new Error(`Tuzi async submit error (${submitRes.status}): ${err}`);
+    throw new Error(`Tuzi 异步提交错误 (${submitRes.status}): ${err}`);
   }
 
   const submitData = (await submitRes.json()) as AsyncSubmitResponse;
@@ -219,9 +219,9 @@ async function generateAsync(
   }
 
   const taskId = submitData.id;
-  if (!taskId) throw new Error("No task ID returned from Tuzi API");
+  if (!taskId) throw new Error("Tuzi API 未返回任务 ID");
 
-  console.log(`Task submitted (id: ${taskId}). Polling for result...`);
+  console.log(`任务已提交 (id: ${taskId})，正在轮询结果...`);
 
   for (let attempt = 0; attempt < MAX_POLL_ATTEMPTS; attempt++) {
     await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
@@ -232,19 +232,19 @@ async function generateAsync(
 
     if (!pollRes.ok) {
       const err = await pollRes.text();
-      throw new Error(`Tuzi poll error (${pollRes.status}): ${err}`);
+      throw new Error(`Tuzi 轮询错误 (${pollRes.status}): ${err}`);
     }
 
     const status = (await pollRes.json()) as AsyncPollResponse;
 
     if (attempt % 6 === 0) {
-      console.log(`Polling... status=${status.status}, progress=${status.progress ?? 0}`);
+      console.log(`轮询中... 状态=${status.status}, 进度=${status.progress ?? 0}`);
     }
 
     if (status.status === "completed") {
       const url = status.video_url || status.url;
-      if (!url) throw new Error("Tuzi API returned no image URL");
-      console.log("Async generation completed.");
+      if (!url) throw new Error("Tuzi API 未返回图片 URL");
+      console.log("异步生成完成。");
       return downloadImage(url);
     }
 
@@ -253,5 +253,5 @@ async function generateAsync(
     }
   }
 
-  throw new Error(`Tuzi async generation timed out after ${(MAX_POLL_ATTEMPTS * POLL_INTERVAL_MS) / 1000}s`);
+  throw new Error(`Tuzi 异步生成超时，已等待 ${(MAX_POLL_ATTEMPTS * POLL_INTERVAL_MS) / 1000} 秒`);
 }
