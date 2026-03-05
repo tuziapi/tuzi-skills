@@ -1,6 +1,6 @@
 ---
 name: release-skills
-description: Universal release workflow. Auto-detects version files and changelogs. Supports Node.js, Python, Rust, Claude Plugin, and generic projects. Use when user says "release", "发布", "new version", "bump version", "push", "推送".
+description: 通用发布工作流。自动检测版本文件和变更日志。支持 Node.js、Python、Rust、Claude 插件和通用项目。当用户说"发布"、"release"、"新版本"、"bump version"、"push"、"推送"时使用。
 ---
 
 # Release Skills
