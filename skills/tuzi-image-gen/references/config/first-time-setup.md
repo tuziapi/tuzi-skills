@@ -37,12 +37,13 @@ For other providers, display the corresponding key setup URL:
 
 ### Step 2: Ask user for API key
 
-Use AskUserQuestion:
+**IMPORTANT**: Do NOT use AskUserQuestion for this step. Instead, directly ask the user in plain text to paste their API key. Example:
 
-```yaml
-header: "API Key"
-question: "请输入你的 API Key（输入后将安全存储到本地 .env 文件）："
 ```
+请粘贴你的 Tuzi API Key（以 sk- 开头）：
+```
+
+Wait for user to reply with the key string. Validate it starts with `sk-`.
 
 ### Step 3: Ask save location (if no .env exists yet)
 
