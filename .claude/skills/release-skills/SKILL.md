@@ -212,12 +212,12 @@ Analyze commits since last tag and group by affected skill/module:
 
 **Example Grouping**:
 ```
-baoyu-cover-image:
+tuzi-cover-image:
   - feat: add new style options
   - fix: handle transparent backgrounds
   → README updates: options table
 
-baoyu-comic:
+tuzi-comic:
   - refactor: improve panel layout algorithm
   → No README updates needed
 
@@ -250,8 +250,8 @@ For each skill/module group (in order of changes):
 
 **Example Commits**:
 ```bash
-git commit -m "feat(baoyu-cover-image): add watercolor and minimalist styles"
-git commit -m "fix(baoyu-comic): improve panel layout for long dialogues"
+git commit -m "feat(tuzi-cover-image): add watercolor and minimalist styles"
+git commit -m "fix(tuzi-comic): improve panel layout for long dialogues"
 git commit -m "docs(project): update architecture documentation"
 ```
 
@@ -299,8 +299,8 @@ Before creating the release commit, ask user to confirm:
 **Example Output Before Confirmation**:
 ```
 Commits created:
-  1. feat(baoyu-cover-image): add watercolor and minimalist styles
-  2. fix(baoyu-comic): improve panel layout for long dialogues
+  1. feat(tuzi-cover-image): add watercolor and minimalist styles
+  2. fix(tuzi-comic): improve panel layout for long dialogues
   3. docs(project): update architecture documentation
 
 Changelog preview (en):
@@ -346,8 +346,8 @@ After user confirmation:
 Release v1.3.0 created.
 
 Commits:
-  1. feat(baoyu-cover-image): add watercolor and minimalist styles
-  2. fix(baoyu-comic): improve panel layout for long dialogues
+  1. feat(tuzi-cover-image): add watercolor and minimalist styles
+  2. fix(tuzi-comic): improve panel layout for long dialogues
   3. docs(project): update architecture documentation
   4. chore: release v1.3.0
 
@@ -418,15 +418,15 @@ Last tag: v1.2.3
 Proposed version: v1.3.0
 
 Changes grouped by skill/module:
-  baoyu-cover-image:
+  tuzi-cover-image:
     - feat: add watercolor style
     - feat: add minimalist style
-    → Commit: feat(baoyu-cover-image): add watercolor and minimalist styles
+    → Commit: feat(tuzi-cover-image): add watercolor and minimalist styles
     → README updates: options table
 
-  baoyu-comic:
+  tuzi-comic:
     - fix: panel layout for long dialogues
-    → Commit: fix(baoyu-comic): improve panel layout for long dialogues
+    → Commit: fix(tuzi-comic): improve panel layout for long dialogues
     → No README updates
 
 Changelog preview (en):
@@ -444,8 +444,8 @@ Changelog preview (zh):
   - 改进 comic 长对话的面板布局
 
 Commits to create:
-  1. feat(baoyu-cover-image): add watercolor and minimalist styles
-  2. fix(baoyu-comic): improve panel layout for long dialogues
+  1. feat(tuzi-cover-image): add watercolor and minimalist styles
+  2. fix(tuzi-comic): improve panel layout for long dialogues
   3. chore: release v1.3.0
 
 No changes made. Run without --dry-run to execute.

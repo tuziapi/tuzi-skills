@@ -13,20 +13,20 @@ Skills are organized into three plugin categories in `marketplace.json`:
 ```
 skills/
 ├── [content-skills]           # Content generation and publishing
-│   ├── baoyu-xhs-images/          # Xiaohongshu infographic series (1-10 images)
-│   ├── baoyu-cover-image/         # Article cover images (2.35:1 aspect)
-│   ├── baoyu-slide-deck/          # Presentation slides with outlines
-│   ├── baoyu-article-illustrator/ # Smart illustration placement
-│   ├── baoyu-comic/               # Knowledge comics (Logicomix/Ohmsha style)
-│   ├── baoyu-post-to-x/           # X/Twitter posting automation
-│   └── baoyu-post-to-wechat/      # WeChat Official Account posting
+│   ├── tuzi-xhs-images/          # Xiaohongshu infographic series (1-10 images)
+│   ├── tuzi-cover-image/         # Article cover images (2.35:1 aspect)
+│   ├── tuzi-slide-deck/          # Presentation slides with outlines
+│   ├── tuzi-article-illustrator/ # Smart illustration placement
+│   ├── tuzi-comic/               # Knowledge comics (Logicomix/Ohmsha style)
+│   ├── tuzi-post-to-x/           # X/Twitter posting automation
+│   └── tuzi-post-to-wechat/      # WeChat Official Account posting
 │
 ├── [ai-generation-skills]     # AI-powered generation backends
-│   └── baoyu-danger-gemini-web/   # Gemini API wrapper (text + image gen)
+│   └── tuzi-danger-gemini-web/   # Gemini API wrapper (text + image gen)
 │
 └── [utility-skills]           # Utility tools for content processing
-    ├── baoyu-danger-x-to-markdown/ # X/Twitter content to markdown
-    └── baoyu-compress-image/      # Image compression
+    ├── tuzi-danger-x-to-markdown/ # X/Twitter content to markdown
+    └── tuzi-compress-image/      # Image compression
 ```
 
 **Plugin Categories**:
@@ -52,24 +52,24 @@ npx -y bun skills/<skill>/scripts/main.ts [options]
 Examples:
 ```bash
 # Text generation
-npx -y bun skills/baoyu-danger-gemini-web/scripts/main.ts "Hello"
+npx -y bun skills/tuzi-danger-gemini-web/scripts/main.ts "Hello"
 
 # Image generation
-npx -y bun skills/baoyu-danger-gemini-web/scripts/main.ts --prompt "A cat" --image cat.png
+npx -y bun skills/tuzi-danger-gemini-web/scripts/main.ts --prompt "A cat" --image cat.png
 
 # From prompt files
-npx -y bun skills/baoyu-danger-gemini-web/scripts/main.ts --promptfiles system.md content.md --image out.png
+npx -y bun skills/tuzi-danger-gemini-web/scripts/main.ts --promptfiles system.md content.md --image out.png
 ```
 
 ## Key Dependencies
 
 - **Bun**: TypeScript runtime (via `npx -y bun`)
-- **Chrome**: Required for `baoyu-danger-gemini-web` auth and `baoyu-post-to-x` automation
+- **Chrome**: Required for `tuzi-danger-gemini-web` auth and `tuzi-post-to-x` automation
 - **No npm packages**: Self-contained TypeScript, no external dependencies
 
 ## Authentication
 
-`baoyu-danger-gemini-web` uses browser cookies for Google auth:
+`tuzi-danger-gemini-web` uses browser cookies for Google auth:
 - First run opens Chrome for login
 - Cookies cached in data directory
 - Force refresh: `--login` flag
@@ -85,11 +85,11 @@ npx -y bun skills/baoyu-danger-gemini-web/scripts/main.ts --promptfiles system.m
 | Rule | Description |
 |------|-------------|
 | **Load project skills first** | MUST load all skills from `skills/` directory in current project. Project skills take priority over system/user-level skills with same name. |
-| **Default image generation** | When image generation is needed, use `skills/baoyu-image-gen/SKILL.md` by default (unless user specifies otherwise). |
+| **Default image generation** | When image generation is needed, use `skills/tuzi-image-gen/SKILL.md` by default (unless user specifies otherwise). |
 
 **Loading Priority** (highest → lowest):
 1. Current project `skills/` directory
-2. User-level skills (`$HOME/.baoyu-skills/`)
+2. User-level skills (`$HOME/.tuzi-skills/`)
 3. System-level skills
 
 ## Release Process
@@ -104,7 +104,7 @@ npx -y bun skills/baoyu-danger-gemini-web/scripts/main.ts --promptfiles system.m
 
 ## Adding New Skills
 
-**IMPORTANT**: All skills MUST use `baoyu-` prefix to avoid conflicts when users import this plugin.
+**IMPORTANT**: All skills MUST use `tuzi-` prefix to avoid conflicts when users import this plugin.
 
 **REQUIRED READING**: Before creating a new skill, read the official [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices).
 
@@ -116,17 +116,17 @@ npx -y bun skills/baoyu-danger-gemini-web/scripts/main.ts --promptfiles system.m
 | **name field** | Max 64 chars, lowercase letters/numbers/hyphens only, no "anthropic"/"claude" |
 | **description field** | Max 1024 chars, non-empty, MUST be third person, include what + when to use |
 | **SKILL.md body** | Keep under 500 lines; use separate files for additional content |
-| **Naming convention** | Gerund form preferred (e.g., `processing-pdfs`), but `baoyu-` prefix required here |
+| **Naming convention** | Gerund form preferred (e.g., `processing-pdfs`), but `tuzi-` prefix required here |
 | **References** | Keep one level deep from SKILL.md; avoid nested references |
 | **No time-sensitive info** | Avoid dates/versions that become outdated |
 
 ### Steps
 
-1. Create `skills/baoyu-<name>/SKILL.md` with YAML front matter
-   - Directory name: `baoyu-<name>`
-   - SKILL.md `name` field: `baoyu-<name>`
-2. Add TypeScript in `skills/baoyu-<name>/scripts/`
-3. Add prompt templates in `skills/baoyu-<name>/prompts/` if needed
+1. Create `skills/tuzi-<name>/SKILL.md` with YAML front matter
+   - Directory name: `tuzi-<name>`
+   - SKILL.md `name` field: `tuzi-<name>`
+2. Add TypeScript in `skills/tuzi-<name>/scripts/`
+3. Add prompt templates in `skills/tuzi-<name>/prompts/` if needed
 4. **Choose the appropriate category** and register in `marketplace.json`:
    - `content-skills`: For content generation/publishing (images, slides, posts)
    - `ai-generation-skills`: For AI backend capabilities
@@ -192,7 +192,7 @@ When referencing scripts in workflow sections, use `${SKILL_DIR}/scripts/<name>.
 For skills with extensive content, use separate reference files:
 
 ```
-skills/baoyu-example/
+skills/tuzi-example/
 ├── SKILL.md              # Main instructions (<500 lines)
 ├── references/
 │   ├── styles.md         # Style definitions (loaded as needed)
@@ -220,9 +220,9 @@ Skills that require image generation MUST delegate to available image generation
 
 ### Image Generation Skill Selection
 
-**Default**: Use `skills/baoyu-image-gen/SKILL.md` (unless user specifies otherwise).
+**Default**: Use `skills/tuzi-image-gen/SKILL.md` (unless user specifies otherwise).
 
-1. Read `skills/baoyu-image-gen/SKILL.md` for parameters and capabilities
+1. Read `skills/tuzi-image-gen/SKILL.md` for parameters and capabilities
 2. If user explicitly requests a different skill, check `skills/` directory for alternatives
 3. Only ask user to choose when they haven't specified and multiple viable options exist
 
@@ -234,7 +234,7 @@ Use this template when implementing image generation in skills:
 ### Step N: Generate Images
 
 **Skill Selection**:
-1. Check available image generation skills (e.g., `baoyu-danger-gemini-web`)
+1. Check available image generation skills (e.g., `tuzi-danger-gemini-web`)
 2. Read selected skill's SKILL.md for parameter reference
 3. If multiple skills available, ask user to choose
 
@@ -308,25 +308,25 @@ Image filenames MUST include meaningful slugs for readability:
 - Handle failures gracefully with retry logic
 - Provide clear progress feedback to user
 
-## Style Maintenance (baoyu-comic)
+## Style Maintenance (tuzi-comic)
 
-When adding, updating, or deleting styles for `baoyu-comic`, follow this workflow:
+When adding, updating, or deleting styles for `tuzi-comic`, follow this workflow:
 
 ### Adding a New Style
 
-1. **Create style definition**: `skills/baoyu-comic/references/styles/<style-name>.md`
+1. **Create style definition**: `skills/tuzi-comic/references/styles/<style-name>.md`
 2. **Update SKILL.md**:
    - Add style to `--style` options table
    - Add auto-selection entry if applicable
 3. **Generate showcase image**:
    ```bash
-   npx -y bun skills/baoyu-danger-gemini-web/scripts/main.ts \
+   npx -y bun skills/tuzi-danger-gemini-web/scripts/main.ts \
      --prompt "A single comic book page in <style-name> style showing [appropriate scene]. Features: [style characteristics from style definition]. 3:4 portrait aspect ratio comic page." \
      --image screenshots/comic-styles/<style-name>.png
    ```
 4. **Compress to WebP**:
    ```bash
-   npx -y bun skills/baoyu-compress-image/scripts/main.ts screenshots/comic-styles/<style-name>.png
+   npx -y bun skills/tuzi-compress-image/scripts/main.ts screenshots/comic-styles/<style-name>.png
    ```
 5. **Update both READMEs** (`README.md` and `README.zh.md`):
    - Add style to `--style` options
@@ -335,14 +335,14 @@ When adding, updating, or deleting styles for `baoyu-comic`, follow this workflo
 
 ### Updating an Existing Style
 
-1. **Update style definition**: `skills/baoyu-comic/references/styles/<style-name>.md`
+1. **Update style definition**: `skills/tuzi-comic/references/styles/<style-name>.md`
 2. **Regenerate showcase image** (if visual characteristics changed):
    - Follow steps 3-4 from "Adding a New Style"
 3. **Update READMEs** if description changed
 
 ### Deleting a Style
 
-1. **Delete style definition**: `skills/baoyu-comic/references/styles/<style-name>.md`
+1. **Delete style definition**: `skills/tuzi-comic/references/styles/<style-name>.md`
 2. **Delete showcase image**: `screenshots/comic-styles/<style-name>.webp`
 3. **Update SKILL.md**:
    - Remove from `--style` options
@@ -378,18 +378,18 @@ Use Bash to check EXTEND.md existence (priority order):
 
 \`\`\`bash
 # Check project-level first
-test -f .baoyu-skills/<skill-name>/EXTEND.md && echo "project"
+test -f .tuzi-skills/<skill-name>/EXTEND.md && echo "project"
 
 # Then user-level (cross-platform: $HOME works on macOS/Linux/WSL)
-test -f "$HOME/.baoyu-skills/<skill-name>/EXTEND.md" && echo "user"
+test -f "$HOME/.tuzi-skills/<skill-name>/EXTEND.md" && echo "user"
 \`\`\`
 
 ┌────────────────────────────────────────────┬───────────────────┐
 │                    Path                    │     Location      │
 ├────────────────────────────────────────────┼───────────────────┤
-│ .baoyu-skills/<skill-name>/EXTEND.md       │ Project directory │
+│ .tuzi-skills/<skill-name>/EXTEND.md       │ Project directory │
 ├────────────────────────────────────────────┼───────────────────┤
-│ $HOME/.baoyu-skills/<skill-name>/EXTEND.md │ User home         │
+│ $HOME/.tuzi-skills/<skill-name>/EXTEND.md │ User home         │
 └────────────────────────────────────────────┴───────────────────┘
 
 ┌───────────┬───────────────────────────────────────────────────────────────────────────┐
@@ -424,7 +424,7 @@ Custom configurations via EXTEND.md. See **Preferences** section for paths and s
 ```
 
 **Notes**:
-- Replace `<skill-name>` with actual skill name (e.g., `baoyu-cover-image`)
+- Replace `<skill-name>` with actual skill name (e.g., `tuzi-cover-image`)
 - Use `$HOME` instead of `~` for cross-platform compatibility (macOS/Linux/WSL)
 - Use `test -f` Bash command for explicit file existence check
 - ASCII tables for clear visual formatting

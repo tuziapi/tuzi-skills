@@ -15,14 +15,14 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/baoyu-xhs-images",
-        "./skills/baoyu-post-to-x",
-        "./skills/baoyu-post-to-wechat",
-        "./skills/baoyu-article-illustrator",
-        "./skills/baoyu-cover-image",
-        "./skills/baoyu-slide-deck",
-        "./skills/baoyu-comic",
-        "./skills/baoyu-infographic"
+        "./skills/tuzi-xhs-images",
+        "./skills/tuzi-post-to-x",
+        "./skills/tuzi-post-to-wechat",
+        "./skills/tuzi-article-illustrator",
+        "./skills/tuzi-cover-image",
+        "./skills/tuzi-slide-deck",
+        "./skills/tuzi-comic",
+        "./skills/tuzi-infographic"
       ]
     },
     {
@@ -31,8 +31,8 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/baoyu-danger-gemini-web",
-        "./skills/baoyu-image-gen"
+        "./skills/tuzi-danger-gemini-web",
+        "./skills/tuzi-image-gen"
       ]
     },
     {
@@ -41,11 +41,11 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/baoyu-danger-x-to-markdown",
-        "./skills/baoyu-compress-image",
-        "./skills/baoyu-url-to-markdown",
-        "./skills/baoyu-format-markdown",
-        "./skills/baoyu-markdown-to-html"
+        "./skills/tuzi-danger-x-to-markdown",
+        "./skills/tuzi-compress-image",
+        "./skills/tuzi-url-to-markdown",
+        "./skills/tuzi-format-markdown",
+        "./skills/tuzi-markdown-to-html"
       ]
     }
   ]

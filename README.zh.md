@@ -53,9 +53,9 @@ npx skills add tuziapi/tuzi-skills
 
 | 插件 | 说明 | 包含技能 |
 |------|------|----------|
-| **content-skills** | 内容生成和发布 | [xhs-images](#baoyu-xhs-images), [infographic](#baoyu-infographic), [cover-image](#baoyu-cover-image), [slide-deck](#baoyu-slide-deck), [comic](#baoyu-comic), [article-illustrator](#baoyu-article-illustrator), [post-to-x](#baoyu-post-to-x), [post-to-wechat](#baoyu-post-to-wechat) |
-| **ai-generation-skills** | AI 生成后端 | [image-gen](#baoyu-image-gen), [danger-gemini-web](#baoyu-danger-gemini-web) |
-| **utility-skills** | 内容处理工具 | [url-to-markdown](#baoyu-url-to-markdown), [danger-x-to-markdown](#baoyu-danger-x-to-markdown), [compress-image](#baoyu-compress-image), [format-markdown](#baoyu-format-markdown) |
+| **content-skills** | 内容生成和发布 | [xhs-images](#tuzi-xhs-images), [infographic](#tuzi-infographic), [cover-image](#tuzi-cover-image), [slide-deck](#tuzi-slide-deck), [comic](#tuzi-comic), [article-illustrator](#tuzi-article-illustrator), [post-to-x](#tuzi-post-to-x), [post-to-wechat](#tuzi-post-to-wechat) |
+| **ai-generation-skills** | AI 生成后端 | [image-gen](#tuzi-image-gen), [danger-gemini-web](#tuzi-danger-gemini-web) |
+| **utility-skills** | 内容处理工具 | [url-to-markdown](#tuzi-url-to-markdown), [danger-x-to-markdown](#tuzi-danger-x-to-markdown), [compress-image](#tuzi-compress-image), [format-markdown](#tuzi-format-markdown) |
 
 ## 更新技能
 
@@ -78,25 +78,25 @@ npx skills add tuziapi/tuzi-skills
 
 内容生成和发布技能。
 
-#### baoyu-xhs-images
+#### tuzi-xhs-images
 
 小红书信息图系列生成器。将内容拆解为 1-10 张卡通风格信息图，支持 **风格 × 布局** 二维系统。
 
 ```bash
 # 自动选择风格和布局
-/baoyu-xhs-images posts/ai-future/article.md
+/tuzi-xhs-images posts/ai-future/article.md
 
 # 指定风格
-/baoyu-xhs-images posts/ai-future/article.md --style notion
+/tuzi-xhs-images posts/ai-future/article.md --style notion
 
 # 指定布局
-/baoyu-xhs-images posts/ai-future/article.md --layout dense
+/tuzi-xhs-images posts/ai-future/article.md --layout dense
 
 # 组合风格和布局
-/baoyu-xhs-images posts/ai-future/article.md --style tech --layout list
+/tuzi-xhs-images posts/ai-future/article.md --style tech --layout list
 
 # 直接输入内容
-/baoyu-xhs-images 今日星座运势
+/tuzi-xhs-images 今日星座运势
 ```
 
 **风格**（视觉美学）：`cute`（默认）、`fresh`、`warm`、`bold`、`minimal`、`retro`、`pop`、`notion`、`chalkboard`
@@ -131,25 +131,25 @@ npx skills add tuziapi/tuzi-skills
 | ![list](./screenshots/xhs-images-layouts/list.webp) | ![comparison](./screenshots/xhs-images-layouts/comparison.webp) | ![flow](./screenshots/xhs-images-layouts/flow.webp) |
 | list | comparison | flow |
 
-#### baoyu-infographic
+#### tuzi-infographic
 
 专业信息图生成器，支持 20 种布局和 17 种视觉风格。分析内容后推荐布局×风格组合，生成可发布的信息图。
 
 ```bash
 # 根据内容自动推荐组合
-/baoyu-infographic path/to/content.md
+/tuzi-infographic path/to/content.md
 
 # 指定布局
-/baoyu-infographic path/to/content.md --layout pyramid
+/tuzi-infographic path/to/content.md --layout pyramid
 
 # 指定风格（默认：craft-handmade）
-/baoyu-infographic path/to/content.md --style technical-schematic
+/tuzi-infographic path/to/content.md --style technical-schematic
 
 # 同时指定布局和风格
-/baoyu-infographic path/to/content.md --layout funnel --style corporate-memphis
+/tuzi-infographic path/to/content.md --layout funnel --style corporate-memphis
 
 # 指定比例
-/baoyu-infographic path/to/content.md --aspect portrait
+/tuzi-infographic path/to/content.md --aspect portrait
 ```
 
 **选项**：
@@ -243,29 +243,29 @@ npx skills add tuziapi/tuzi-skills
 | ![knolling](./screenshots/infographic-styles/knolling.webp) | ![lego-brick](./screenshots/infographic-styles/lego-brick.webp) | |
 | knolling | lego-brick | |
 
-#### baoyu-cover-image
+#### tuzi-cover-image
 
 为文章生成封面图，支持五维定制系统：类型 × 配色 × 渲染 × 文字 × 氛围。9 种配色方案与 6 种渲染风格组合，提供 54 种独特效果。
 
 ```bash
 # 根据内容自动选择所有维度
-/baoyu-cover-image path/to/article.md
+/tuzi-cover-image path/to/article.md
 
 # 快速模式：跳过确认，使用自动选择
-/baoyu-cover-image path/to/article.md --quick
+/tuzi-cover-image path/to/article.md --quick
 
 # 指定维度（5D 系统）
-/baoyu-cover-image path/to/article.md --type conceptual --palette cool --rendering digital
-/baoyu-cover-image path/to/article.md --text title-subtitle --mood bold
+/tuzi-cover-image path/to/article.md --type conceptual --palette cool --rendering digital
+/tuzi-cover-image path/to/article.md --text title-subtitle --mood bold
 
 # 风格预设（向后兼容的简写方式）
-/baoyu-cover-image path/to/article.md --style blueprint
+/tuzi-cover-image path/to/article.md --style blueprint
 
 # 指定宽高比（默认：16:9）
-/baoyu-cover-image path/to/article.md --aspect 2.35:1
+/tuzi-cover-image path/to/article.md --aspect 2.35:1
 
 # 纯视觉（不含标题文字）
-/baoyu-cover-image path/to/article.md --no-title
+/tuzi-cover-image path/to/article.md --no-title
 ```
 
 **五个维度**：
@@ -275,26 +275,26 @@ npx skills add tuziapi/tuzi-skills
 - **文字 (Text)**：`none`、`title-only`（默认）、`title-subtitle`、`text-rich`
 - **氛围 (Mood)**：`subtle`、`balanced`（默认）、`bold`
 
-#### baoyu-slide-deck
+#### tuzi-slide-deck
 
 从内容生成专业的幻灯片图片。先创建包含样式说明的完整大纲，然后逐页生成幻灯片图片。
 
 ```bash
 # 从 markdown 文件生成
-/baoyu-slide-deck path/to/article.md
+/tuzi-slide-deck path/to/article.md
 
 # 指定风格和受众
-/baoyu-slide-deck path/to/article.md --style corporate
-/baoyu-slide-deck path/to/article.md --audience executives
+/tuzi-slide-deck path/to/article.md --style corporate
+/tuzi-slide-deck path/to/article.md --audience executives
 
 # 指定页数
-/baoyu-slide-deck path/to/article.md --slides 15
+/tuzi-slide-deck path/to/article.md --slides 15
 
 # 仅生成大纲（不生成图片）
-/baoyu-slide-deck path/to/article.md --outline-only
+/tuzi-slide-deck path/to/article.md --outline-only
 
 # 指定语言
-/baoyu-slide-deck path/to/article.md --lang zh
+/tuzi-slide-deck path/to/article.md --lang zh
 ```
 
 **选项**：
@@ -361,31 +361,31 @@ npx skills add tuziapi/tuzi-skills
 
 生成完成后，所有幻灯片会自动合并为 `.pptx` 和 `.pdf` 文件，方便分享。
 
-#### baoyu-comic
+#### tuzi-comic
 
 知识漫画创作器，支持画风 × 基调灵活组合。创作带有详细分镜布局的原创教育漫画，逐页生成图片。
 
 ```bash
 # 从素材文件生成（自动选择画风 + 基调）
-/baoyu-comic posts/turing-story/source.md
+/tuzi-comic posts/turing-story/source.md
 
 # 指定画风和基调
-/baoyu-comic posts/turing-story/source.md --art manga --tone warm
-/baoyu-comic posts/turing-story/source.md --art ink-brush --tone dramatic
+/tuzi-comic posts/turing-story/source.md --art manga --tone warm
+/tuzi-comic posts/turing-story/source.md --art ink-brush --tone dramatic
 
 # 使用预设（包含特殊规则）
-/baoyu-comic posts/turing-story/source.md --style ohmsha
-/baoyu-comic posts/turing-story/source.md --style wuxia
+/tuzi-comic posts/turing-story/source.md --style ohmsha
+/tuzi-comic posts/turing-story/source.md --style wuxia
 
 # 指定布局和比例
-/baoyu-comic posts/turing-story/source.md --layout cinematic
-/baoyu-comic posts/turing-story/source.md --aspect 16:9
+/tuzi-comic posts/turing-story/source.md --layout cinematic
+/tuzi-comic posts/turing-story/source.md --aspect 16:9
 
 # 指定语言
-/baoyu-comic posts/turing-story/source.md --lang zh
+/tuzi-comic posts/turing-story/source.md --lang zh
 
 # 直接输入内容
-/baoyu-comic "图灵的故事与计算机科学的诞生"
+/tuzi-comic "图灵的故事与计算机科学的诞生"
 ```
 
 **选项**：
@@ -447,22 +447,22 @@ npx skills add tuziapi/tuzi-skills
 | ![splash](./screenshots/comic-layouts/splash.webp) | ![mixed](./screenshots/comic-layouts/mixed.webp) | ![webtoon](./screenshots/comic-layouts/webtoon.webp) |
 | splash | mixed | webtoon |
 
-#### baoyu-article-illustrator
+#### tuzi-article-illustrator
 
 智能文章插图技能，采用类型 × 风格二维系统。分析文章结构，识别需要视觉辅助的位置，生成插图。
 
 ```bash
 # 根据内容自动选择类型和风格
-/baoyu-article-illustrator path/to/article.md
+/tuzi-article-illustrator path/to/article.md
 
 # 指定类型
-/baoyu-article-illustrator path/to/article.md --type infographic
+/tuzi-article-illustrator path/to/article.md --type infographic
 
 # 指定风格
-/baoyu-article-illustrator path/to/article.md --style blueprint
+/tuzi-article-illustrator path/to/article.md --style blueprint
 
 # 组合类型和风格
-/baoyu-article-illustrator path/to/article.md --type flowchart --style notion
+/tuzi-article-illustrator path/to/article.md --type flowchart --style notion
 ```
 
 **类型**（信息结构）：
@@ -500,39 +500,39 @@ npx skills add tuziapi/tuzi-skills
 | ![editorial](./screenshots/article-illustrator-styles/editorial.webp) | ![scientific](./screenshots/article-illustrator-styles/scientific.webp) | |
 | editorial | scientific | |
 
-#### baoyu-post-to-x
+#### tuzi-post-to-x
 
 发布内容和文章到 X (Twitter)。支持带图片的普通帖子和 X 文章（长篇 Markdown）。使用真实 Chrome + CDP 绕过反自动化检测。
 
 ```bash
 # 发布文字
-/baoyu-post-to-x "Hello from Claude Code!"
+/tuzi-post-to-x "Hello from Claude Code!"
 
 # 发布带图片
-/baoyu-post-to-x "看看这个" --image photo.png
+/tuzi-post-to-x "看看这个" --image photo.png
 
 # 发布 X 文章
-/baoyu-post-to-x --article path/to/article.md
+/tuzi-post-to-x --article path/to/article.md
 ```
 
-#### baoyu-post-to-wechat
+#### tuzi-post-to-wechat
 
 发布内容到微信公众号，支持两种模式：
 
 **贴图模式** - 多图配短标题和正文：
 
 ```bash
-/baoyu-post-to-wechat 贴图 --markdown article.md --images ./photos/
-/baoyu-post-to-wechat 贴图 --markdown article.md --image img1.png --image img2.png --image img3.png
-/baoyu-post-to-wechat 贴图 --title "标题" --content "内容" --image img1.png --submit
+/tuzi-post-to-wechat 贴图 --markdown article.md --images ./photos/
+/tuzi-post-to-wechat 贴图 --markdown article.md --image img1.png --image img2.png --image img3.png
+/tuzi-post-to-wechat 贴图 --title "标题" --content "内容" --image img1.png --submit
 ```
 
 **文章模式** - 完整 markdown/HTML 富文本格式：
 
 ```bash
-/baoyu-post-to-wechat 文章 --markdown article.md
-/baoyu-post-to-wechat 文章 --markdown article.md --theme grace
-/baoyu-post-to-wechat 文章 --html article.html
+/tuzi-post-to-wechat 文章 --markdown article.md
+/tuzi-post-to-wechat 文章 --markdown article.md --theme grace
+/tuzi-post-to-wechat 文章 --html article.html
 ```
 
 **发布方式**：
@@ -545,7 +545,7 @@ npx skills add tuziapi/tuzi-skills
 **API 配置**（更快的发布方式）：
 
 ```bash
-# 添加到 .baoyu-skills/.env（项目级）或 ~/.baoyu-skills/.env（用户级）
+# 添加到 .tuzi-skills/.env（项目级）或 ~/.tuzi-skills/.env（用户级）
 WECHAT_APP_ID=你的AppID
 WECHAT_APP_SECRET=你的AppSecret
 ```
@@ -562,30 +562,30 @@ WECHAT_APP_SECRET=你的AppSecret
 
 AI 驱动的生成后端。
 
-#### baoyu-image-gen
+#### tuzi-image-gen
 
 多服务商 AI 图像生成。默认服务商：兔子API (api.tu-zi.com, nano-banana 模型)。同时支持 Google、OpenAI、DashScope 和 Replicate。
 
 ```bash
 # 基础生成（默认使用 Tuzi）
-/baoyu-image-gen --prompt "一只可爱的猫" --image cat.png
+/tuzi-image-gen --prompt "一只可爱的猫" --image cat.png
 
 # 指定宽高比
-/baoyu-image-gen --prompt "风景图" --image landscape.png --ar 16:9
+/tuzi-image-gen --prompt "风景图" --image landscape.png --ar 16:9
 
 # 指定质量（Tuzi: 1k/2k/4k）
-/baoyu-image-gen --prompt "横幅图" --image banner.png --quality 2k
+/tuzi-image-gen --prompt "横幅图" --image banner.png --quality 2k
 
 # 4K VIP 模型
-/baoyu-image-gen --prompt "一只猫" --image cat.png --model gemini-3-pro-image-preview-4k-vip
+/tuzi-image-gen --prompt "一只猫" --image cat.png --model gemini-3-pro-image-preview-4k-vip
 
 # 带参考图
-/baoyu-image-gen --prompt "把它变成蓝色" --image out.png --ref source.png
+/tuzi-image-gen --prompt "把它变成蓝色" --image out.png --ref source.png
 
 # 其他服务商
-/baoyu-image-gen --prompt "一只猫" --image cat.png --provider google
-/baoyu-image-gen --prompt "一只猫" --image cat.png --provider openai
-/baoyu-image-gen --prompt "一只可爱的猫" --image cat.png --provider dashscope
+/tuzi-image-gen --prompt "一只猫" --image cat.png --provider google
+/tuzi-image-gen --prompt "一只猫" --image cat.png --provider openai
+/tuzi-image-gen --prompt "一只可爱的猫" --image cat.png --provider dashscope
 ```
 
 **选项**：
@@ -631,41 +631,41 @@ AI 驱动的生成后端。
 2. 如果只有一个 API 密钥 → 使用对应服务商
 3. 如果多个可用 → 默认使用 Tuzi
 
-#### baoyu-danger-gemini-web
+#### tuzi-danger-gemini-web
 
 与 Gemini Web 交互，生成文本和图片。
 
 **文本生成：**
 
 ```bash
-/baoyu-danger-gemini-web "你好，Gemini"
-/baoyu-danger-gemini-web --prompt "解释量子计算"
+/tuzi-danger-gemini-web "你好，Gemini"
+/tuzi-danger-gemini-web --prompt "解释量子计算"
 ```
 
 **图片生成：**
 
 ```bash
-/baoyu-danger-gemini-web --prompt "一只可爱的猫" --image cat.png
-/baoyu-danger-gemini-web --promptfiles system.md content.md --image out.png
+/tuzi-danger-gemini-web --prompt "一只可爱的猫" --image cat.png
+/tuzi-danger-gemini-web --promptfiles system.md content.md --image out.png
 ```
 
 ### 工具技能 (Utility Skills)
 
 内容处理工具。
 
-#### baoyu-url-to-markdown
+#### tuzi-url-to-markdown
 
 通过 Chrome CDP 抓取任意 URL 并转换为干净的 Markdown。支持两种抓取模式，适应不同场景。
 
 ```bash
 # 自动模式（默认）- 页面加载后立即抓取
-/baoyu-url-to-markdown https://example.com/article
+/tuzi-url-to-markdown https://example.com/article
 
 # 等待模式 - 适用于需要登录的页面
-/baoyu-url-to-markdown https://example.com/private --wait
+/tuzi-url-to-markdown https://example.com/private --wait
 
 # 保存到指定文件
-/baoyu-url-to-markdown https://example.com/article -o output.md
+/tuzi-url-to-markdown https://example.com/article -o output.md
 ```
 
 **抓取模式**：
@@ -682,22 +682,22 @@ AI 驱动的生成后端。
 | `--wait` | 等待用户信号后抓取 |
 | `--timeout <ms>` | 页面加载超时（默认：30000） |
 
-#### baoyu-danger-x-to-markdown
+#### tuzi-danger-x-to-markdown
 
 将 X (Twitter) 内容转换为 markdown 格式。支持推文串和 X 文章。
 
 ```bash
 # 将推文转换为 markdown
-/baoyu-danger-x-to-markdown https://x.com/username/status/123456
+/tuzi-danger-x-to-markdown https://x.com/username/status/123456
 
 # 保存到指定文件
-/baoyu-danger-x-to-markdown https://x.com/username/status/123456 -o output.md
+/tuzi-danger-x-to-markdown https://x.com/username/status/123456 -o output.md
 
 # JSON 输出
-/baoyu-danger-x-to-markdown https://x.com/username/status/123456 --json
+/tuzi-danger-x-to-markdown https://x.com/username/status/123456 --json
 
 # 下载媒体文件（图片/视频）到本地
-/baoyu-danger-x-to-markdown https://x.com/username/status/123456 --download-media
+/tuzi-danger-x-to-markdown https://x.com/username/status/123456 --download-media
 ```
 
 **支持的 URL：**
@@ -707,25 +707,25 @@ AI 驱动的生成后端。
 
 **身份验证：** 使用环境变量（`X_AUTH_TOKEN`、`X_CT0`）或 Chrome 登录进行 cookie 认证。
 
-#### baoyu-compress-image
+#### tuzi-compress-image
 
 压缩图片以减小文件大小，同时保持质量。
 
 ```bash
-/baoyu-compress-image path/to/image.png
-/baoyu-compress-image path/to/images/ --quality 80
+/tuzi-compress-image path/to/image.png
+/tuzi-compress-image path/to/images/ --quality 80
 ```
 
-#### baoyu-format-markdown
+#### tuzi-format-markdown
 
 格式化纯文本或 Markdown 文件，添加 frontmatter、标题、摘要、层级标题、加粗、列表和代码块。
 
 ```bash
 # 格式化 markdown 文件
-/baoyu-format-markdown path/to/article.md
+/tuzi-format-markdown path/to/article.md
 
 # 格式化指定文件
-/baoyu-format-markdown path/to/draft.md
+/tuzi-format-markdown path/to/draft.md
 ```
 
 **工作流程**：
@@ -758,19 +758,19 @@ AI 驱动的生成后端。
 部分技能需要 API 密钥或自定义配置。环境变量可以在 `.env` 文件中设置：
 
 **加载优先级**（高优先级覆盖低优先级）：
-1. 命令行环境变量（如 `OPENAI_API_KEY=xxx /baoyu-image-gen ...`）
+1. 命令行环境变量（如 `OPENAI_API_KEY=xxx /tuzi-image-gen ...`）
 2. `process.env`（系统环境变量）
-3. `<cwd>/.baoyu-skills/.env`（项目级）
-4. `~/.baoyu-skills/.env`（用户级）
+3. `<cwd>/.tuzi-skills/.env`（项目级）
+4. `~/.tuzi-skills/.env`（用户级）
 
 **配置方法**：
 
 ```bash
 # 创建用户级配置目录
-mkdir -p ~/.baoyu-skills
+mkdir -p ~/.tuzi-skills
 
 # 创建 .env 文件
-cat > ~/.baoyu-skills/.env << 'EOF'
+cat > ~/.tuzi-skills/.env << 'EOF'
 # 兔子API（默认服务商）
 TUZI_API_KEY=sk-xxx
 TUZI_IMAGE_MODEL=gemini-3.1-flash-image-preview
@@ -800,9 +800,9 @@ EOF
 **项目级配置**（团队共享）：
 
 ```bash
-mkdir -p .baoyu-skills
-# 将 .baoyu-skills/.env 添加到 .gitignore 避免提交密钥
-echo ".baoyu-skills/.env" >> .gitignore
+mkdir -p .tuzi-skills
+# 将 .tuzi-skills/.env 添加到 .gitignore 避免提交密钥
+echo ".tuzi-skills/.env" >> .gitignore
 ```
 
 ## 自定义扩展
@@ -810,16 +810,16 @@ echo ".baoyu-skills/.env" >> .gitignore
 所有技能支持通过 `EXTEND.md` 文件自定义。创建扩展文件可覆盖默认样式、添加自定义配置或定义个人预设。
 
 **扩展路径**（按优先级检查）：
-1. `.baoyu-skills/<skill-name>/EXTEND.md` - 项目级（团队/项目特定设置）
-2. `~/.baoyu-skills/<skill-name>/EXTEND.md` - 用户级（个人偏好设置）
+1. `.tuzi-skills/<skill-name>/EXTEND.md` - 项目级（团队/项目特定设置）
+2. `~/.tuzi-skills/<skill-name>/EXTEND.md` - 用户级（个人偏好设置）
 
-**示例**：为 `baoyu-cover-image` 自定义品牌配色：
+**示例**：为 `tuzi-cover-image` 自定义品牌配色：
 
 ```bash
-mkdir -p .baoyu-skills/baoyu-cover-image
+mkdir -p .tuzi-skills/tuzi-cover-image
 ```
 
-然后创建 `.baoyu-skills/baoyu-cover-image/EXTEND.md`：
+然后创建 `.tuzi-skills/tuzi-cover-image/EXTEND.md`：
 
 ```markdown
 ## 自定义配色
@@ -836,7 +836,7 @@ mkdir -p .baoyu-skills/baoyu-cover-image
 
 ## 免责声明
 
-### baoyu-danger-gemini-web
+### tuzi-danger-gemini-web
 
 此技能使用 Gemini Web API（逆向工程）。
 
@@ -851,10 +851,10 @@ mkdir -p .baoyu-skills/baoyu-cover-image
 **代理配置**：如果需要通过代理访问 Google 服务（如中国大陆用户），请在命令前设置环境变量：
 
 ```bash
-HTTP_PROXY=http://127.0.0.1:7890 HTTPS_PROXY=http://127.0.0.1:7890 /baoyu-danger-gemini-web "你好"
+HTTP_PROXY=http://127.0.0.1:7890 HTTPS_PROXY=http://127.0.0.1:7890 /tuzi-danger-gemini-web "你好"
 ```
 
-### baoyu-danger-x-to-markdown
+### tuzi-danger-x-to-markdown
 
 此技能使用逆向工程的 X (Twitter) API。
 

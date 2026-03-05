@@ -53,9 +53,9 @@ Simply tell Claude Code:
 
 | Plugin | Description | Skills |
 |--------|-------------|--------|
-| **content-skills** | Content generation and publishing | [xhs-images](#baoyu-xhs-images), [infographic](#baoyu-infographic), [cover-image](#baoyu-cover-image), [slide-deck](#baoyu-slide-deck), [comic](#baoyu-comic), [article-illustrator](#baoyu-article-illustrator), [post-to-x](#baoyu-post-to-x), [post-to-wechat](#baoyu-post-to-wechat) |
-| **ai-generation-skills** | AI-powered generation backends | [image-gen](#baoyu-image-gen), [danger-gemini-web](#baoyu-danger-gemini-web) |
-| **utility-skills** | Utility tools for content processing | [url-to-markdown](#baoyu-url-to-markdown), [danger-x-to-markdown](#baoyu-danger-x-to-markdown), [compress-image](#baoyu-compress-image), [format-markdown](#baoyu-format-markdown) |
+| **content-skills** | Content generation and publishing | [xhs-images](#tuzi-xhs-images), [infographic](#tuzi-infographic), [cover-image](#tuzi-cover-image), [slide-deck](#tuzi-slide-deck), [comic](#tuzi-comic), [article-illustrator](#tuzi-article-illustrator), [post-to-x](#tuzi-post-to-x), [post-to-wechat](#tuzi-post-to-wechat) |
+| **ai-generation-skills** | AI-powered generation backends | [image-gen](#tuzi-image-gen), [danger-gemini-web](#tuzi-danger-gemini-web) |
+| **utility-skills** | Utility tools for content processing | [url-to-markdown](#tuzi-url-to-markdown), [danger-x-to-markdown](#tuzi-danger-x-to-markdown), [compress-image](#tuzi-compress-image), [format-markdown](#tuzi-format-markdown) |
 
 ## Update Skills
 
@@ -78,25 +78,25 @@ Skills are organized into three categories:
 
 Content generation and publishing skills.
 
-#### baoyu-xhs-images
+#### tuzi-xhs-images
 
 Xiaohongshu (RedNote) infographic series generator. Breaks down content into 1-10 cartoon-style infographics with **Style × Layout** two-dimensional system.
 
 ```bash
 # Auto-select style and layout
-/baoyu-xhs-images posts/ai-future/article.md
+/tuzi-xhs-images posts/ai-future/article.md
 
 # Specify style
-/baoyu-xhs-images posts/ai-future/article.md --style notion
+/tuzi-xhs-images posts/ai-future/article.md --style notion
 
 # Specify layout
-/baoyu-xhs-images posts/ai-future/article.md --layout dense
+/tuzi-xhs-images posts/ai-future/article.md --layout dense
 
 # Combine style and layout
-/baoyu-xhs-images posts/ai-future/article.md --style tech --layout list
+/tuzi-xhs-images posts/ai-future/article.md --style tech --layout list
 
 # Direct content input
-/baoyu-xhs-images 今日星座运势
+/tuzi-xhs-images 今日星座运势
 ```
 
 **Styles** (visual aesthetics): `cute` (default), `fresh`, `warm`, `bold`, `minimal`, `retro`, `pop`, `notion`, `chalkboard`
@@ -131,25 +131,25 @@ Xiaohongshu (RedNote) infographic series generator. Breaks down content into 1-1
 | ![list](./screenshots/xhs-images-layouts/list.webp) | ![comparison](./screenshots/xhs-images-layouts/comparison.webp) | ![flow](./screenshots/xhs-images-layouts/flow.webp) |
 | list | comparison | flow |
 
-#### baoyu-infographic
+#### tuzi-infographic
 
 Generate professional infographics with 20 layout types and 17 visual styles. Analyzes content, recommends layout×style combinations, and generates publication-ready infographics.
 
 ```bash
 # Auto-recommend combinations based on content
-/baoyu-infographic path/to/content.md
+/tuzi-infographic path/to/content.md
 
 # Specify layout
-/baoyu-infographic path/to/content.md --layout pyramid
+/tuzi-infographic path/to/content.md --layout pyramid
 
 # Specify style (default: craft-handmade)
-/baoyu-infographic path/to/content.md --style technical-schematic
+/tuzi-infographic path/to/content.md --style technical-schematic
 
 # Specify both
-/baoyu-infographic path/to/content.md --layout funnel --style corporate-memphis
+/tuzi-infographic path/to/content.md --layout funnel --style corporate-memphis
 
 # With aspect ratio
-/baoyu-infographic path/to/content.md --aspect portrait
+/tuzi-infographic path/to/content.md --aspect portrait
 ```
 
 **Options**:
@@ -243,29 +243,29 @@ Generate professional infographics with 20 layout types and 17 visual styles. An
 | ![knolling](./screenshots/infographic-styles/knolling.webp) | ![lego-brick](./screenshots/infographic-styles/lego-brick.webp) | |
 | knolling | lego-brick | |
 
-#### baoyu-cover-image
+#### tuzi-cover-image
 
 Generate cover images for articles with 5 dimensions: Type × Palette × Rendering × Text × Mood. Combines 9 color palettes with 6 rendering styles for 54 unique combinations.
 
 ```bash
 # Auto-select all dimensions based on content
-/baoyu-cover-image path/to/article.md
+/tuzi-cover-image path/to/article.md
 
 # Quick mode: skip confirmation, use auto-selection
-/baoyu-cover-image path/to/article.md --quick
+/tuzi-cover-image path/to/article.md --quick
 
 # Specify dimensions (5D system)
-/baoyu-cover-image path/to/article.md --type conceptual --palette cool --rendering digital
-/baoyu-cover-image path/to/article.md --text title-subtitle --mood bold
+/tuzi-cover-image path/to/article.md --type conceptual --palette cool --rendering digital
+/tuzi-cover-image path/to/article.md --text title-subtitle --mood bold
 
 # Style presets (backward-compatible shorthand)
-/baoyu-cover-image path/to/article.md --style blueprint
+/tuzi-cover-image path/to/article.md --style blueprint
 
 # Specify aspect ratio (default: 16:9)
-/baoyu-cover-image path/to/article.md --aspect 2.35:1
+/tuzi-cover-image path/to/article.md --aspect 2.35:1
 
 # Visual only (no title text)
-/baoyu-cover-image path/to/article.md --no-title
+/tuzi-cover-image path/to/article.md --no-title
 ```
 
 **Five Dimensions**:
@@ -275,26 +275,26 @@ Generate cover images for articles with 5 dimensions: Type × Palette × Renderi
 - **Text**: `none`, `title-only` (default), `title-subtitle`, `text-rich`
 - **Mood**: `subtle`, `balanced` (default), `bold`
 
-#### baoyu-slide-deck
+#### tuzi-slide-deck
 
 Generate professional slide deck images from content. Creates comprehensive outlines with style instructions, then generates individual slide images.
 
 ```bash
 # From markdown file
-/baoyu-slide-deck path/to/article.md
+/tuzi-slide-deck path/to/article.md
 
 # With style and audience
-/baoyu-slide-deck path/to/article.md --style corporate
-/baoyu-slide-deck path/to/article.md --audience executives
+/tuzi-slide-deck path/to/article.md --style corporate
+/tuzi-slide-deck path/to/article.md --audience executives
 
 # Target slide count
-/baoyu-slide-deck path/to/article.md --slides 15
+/tuzi-slide-deck path/to/article.md --slides 15
 
 # Outline only (no image generation)
-/baoyu-slide-deck path/to/article.md --outline-only
+/tuzi-slide-deck path/to/article.md --outline-only
 
 # With language
-/baoyu-slide-deck path/to/article.md --lang zh
+/tuzi-slide-deck path/to/article.md --lang zh
 ```
 
 **Options**:
@@ -361,31 +361,31 @@ Styles are built from 4 dimensions: **Texture** × **Mood** × **Typography** ×
 
 After generation, slides are automatically merged into `.pptx` and `.pdf` files for easy sharing.
 
-#### baoyu-comic
+#### tuzi-comic
 
 Knowledge comic creator with flexible art style × tone combinations. Creates original educational comics with detailed panel layouts and sequential image generation.
 
 ```bash
 # From source material (auto-selects art + tone)
-/baoyu-comic posts/turing-story/source.md
+/tuzi-comic posts/turing-story/source.md
 
 # Specify art style and tone
-/baoyu-comic posts/turing-story/source.md --art manga --tone warm
-/baoyu-comic posts/turing-story/source.md --art ink-brush --tone dramatic
+/tuzi-comic posts/turing-story/source.md --art manga --tone warm
+/tuzi-comic posts/turing-story/source.md --art ink-brush --tone dramatic
 
 # Use preset (includes special rules)
-/baoyu-comic posts/turing-story/source.md --style ohmsha
-/baoyu-comic posts/turing-story/source.md --style wuxia
+/tuzi-comic posts/turing-story/source.md --style ohmsha
+/tuzi-comic posts/turing-story/source.md --style wuxia
 
 # Specify layout and aspect ratio
-/baoyu-comic posts/turing-story/source.md --layout cinematic
-/baoyu-comic posts/turing-story/source.md --aspect 16:9
+/tuzi-comic posts/turing-story/source.md --layout cinematic
+/tuzi-comic posts/turing-story/source.md --aspect 16:9
 
 # Specify language
-/baoyu-comic posts/turing-story/source.md --lang zh
+/tuzi-comic posts/turing-story/source.md --lang zh
 
 # Direct content input
-/baoyu-comic "The story of Alan Turing and the birth of computer science"
+/tuzi-comic "The story of Alan Turing and the birth of computer science"
 ```
 
 **Options**:
@@ -447,22 +447,22 @@ Knowledge comic creator with flexible art style × tone combinations. Creates or
 | ![splash](./screenshots/comic-layouts/splash.webp) | ![mixed](./screenshots/comic-layouts/mixed.webp) | ![webtoon](./screenshots/comic-layouts/webtoon.webp) |
 | splash | mixed | webtoon |
 
-#### baoyu-article-illustrator
+#### tuzi-article-illustrator
 
 Smart article illustration skill with Type × Style two-dimension approach. Analyzes article structure, identifies positions requiring visual aids, and generates illustrations.
 
 ```bash
 # Auto-select type and style based on content
-/baoyu-article-illustrator path/to/article.md
+/tuzi-article-illustrator path/to/article.md
 
 # Specify type
-/baoyu-article-illustrator path/to/article.md --type infographic
+/tuzi-article-illustrator path/to/article.md --type infographic
 
 # Specify style
-/baoyu-article-illustrator path/to/article.md --style blueprint
+/tuzi-article-illustrator path/to/article.md --style blueprint
 
 # Combine type and style
-/baoyu-article-illustrator path/to/article.md --type flowchart --style notion
+/tuzi-article-illustrator path/to/article.md --type flowchart --style notion
 ```
 
 **Types** (information structure):
@@ -500,39 +500,39 @@ Smart article illustration skill with Type × Style two-dimension approach. Anal
 | ![editorial](./screenshots/article-illustrator-styles/editorial.webp) | ![scientific](./screenshots/article-illustrator-styles/scientific.webp) | |
 | editorial | scientific | |
 
-#### baoyu-post-to-x
+#### tuzi-post-to-x
 
 Post content and articles to X (Twitter). Supports regular posts with images and X Articles (long-form Markdown). Uses real Chrome with CDP to bypass anti-automation.
 
 ```bash
 # Post with text
-/baoyu-post-to-x "Hello from Claude Code!"
+/tuzi-post-to-x "Hello from Claude Code!"
 
 # Post with images
-/baoyu-post-to-x "Check this out" --image photo.png
+/tuzi-post-to-x "Check this out" --image photo.png
 
 # Post X Article
-/baoyu-post-to-x --article path/to/article.md
+/tuzi-post-to-x --article path/to/article.md
 ```
 
-#### baoyu-post-to-wechat
+#### tuzi-post-to-wechat
 
 Post content to WeChat Official Account (微信公众号). Two modes available:
 
 **Image-Text (贴图)** - Multiple images with short title/content:
 
 ```bash
-/baoyu-post-to-wechat 贴图 --markdown article.md --images ./photos/
-/baoyu-post-to-wechat 贴图 --markdown article.md --image img1.png --image img2.png --image img3.png
-/baoyu-post-to-wechat 贴图 --title "标题" --content "内容" --image img1.png --submit
+/tuzi-post-to-wechat 贴图 --markdown article.md --images ./photos/
+/tuzi-post-to-wechat 贴图 --markdown article.md --image img1.png --image img2.png --image img3.png
+/tuzi-post-to-wechat 贴图 --title "标题" --content "内容" --image img1.png --submit
 ```
 
 **Article (文章)** - Full markdown/HTML with rich formatting:
 
 ```bash
-/baoyu-post-to-wechat 文章 --markdown article.md
-/baoyu-post-to-wechat 文章 --markdown article.md --theme grace
-/baoyu-post-to-wechat 文章 --html article.html
+/tuzi-post-to-wechat 文章 --markdown article.md
+/tuzi-post-to-wechat 文章 --markdown article.md --theme grace
+/tuzi-post-to-wechat 文章 --html article.html
 ```
 
 **Publishing Methods**:
@@ -545,7 +545,7 @@ Post content to WeChat Official Account (微信公众号). Two modes available:
 **API Configuration** (for faster publishing):
 
 ```bash
-# Add to .baoyu-skills/.env (project-level) or ~/.baoyu-skills/.env (user-level)
+# Add to .tuzi-skills/.env (project-level) or ~/.tuzi-skills/.env (user-level)
 WECHAT_APP_ID=your_app_id
 WECHAT_APP_SECRET=your_app_secret
 ```
@@ -562,30 +562,30 @@ To obtain credentials:
 
 AI-powered generation backends.
 
-#### baoyu-image-gen
+#### tuzi-image-gen
 
 Multi-provider AI image generation. Default provider: Tuzi API (api.tu-zi.com, nano-banana models). Also supports Google, OpenAI, DashScope and Replicate.
 
 ```bash
 # Basic generation (uses Tuzi by default)
-/baoyu-image-gen --prompt "A cute cat" --image cat.png
+/tuzi-image-gen --prompt "A cute cat" --image cat.png
 
 # With aspect ratio
-/baoyu-image-gen --prompt "A landscape" --image landscape.png --ar 16:9
+/tuzi-image-gen --prompt "A landscape" --image landscape.png --ar 16:9
 
 # With quality (Tuzi: 1k/2k/4k)
-/baoyu-image-gen --prompt "A banner" --image banner.png --quality 2k
+/tuzi-image-gen --prompt "A banner" --image banner.png --quality 2k
 
 # 4K VIP model
-/baoyu-image-gen --prompt "A cat" --image cat.png --model gemini-3-pro-image-preview-4k-vip
+/tuzi-image-gen --prompt "A cat" --image cat.png --model gemini-3-pro-image-preview-4k-vip
 
 # With reference images
-/baoyu-image-gen --prompt "Make it blue" --image out.png --ref source.png
+/tuzi-image-gen --prompt "Make it blue" --image out.png --ref source.png
 
 # Other providers
-/baoyu-image-gen --prompt "A cat" --image cat.png --provider google
-/baoyu-image-gen --prompt "A cat" --image cat.png --provider openai
-/baoyu-image-gen --prompt "一只可爱的猫" --image cat.png --provider dashscope
+/tuzi-image-gen --prompt "A cat" --image cat.png --provider google
+/tuzi-image-gen --prompt "A cat" --image cat.png --provider openai
+/tuzi-image-gen --prompt "一只可爱的猫" --image cat.png --provider dashscope
 ```
 
 **Options**:
@@ -631,41 +631,41 @@ Multi-provider AI image generation. Default provider: Tuzi API (api.tu-zi.com, n
 2. If only one API key available → use that provider
 3. If multiple available → default to Tuzi
 
-#### baoyu-danger-gemini-web
+#### tuzi-danger-gemini-web
 
 Interacts with Gemini Web to generate text and images.
 
 **Text Generation:**
 
 ```bash
-/baoyu-danger-gemini-web "Hello, Gemini"
-/baoyu-danger-gemini-web --prompt "Explain quantum computing"
+/tuzi-danger-gemini-web "Hello, Gemini"
+/tuzi-danger-gemini-web --prompt "Explain quantum computing"
 ```
 
 **Image Generation:**
 
 ```bash
-/baoyu-danger-gemini-web --prompt "A cute cat" --image cat.png
-/baoyu-danger-gemini-web --promptfiles system.md content.md --image out.png
+/tuzi-danger-gemini-web --prompt "A cute cat" --image cat.png
+/tuzi-danger-gemini-web --promptfiles system.md content.md --image out.png
 ```
 
 ### Utility Skills
 
 Utility tools for content processing.
 
-#### baoyu-url-to-markdown
+#### tuzi-url-to-markdown
 
 Fetch any URL via Chrome CDP and convert to clean markdown. Supports two capture modes for different scenarios.
 
 ```bash
 # Auto mode (default) - capture when page loads
-/baoyu-url-to-markdown https://example.com/article
+/tuzi-url-to-markdown https://example.com/article
 
 # Wait mode - for login-required pages
-/baoyu-url-to-markdown https://example.com/private --wait
+/tuzi-url-to-markdown https://example.com/private --wait
 
 # Save to specific file
-/baoyu-url-to-markdown https://example.com/article -o output.md
+/tuzi-url-to-markdown https://example.com/article -o output.md
 ```
 
 **Capture Modes**:
@@ -682,22 +682,22 @@ Fetch any URL via Chrome CDP and convert to clean markdown. Supports two capture
 | `--wait` | Wait for user signal before capturing |
 | `--timeout <ms>` | Page load timeout (default: 30000) |
 
-#### baoyu-danger-x-to-markdown
+#### tuzi-danger-x-to-markdown
 
 Converts X (Twitter) content to markdown format. Supports tweet threads and X Articles.
 
 ```bash
 # Convert tweet to markdown
-/baoyu-danger-x-to-markdown https://x.com/username/status/123456
+/tuzi-danger-x-to-markdown https://x.com/username/status/123456
 
 # Save to specific file
-/baoyu-danger-x-to-markdown https://x.com/username/status/123456 -o output.md
+/tuzi-danger-x-to-markdown https://x.com/username/status/123456 -o output.md
 
 # JSON output
-/baoyu-danger-x-to-markdown https://x.com/username/status/123456 --json
+/tuzi-danger-x-to-markdown https://x.com/username/status/123456 --json
 
 # Download media (images/videos) to local files
-/baoyu-danger-x-to-markdown https://x.com/username/status/123456 --download-media
+/tuzi-danger-x-to-markdown https://x.com/username/status/123456 --download-media
 ```
 
 **Supported URLs:**
@@ -707,25 +707,25 @@ Converts X (Twitter) content to markdown format. Supports tweet threads and X Ar
 
 **Authentication:** Uses environment variables (`X_AUTH_TOKEN`, `X_CT0`) or Chrome login for cookie-based auth.
 
-#### baoyu-compress-image
+#### tuzi-compress-image
 
 Compress images to reduce file size while maintaining quality.
 
 ```bash
-/baoyu-compress-image path/to/image.png
-/baoyu-compress-image path/to/images/ --quality 80
+/tuzi-compress-image path/to/image.png
+/tuzi-compress-image path/to/images/ --quality 80
 ```
 
-#### baoyu-format-markdown
+#### tuzi-format-markdown
 
 Format plain text or markdown files with proper frontmatter, titles, summaries, headings, bold, lists, and code blocks.
 
 ```bash
 # Format a markdown file
-/baoyu-format-markdown path/to/article.md
+/tuzi-format-markdown path/to/article.md
 
 # Format with specific output
-/baoyu-format-markdown path/to/draft.md
+/tuzi-format-markdown path/to/draft.md
 ```
 
 **Workflow**:
@@ -758,19 +758,19 @@ Format plain text or markdown files with proper frontmatter, titles, summaries, 
 Some skills require API keys or custom configuration. Environment variables can be set in `.env` files:
 
 **Load Priority** (higher priority overrides lower):
-1. CLI environment variables (e.g., `OPENAI_API_KEY=xxx /baoyu-image-gen ...`)
+1. CLI environment variables (e.g., `OPENAI_API_KEY=xxx /tuzi-image-gen ...`)
 2. `process.env` (system environment)
-3. `<cwd>/.baoyu-skills/.env` (project-level)
-4. `~/.baoyu-skills/.env` (user-level)
+3. `<cwd>/.tuzi-skills/.env` (project-level)
+4. `~/.tuzi-skills/.env` (user-level)
 
 **Setup**:
 
 ```bash
 # Create user-level config directory
-mkdir -p ~/.baoyu-skills
+mkdir -p ~/.tuzi-skills
 
 # Create .env file
-cat > ~/.baoyu-skills/.env << 'EOF'
+cat > ~/.tuzi-skills/.env << 'EOF'
 # Tuzi API (default provider)
 TUZI_API_KEY=sk-xxx
 TUZI_IMAGE_MODEL=gemini-3.1-flash-image-preview
@@ -800,9 +800,9 @@ EOF
 **Project-level config** (for team sharing):
 
 ```bash
-mkdir -p .baoyu-skills
-# Add .baoyu-skills/.env to .gitignore to avoid committing secrets
-echo ".baoyu-skills/.env" >> .gitignore
+mkdir -p .tuzi-skills
+# Add .tuzi-skills/.env to .gitignore to avoid committing secrets
+echo ".tuzi-skills/.env" >> .gitignore
 ```
 
 ## Customization
@@ -810,16 +810,16 @@ echo ".baoyu-skills/.env" >> .gitignore
 All skills support customization via `EXTEND.md` files. Create an extension file to override default styles, add custom configurations, or define your own presets.
 
 **Extension paths** (checked in priority order):
-1. `.baoyu-skills/<skill-name>/EXTEND.md` - Project-level (for team/project-specific settings)
-2. `~/.baoyu-skills/<skill-name>/EXTEND.md` - User-level (for personal preferences)
+1. `.tuzi-skills/<skill-name>/EXTEND.md` - Project-level (for team/project-specific settings)
+2. `~/.tuzi-skills/<skill-name>/EXTEND.md` - User-level (for personal preferences)
 
-**Example**: To customize `baoyu-cover-image` with your brand colors:
+**Example**: To customize `tuzi-cover-image` with your brand colors:
 
 ```bash
-mkdir -p .baoyu-skills/baoyu-cover-image
+mkdir -p .tuzi-skills/tuzi-cover-image
 ```
 
-Then create `.baoyu-skills/baoyu-cover-image/EXTEND.md`:
+Then create `.tuzi-skills/tuzi-cover-image/EXTEND.md`:
 
 ```markdown
 ## Custom Palettes
@@ -836,7 +836,7 @@ The extension content will be loaded before skill execution and override default
 
 ## Disclaimer
 
-### baoyu-danger-gemini-web
+### tuzi-danger-gemini-web
 
 This skill uses the Gemini Web API (reverse-engineered).
 
@@ -851,10 +851,10 @@ This skill uses the Gemini Web API (reverse-engineered).
 **Proxy configuration**: If you need a proxy to access Google services (e.g., in China), set environment variables inline:
 
 ```bash
-HTTP_PROXY=http://127.0.0.1:7890 HTTPS_PROXY=http://127.0.0.1:7890 /baoyu-danger-gemini-web "Hello"
+HTTP_PROXY=http://127.0.0.1:7890 HTTPS_PROXY=http://127.0.0.1:7890 /tuzi-danger-gemini-web "Hello"
 ```
 
-### baoyu-danger-x-to-markdown
+### tuzi-danger-x-to-markdown
 
 This skill uses a reverse-engineered X (Twitter) API.
 

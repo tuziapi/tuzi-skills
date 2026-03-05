@@ -2,8 +2,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-SRC="$REPO_ROOT/skills/baoyu-markdown-to-html/scripts/md/"
-DEST="$REPO_ROOT/skills/baoyu-post-to-wechat/scripts/md/"
+SRC="$REPO_ROOT/skills/tuzi-markdown-to-html/scripts/md/"
+DEST="$REPO_ROOT/skills/tuzi-post-to-wechat/scripts/md/"
 
 echo "Syncing: $SRC → $DEST"
 

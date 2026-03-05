@@ -143,7 +143,7 @@ tests-data/
 .DS_Store
 
 # Skill extensions (user customization)
-.baoyu-skills/
+.tuzi-skills/
 x-to-markdown/
 xhs-images/
 url-to-markdown/
@@ -158,4 +158,4 @@ comic/
 *.iml
 *.ipr
 
-.claude/skills/baoyu-skill-evolution
+.claude/skills/tuzi-skill-evolution
