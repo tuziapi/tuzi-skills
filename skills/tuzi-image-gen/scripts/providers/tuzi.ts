@@ -1,5 +1,7 @@
 import path from "node:path";
-import { readFile } from "node:fs/promises";
+import { readFile, unlink } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { spawn } from "node:child_process";
 import type { CliArgs } from "../types";
 
 const DEFAULT_MODEL = "gemini-3-pro-image-preview";
@@ -90,13 +92,48 @@ function parseError(error: unknown): string {
   return String(error);
 }
 
+const MAX_REF_IMAGE_BYTES = 1024 * 1024;
+
+function runCmd(cmd: string, args: string[]): Promise<{ code: number }> {
+  return new Promise((res) => {
+    const proc = spawn(cmd, args, { stdio: ["ignore", "ignore", "pipe"] });
+    proc.on("close", (code) => res({ code: code ?? 1 }));
+    proc.on("error", () => res({ code: 1 }));
+  });
+}
+
+async function compressToJpeg(filePath: string): Promise<Buffer | null> {
+  const tmp = path.join(tmpdir(), `tuzi-ref-${Date.now()}.jpg`);
+  try {
+    if (process.platform === "darwin") {
+      const { code } = await runCmd("sips", ["-s", "format", "jpeg", "-s", "formatOptions", "70", filePath, "--out", tmp]);
+      if (code === 0) return await readFile(tmp);
+    }
+    const { code } = await runCmd("convert", [filePath, "-quality", "70", tmp]);
+    if (code === 0) return await readFile(tmp);
+    return null;
+  } finally {
+    await unlink(tmp).catch(() => {});
+  }
+}
+
 async function readImageAsBase64DataUrl(p: string): Promise<string> {
-  const buf = await readFile(p);
+  let buf = await readFile(p);
   const ext = path.extname(p).toLowerCase();
   let mime = "image/png";
   if (ext === ".jpg" || ext === ".jpeg") mime = "image/jpeg";
   else if (ext === ".webp") mime = "image/webp";
   else if (ext === ".gif") mime = "image/gif";
+
+  if (buf.length > MAX_REF_IMAGE_BYTES && mime !== "image/gif") {
+    const compressed = await compressToJpeg(p);
+    if (compressed && compressed.length < buf.length) {
+      console.log(`参考图 ${path.basename(p)} 已压缩: ${buf.length} → ${compressed.length} bytes`);
+      buf = compressed;
+      mime = "image/jpeg";
+    }
+  }
+
   return `data:${mime};base64,${buf.toString("base64")}`;
 }
 
@@ -194,14 +231,25 @@ async function generateAsync(
   if (args.referenceImages.length > 0) {
     for (let i = 0; i < args.referenceImages.length; i++) {
       const refPath = args.referenceImages[i]!;
-      const bytes = await readFile(refPath);
+      let bytes = await readFile(refPath);
       const ext = path.extname(refPath).toLowerCase();
       let mime = "image/png";
       if (ext === ".jpg" || ext === ".jpeg") mime = "image/jpeg";
       else if (ext === ".webp") mime = "image/webp";
       else if (ext === ".gif") mime = "image/gif";
+
+      if (bytes.length > MAX_REF_IMAGE_BYTES && mime !== "image/gif") {
+        const compressed = await compressToJpeg(refPath);
+        if (compressed && compressed.length < bytes.length) {
+          console.log(`参考图 ${path.basename(refPath)} 已压缩: ${bytes.length} → ${compressed.length} bytes`);
+          bytes = compressed;
+          mime = "image/jpeg";
+        }
+      }
+
       const blob = new Blob([bytes], { type: mime });
-      form.append("input_reference", blob, `reference-${i + 1}${ext || ".png"}`);
+      const blobExt = mime === "image/jpeg" ? ".jpg" : ext || ".png";
+      form.append("input_reference", blob, `reference-${i + 1}${blobExt}`);
     }
   }
 

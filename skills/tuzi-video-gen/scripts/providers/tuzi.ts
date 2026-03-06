@@ -1,4 +1,6 @@
-import { readFile } from "node:fs/promises"
+import { readFile, unlink } from "node:fs/promises"
+import { tmpdir } from "node:os"
+import { spawn } from "node:child_process"
 import path from "node:path"
 import type { CliArgs } from "../types"
 
@@ -59,27 +61,53 @@ function extFromMime(mime: string): string {
   return ".png"
 }
 
+function runCmd(cmd: string, args: string[]): Promise<{ code: number; stderr: string }> {
+  return new Promise((res) => {
+    const proc = spawn(cmd, args, { stdio: ["ignore", "ignore", "pipe"] })
+    let stderr = ""
+    proc.stderr?.on("data", (d: Buffer) => (stderr += d.toString()))
+    proc.on("close", (code) => res({ code: code ?? 1, stderr }))
+    proc.on("error", (e) => res({ code: 1, stderr: e.message }))
+  })
+}
+
+async function compressImage(filePath: string): Promise<{ bytes: Uint8Array; mime: string }> {
+  const tmp = path.join(tmpdir(), `tuzi-ref-${Date.now()}.jpg`)
+  try {
+    if (process.platform === "darwin") {
+      const { code } = await runCmd("sips", ["-s", "format", "jpeg", "-s", "formatOptions", "70", filePath, "--out", tmp])
+      if (code === 0) {
+        const compressed = await readFile(tmp)
+        return { bytes: new Uint8Array(compressed), mime: "image/jpeg" }
+      }
+    }
+    const { code } = await runCmd("convert", [filePath, "-quality", "70", tmp])
+    if (code === 0) {
+      const compressed = await readFile(tmp)
+      return { bytes: new Uint8Array(compressed), mime: "image/jpeg" }
+    }
+    const original = await readFile(filePath)
+    return { bytes: new Uint8Array(original), mime: mimeFromExt(filePath) }
+  } finally {
+    await unlink(tmp).catch(() => {})
+  }
+}
+
 async function readRefImage(filePath: string): Promise<{ blob: Blob; filename: string }> {
   const bytes = await readFile(filePath)
   const mime = mimeFromExt(filePath)
-  let blob = new Blob([bytes], { type: mime })
 
-  if (blob.size > MAX_REF_IMAGE_BYTES && (mime === "image/png" || mime === "image/jpeg" || mime === "image/webp")) {
-    const quality = Math.min(0.85, MAX_REF_IMAGE_BYTES / blob.size)
-    try {
-      const sharp = (await import("sharp")).default
-      const compressed = await sharp(bytes)
-        .jpeg({ quality: Math.round(quality * 100) })
-        .toBuffer()
-      blob = new Blob([compressed], { type: "image/jpeg" })
-      console.log(`参考图 ${path.basename(filePath)} 已压缩: ${bytes.length} → ${blob.size} bytes`)
-    } catch {
-      console.log(`参考图 ${path.basename(filePath)} 超过 1MB，但 sharp 不可用，跳过压缩`)
+  if (bytes.length > MAX_REF_IMAGE_BYTES && (mime === "image/png" || mime === "image/jpeg" || mime === "image/webp" || mime === "image/bmp")) {
+    const { bytes: compressed, mime: cMime } = await compressImage(filePath)
+    if (compressed.length < bytes.length) {
+      const ext = extFromMime(cMime)
+      console.log(`参考图 ${path.basename(filePath)} 已压缩: ${bytes.length} → ${compressed.length} bytes`)
+      return { blob: new Blob([compressed], { type: cMime }), filename: `reference${ext}` }
     }
   }
 
-  const ext = extFromMime(blob.type)
-  return { blob, filename: `reference${ext}` }
+  const ext = extFromMime(mime)
+  return { blob: new Blob([bytes], { type: mime }), filename: `reference${ext}` }
 }
 
 async function download(url: string): Promise<Uint8Array> {
