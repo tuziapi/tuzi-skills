@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises"
 import type { CliArgs } from "../types"
 
-const DEFAULT_MODEL = "veo3"
+const DEFAULT_MODEL = "veo3.1"
 const POLL_INTERVAL_MS = 5000
 const MAX_POLL_MS = 90 * 60 * 1000
 const BACKOFF_MULTIPLIER = 1.5

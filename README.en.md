@@ -19,10 +19,10 @@ One command to install all skills, suitable for most users:
 npx skills add tuziapi/tuzi-skills
 ```
 
-Add `--yes` to install everything directly:
+Add `--skill "*"` to select all skills (you can still choose which IDEs to install to):
 
 ```bash
-npx skills add tuziapi/tuzi-skills --yes
+npx skills add tuziapi/tuzi-skills --skill "*"
 ```
 
 ### Register as Plugin Marketplace
@@ -71,8 +71,8 @@ Simply tell Claude Code:
 
 | Plugin | Description | Skills |
 |--------|-------------|--------|
-| **content-skills** | Content generation and publishing | [xhs-images](#tuzi-xhs-images), [infographic](#tuzi-infographic), [cover-image](#tuzi-cover-image), [slide-deck](#tuzi-slide-deck), [comic](#tuzi-comic), [article-illustrator](#tuzi-article-illustrator), [post-to-x](#tuzi-post-to-x), [post-to-wechat](#tuzi-post-to-wechat) |
-| **ai-generation-skills** | AI-powered generation backends | [image-gen](#tuzi-image-gen), [danger-gemini-web](#tuzi-danger-gemini-web) |
+| **content-skills** | Content generation and publishing | [xhs-images](#tuzi-xhs-images), [infographic](#tuzi-infographic), [cover-image](#tuzi-cover-image), [slide-deck](#tuzi-slide-deck), [comic](#tuzi-comic), [article-illustrator](#tuzi-article-illustrator), [short-video](#tuzi-short-video), [post-to-x](#tuzi-post-to-x), [post-to-wechat](#tuzi-post-to-wechat) |
+| **ai-generation-skills** | AI-powered generation backends | [image-gen](#tuzi-image-gen), [video-gen](#tuzi-video-gen), [danger-gemini-web](#tuzi-danger-gemini-web) |
 | **utility-skills** | Utility tools for content processing | [url-to-markdown](#tuzi-url-to-markdown), [danger-x-to-markdown](#tuzi-danger-x-to-markdown), [compress-image](#tuzi-compress-image), [format-markdown](#tuzi-format-markdown) |
 
 ## Update Skills
@@ -576,6 +576,33 @@ To obtain credentials:
 
 **Browser Method** (no API setup needed): Requires Google Chrome. First run opens browser for QR code login (session preserved).
 
+#### tuzi-short-video
+
+Creates short videos for social media platforms (Xiaohongshu, Douyin/TikTok, X/Twitter, WeChat Channels). Analyzes user input, adapts to platform specs, generates video scripts and calls the video generation backend.
+
+```bash
+# Generate short video from content (interactive platform selection)
+/tuzi-short-video path/to/content.md
+
+# Direct topic input
+/tuzi-short-video "How AI is changing our lives"
+```
+
+**Platform Presets**:
+
+| Platform | Aspect | Resolution | Duration |
+|----------|--------|------------|----------|
+| Xiaohongshu | 9:16 | 720x1280 | 15-60s |
+| Douyin | 9:16 | 1080x1920 | 15-60s |
+| X/Twitter | 16:9 | 1280x720 | 5-140s |
+| WeChat Channels | 9:16 | 1080x1920 | 15-60s |
+
+**Workflow**:
+1. Analyze user input (text, article, script)
+2. Select target platform, auto-apply platform presets
+3. Generate video prompts (single or multi-segment)
+4. Call tuzi-video-gen to generate video
+
 ### AI Generation Skills
 
 AI-powered generation backends.
@@ -649,6 +676,54 @@ Multi-provider AI image generation. Default provider: Tuzi API (api.tu-zi.com, n
 1. If `--provider` specified → use it
 2. If only one API key available → use that provider
 3. If multiple available → default to Tuzi
+
+#### tuzi-video-gen
+
+AI video generation backend via Tuzi API. Supports Veo, Sora, Kling, Seedance models. Single video and long video (multi-segment concat) modes.
+
+```bash
+# Single video
+/tuzi-video-gen --prompt "A cat walking in a garden" --video cat.mp4
+
+# Specify model and duration
+/tuzi-video-gen --prompt "City night timelapse" --video city.mp4 --model veo3 --seconds 8
+
+# With reference image
+/tuzi-video-gen --prompt "Animate this scene" --video out.mp4 --ref source.png
+
+# Long video (multi-segment auto-concat, requires ffmpeg)
+/tuzi-video-gen --prompt "A journey through seasons" --video long.mp4 --segments 3
+
+# Per-segment prompts
+/tuzi-video-gen --video long.mp4 --segments 3 --segment-prompts seg1.md seg2.md seg3.md
+```
+
+**Options**:
+| Option | Description |
+|--------|-------------|
+| `--prompt`, `-p` | Prompt text |
+| `--promptfiles` | Read prompt from files |
+| `--video` | Output video path (required) |
+| `--model`, `-m` | Model ID (default: veo3.1) |
+| `--seconds`, `-s` | Duration in seconds |
+| `--size` | Size (e.g., `1280x720`, `16x9`) |
+| `--ref` | Reference images |
+| `--ref-mode` | Reference mode: `reference`, `frames`, `components` |
+| `--segments` | Long video segment count (min 2) |
+| `--segment-prompts` | Per-segment prompt files |
+
+**Available Models**:
+| Model | Provider | Duration | Sizes |
+|-------|----------|----------|-------|
+| `veo3` | Veo | 8s | 16:9, 9:16 |
+| `veo3.1` (default) | Veo | 8s | 16:9, 9:16 |
+| `veo3.1-4k` | Veo | 8s | 4K |
+| `sora-2` | Sora | 10/15s | 16:9, 9:16 |
+| `sora-2-pro` | Sora | 10/15/25s | 16:9, 9:16, HD |
+| `kling-v1-6` | Kling | 5/10s | 16:9, 9:16, 1:1 |
+| `seedance-1.5-pro` | Seedance | 5/10s | 1080p, 720p |
+
+**Long Video Mode**: With `--segments N`, generates N segments sequentially, auto-extracts last frame as next segment's reference (visual continuity), then concatenates with ffmpeg. Requires ffmpeg installed.
 
 #### tuzi-danger-gemini-web
 

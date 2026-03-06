@@ -61,10 +61,10 @@ Use AskUserQuestion:
 header: "Video Model"
 question: "默认视频生成模型？"
 options:
-  - label: "veo3 (Recommended)"
-    description: "Google Veo 3 - 8s, 16:9/9:16"
-  - label: "veo3.1"
+  - label: "veo3.1 (Recommended)"
     description: "Google Veo 3.1 - 8s, frames mode"
+  - label: "veo3"
+    description: "Google Veo 3 - 8s, 16:9/9:16"
   - label: "sora-2"
     description: "OpenAI Sora 2 - 10/15s"
   - label: "kling-v1-6"

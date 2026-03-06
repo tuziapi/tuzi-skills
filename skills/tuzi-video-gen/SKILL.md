@@ -5,7 +5,7 @@ description: 通过兔子API进行AI视频生成。支持 Veo、Sora、Kling、S
 
 # Video Generation (AI SDK)
 
-Tuzi API video generation backend. Default model: veo3.
+Tuzi API video generation backend. Default model: veo3.1.
 
 ## Script Directory
 
@@ -79,7 +79,7 @@ npx -y bun ${SKILL_DIR}/scripts/main.ts --video long.mp4 --segments 3 --segment-
 | `--prompt <text>`, `-p` | Prompt text |
 | `--promptfiles <files...>` | Read prompt from files (concatenated) |
 | `--video <path>` | Output video path (required) |
-| `--model <id>`, `-m` | Model ID (default: veo3) |
+| `--model <id>`, `-m` | Model ID (default: veo3.1) |
 | `--seconds <n>`, `-s` | Duration in seconds |
 | `--size <WxH>` | Video size (e.g., `1280x720`, `16x9`) |
 | `--ref <files...>` | Reference images |
@@ -92,8 +92,8 @@ npx -y bun ${SKILL_DIR}/scripts/main.ts --video long.mp4 --segments 3 --segment-
 
 | Model | Provider | Duration | Sizes | Image Mode |
 |-------|----------|----------|-------|------------|
-| `veo3` (default) | Veo | 8s | 16:9, 9:16 | reference |
-| `veo3.1` | Veo | 8s | 16:9, 9:16 | frames |
+| `veo3` | Veo | 8s | 16:9, 9:16 | reference |
+| `veo3.1` (default) | Veo | 8s | 16:9, 9:16 | frames |
 | `veo3.1-4k` | Veo | 8s | 4K | frames |
 | `sora-2` | Sora | 10/15s | 16:9, 9:16 | reference |
 | `sora-2-pro` | Sora | 10/15/25s | 16:9, 9:16, HD | reference |
@@ -119,7 +119,7 @@ When `--segments N` is specified (N >= 2):
 | Variable | Description |
 |----------|-------------|
 | `TUZI_API_KEY` | Tuzi API key (https://api.tu-zi.com) |
-| `TUZI_VIDEO_MODEL` | Default video model (default: veo3) |
+| `TUZI_VIDEO_MODEL` | Default video model (default: veo3.1) |
 | `TUZI_BASE_URL` | Custom Tuzi endpoint (default: https://api.tu-zi.com) |
 
 **Load Priority**: CLI args > EXTEND.md > env vars > `<cwd>/.tuzi-skills/.env` > `~/.tuzi-skills/.env`
@@ -131,7 +131,7 @@ Priority (highest → lowest):
 1. CLI: `--model <id>`
 2. EXTEND.md: `default_model`
 3. Env var: `TUZI_VIDEO_MODEL`
-4. Built-in default: `veo3`
+4. Built-in default: `veo3.1`
 
 **Agent MUST display model info** before each generation:
 - Show: `Using [model]`

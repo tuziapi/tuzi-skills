@@ -19,10 +19,10 @@ AI 内容生成技能集，支持 Claude Code 和 OpenClaw，由兔子API (api.t
 npx skills add tuziapi/tuzi-skills
 ```
 
-可以加 `--yes` 全量安装：
+可以加 `--skill "*"` 全选技能（仍可选择安装到哪些 IDE）：
 
 ```bash
-npx skills add tuziapi/tuzi-skills --yes
+npx skills add tuziapi/tuzi-skills --skill "*"
 ```
 
 ### 注册插件市场
@@ -71,8 +71,8 @@ npx skills add tuziapi/tuzi-skills --yes
 
 | 插件 | 说明 | 包含技能 |
 |------|------|----------|
-| **content-skills** | 内容生成和发布 | [xhs-images](#tuzi-xhs-images), [infographic](#tuzi-infographic), [cover-image](#tuzi-cover-image), [slide-deck](#tuzi-slide-deck), [comic](#tuzi-comic), [article-illustrator](#tuzi-article-illustrator), [post-to-x](#tuzi-post-to-x), [post-to-wechat](#tuzi-post-to-wechat) |
-| **ai-generation-skills** | AI 生成后端 | [image-gen](#tuzi-image-gen), [danger-gemini-web](#tuzi-danger-gemini-web) |
+| **content-skills** | 内容生成和发布 | [xhs-images](#tuzi-xhs-images), [infographic](#tuzi-infographic), [cover-image](#tuzi-cover-image), [slide-deck](#tuzi-slide-deck), [comic](#tuzi-comic), [article-illustrator](#tuzi-article-illustrator), [short-video](#tuzi-short-video), [post-to-x](#tuzi-post-to-x), [post-to-wechat](#tuzi-post-to-wechat) |
+| **ai-generation-skills** | AI 生成后端 | [image-gen](#tuzi-image-gen), [video-gen](#tuzi-video-gen), [danger-gemini-web](#tuzi-danger-gemini-web) |
 | **utility-skills** | 内容处理工具 | [url-to-markdown](#tuzi-url-to-markdown), [danger-x-to-markdown](#tuzi-danger-x-to-markdown), [compress-image](#tuzi-compress-image), [format-markdown](#tuzi-format-markdown) |
 
 ## 更新技能
@@ -576,6 +576,33 @@ WECHAT_APP_SECRET=你的AppSecret
 
 **浏览器方式**（无需 API 配置）：需已安装 Google Chrome，首次运行需扫码登录（登录状态会保存）
 
+#### tuzi-short-video
+
+为小红书、抖音、X/Twitter、视频号等平台生成短视频内容。分析用户输入，自动适配平台规格，生成视频脚本并调用视频生成后端。
+
+```bash
+# 根据内容生成短视频（交互选择平台）
+/tuzi-short-video path/to/content.md
+
+# 直接输入主题
+/tuzi-short-video "AI 如何改变我们的生活"
+```
+
+**平台预设**：
+
+| 平台 | 宽高比 | 分辨率 | 推荐时长 |
+|------|--------|--------|---------|
+| 小红书 | 9:16 | 720x1280 | 15-60s |
+| 抖音 | 9:16 | 1080x1920 | 15-60s |
+| X/Twitter | 16:9 | 1280x720 | 5-140s |
+| 视频号 | 9:16 | 1080x1920 | 15-60s |
+
+**工作流程**：
+1. 分析用户输入（文本/文章/脚本）
+2. 选择目标平台，自动应用平台预设
+3. 生成视频提示词（单视频或多段长视频）
+4. 调用 tuzi-video-gen 生成视频
+
 ### AI 生成技能 (AI Generation Skills)
 
 AI 驱动的生成后端。
@@ -649,6 +676,54 @@ AI 驱动的生成后端。
 1. 如果指定了 `--provider` → 使用指定的
 2. 如果只有一个 API 密钥 → 使用对应服务商
 3. 如果多个可用 → 默认使用 Tuzi
+
+#### tuzi-video-gen
+
+AI 视频生成后端，通过兔子API支持 Veo、Sora、Kling、Seedance 等模型。支持单视频和长视频（多段合成）模式。
+
+```bash
+# 单视频生成
+/tuzi-video-gen --prompt "A cat walking in a garden" --video cat.mp4
+
+# 指定模型和时长
+/tuzi-video-gen --prompt "城市夜景延时" --video city.mp4 --model veo3 --seconds 8
+
+# 带参考图片
+/tuzi-video-gen --prompt "Animate this scene" --video out.mp4 --ref source.png
+
+# 长视频（多段自动合成，需要 ffmpeg）
+/tuzi-video-gen --prompt "A journey through seasons" --video long.mp4 --segments 3
+
+# 每段独立提示词
+/tuzi-video-gen --video long.mp4 --segments 3 --segment-prompts seg1.md seg2.md seg3.md
+```
+
+**选项**：
+| 选项 | 说明 |
+|------|------|
+| `--prompt`, `-p` | 提示词文本 |
+| `--promptfiles` | 从文件读取提示词 |
+| `--video` | 输出视频路径（必需） |
+| `--model`, `-m` | 模型 ID（默认：veo3.1） |
+| `--seconds`, `-s` | 时长（秒） |
+| `--size` | 尺寸（如 `1280x720`、`16x9`） |
+| `--ref` | 参考图片 |
+| `--ref-mode` | 参考图模式：`reference`、`frames`、`components` |
+| `--segments` | 长视频段数（最少 2 段） |
+| `--segment-prompts` | 每段独立提示词文件 |
+
+**可用模型**：
+| 模型 | 提供商 | 时长 | 尺寸 |
+|------|--------|------|------|
+| `veo3` | Veo | 8s | 16:9, 9:16 |
+| `veo3.1`（默认） | Veo | 8s | 16:9, 9:16 |
+| `veo3.1-4k` | Veo | 8s | 4K |
+| `sora-2` | Sora | 10/15s | 16:9, 9:16 |
+| `sora-2-pro` | Sora | 10/15/25s | 16:9, 9:16, HD |
+| `kling-v1-6` | Kling | 5/10s | 16:9, 9:16, 1:1 |
+| `seedance-1.5-pro` | Seedance | 5/10s | 1080p, 720p |
+
+**长视频模式**：指定 `--segments N` 后，依次生成 N 段视频，每段结束自动提取尾帧作为下一段首帧参考（保持画面连续性），最后用 ffmpeg 合并。需要安装 ffmpeg。
 
 #### tuzi-danger-gemini-web
 

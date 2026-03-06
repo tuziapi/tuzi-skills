@@ -24,7 +24,7 @@ default_size: null          # "1280x720"|"720x1280"|"1920x1080"|null (null = mod
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
 | `version` | int | 1 | Schema version |
-| `default_model` | string\|null | null | Default video model (null = veo3) |
+| `default_model` | string\|null | null | Default video model (null = veo3.1) |
 | `default_seconds` | string\|null | null | Default duration in seconds |
 | `default_size` | string\|null | null | Default video size |
 

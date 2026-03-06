@@ -14,7 +14,7 @@ function printUsage(): void {
   -p, --prompt <text>              提示词文本
   --promptfiles <files...>         从文件读取提示词（多文件拼接）
   --video <path>                   输出视频路径（必填）
-  -m, --model <id>                 模型 ID（默认 veo3）
+  -m, --model <id>                 模型 ID（默认 veo3.1）
   -s, --seconds <n>                时长（秒）
   --size <WxH>                     尺寸（如 1280x720、16x9）
   --ref <files...>                 参考图片
@@ -26,7 +26,7 @@ function printUsage(): void {
 
 环境变量:
   TUZI_API_KEY                     Tuzi API 密钥（https://api.tu-zi.com）
-  TUZI_VIDEO_MODEL                 默认视频模型（veo3）
+  TUZI_VIDEO_MODEL                 默认视频模型（veo3.1）
   TUZI_BASE_URL                    自定义 Tuzi 端点
 
 加载优先级: 命令行参数 > EXTEND.md > 环境变量 > <cwd>/.tuzi-skills/.env > ~/.tuzi-skills/.env`)

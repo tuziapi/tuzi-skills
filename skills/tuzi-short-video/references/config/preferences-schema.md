@@ -13,7 +13,7 @@ version: 1
 
 default_platform: null     # xiaohongshu|douyin|x-twitter|weixin-video|null
 
-default_model: null         # veo3|veo3.1|sora-2|null (null = veo3)
+default_model: null         # veo3|veo3.1|sora-2|null (null = veo3.1)
 ---
 ```
 
