@@ -1,6 +1,6 @@
 # tuzi-skills
 
-English | [中文](./README.zh.md)
+English | [中文](./README.md)
 
 AI content generation skills for Claude Code and OpenClaw, powered by Tuzi API (api.tu-zi.com).
 

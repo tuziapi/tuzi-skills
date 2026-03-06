@@ -1,6 +1,6 @@
 # tuzi-skills
 
-[English](./README.md) | 中文
+[English](./README.en.md) | 中文
 
 AI 内容生成技能集，支持 Claude Code 和 OpenClaw，由兔子API (api.tu-zi.com) 驱动。
 
