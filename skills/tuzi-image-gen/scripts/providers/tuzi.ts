@@ -193,9 +193,15 @@ async function generateAsync(
 
   if (args.referenceImages.length > 0) {
     for (let i = 0; i < args.referenceImages.length; i++) {
-      const bytes = await readFile(args.referenceImages[i]!);
-      const blob = new Blob([bytes], { type: "image/png" });
-      form.append("input_reference", blob, `reference-${i}.png`);
+      const refPath = args.referenceImages[i]!;
+      const bytes = await readFile(refPath);
+      const ext = path.extname(refPath).toLowerCase();
+      let mime = "image/png";
+      if (ext === ".jpg" || ext === ".jpeg") mime = "image/jpeg";
+      else if (ext === ".webp") mime = "image/webp";
+      else if (ext === ".gif") mime = "image/gif";
+      const blob = new Blob([bytes], { type: mime });
+      form.append("input_reference", blob, `reference-${i + 1}${ext || ".png"}`);
     }
   }
 

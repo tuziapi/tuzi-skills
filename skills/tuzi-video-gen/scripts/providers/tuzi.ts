@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises"
+import path from "node:path"
 import type { CliArgs } from "../types"
 
 const DEFAULT_MODEL = "veo3.1"
@@ -39,6 +40,48 @@ function isNetworkError(e: unknown): boolean {
   return networkMarkers.some((m) => msg.toLowerCase().includes(m.toLowerCase()))
 }
 
+const MAX_REF_IMAGE_BYTES = 1024 * 1024
+
+function mimeFromExt(filePath: string): string {
+  const ext = path.extname(filePath).toLowerCase()
+  if (ext === ".jpg" || ext === ".jpeg") return "image/jpeg"
+  if (ext === ".webp") return "image/webp"
+  if (ext === ".gif") return "image/gif"
+  if (ext === ".bmp") return "image/bmp"
+  return "image/png"
+}
+
+function extFromMime(mime: string): string {
+  if (mime === "image/jpeg") return ".jpg"
+  if (mime === "image/webp") return ".webp"
+  if (mime === "image/gif") return ".gif"
+  if (mime === "image/bmp") return ".bmp"
+  return ".png"
+}
+
+async function readRefImage(filePath: string): Promise<{ blob: Blob; filename: string }> {
+  const bytes = await readFile(filePath)
+  const mime = mimeFromExt(filePath)
+  let blob = new Blob([bytes], { type: mime })
+
+  if (blob.size > MAX_REF_IMAGE_BYTES && (mime === "image/png" || mime === "image/jpeg" || mime === "image/webp")) {
+    const quality = Math.min(0.85, MAX_REF_IMAGE_BYTES / blob.size)
+    try {
+      const sharp = (await import("sharp")).default
+      const compressed = await sharp(bytes)
+        .jpeg({ quality: Math.round(quality * 100) })
+        .toBuffer()
+      blob = new Blob([compressed], { type: "image/jpeg" })
+      console.log(`参考图 ${path.basename(filePath)} 已压缩: ${bytes.length} → ${blob.size} bytes`)
+    } catch {
+      console.log(`参考图 ${path.basename(filePath)} 超过 1MB，但 sharp 不可用，跳过压缩`)
+    }
+  }
+
+  const ext = extFromMime(blob.type)
+  return { blob, filename: `reference${ext}` }
+}
+
 async function download(url: string): Promise<Uint8Array> {
   const res = await fetch(url)
   if (!res.ok) throw new Error(`视频下载失败: ${res.status}`)
@@ -65,9 +108,8 @@ export async function generateVideo(
   if (args.referenceImages.length > 0) {
     const mode = args.refMode || "reference"
     for (let i = 0; i < args.referenceImages.length; i++) {
-      const bytes = await readFile(args.referenceImages[i]!)
-      const blob = new Blob([bytes], { type: "image/png" })
-      form.append("input_reference", blob, `ref-${i}.png`)
+      const { blob, filename } = await readRefImage(args.referenceImages[i]!)
+      form.append("input_reference", blob, `${i + 1}-${filename}`)
     }
     form.append("ref_mode", mode)
   }
