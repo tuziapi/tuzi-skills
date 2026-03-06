@@ -71,7 +71,7 @@ Simply tell Claude Code:
 
 | Plugin | Description | Skills |
 |--------|-------------|--------|
-| **content-skills** | Content generation and publishing | [xhs-images](#tuzi-xhs-images), [infographic](#tuzi-infographic), [cover-image](#tuzi-cover-image), [slide-deck](#tuzi-slide-deck), [comic](#tuzi-comic), [article-illustrator](#tuzi-article-illustrator), [short-video](#tuzi-short-video), [post-to-x](#tuzi-post-to-x), [post-to-wechat](#tuzi-post-to-wechat) |
+| **content-skills** | Content generation and publishing | [xhs-images](#tuzi-xhs-images), [infographic](#tuzi-infographic), [cover-image](#tuzi-cover-image), [slide-deck](#tuzi-slide-deck), [comic](#tuzi-comic), [article-illustrator](#tuzi-article-illustrator), [short-video](#tuzi-short-video), [copy-polish](#tuzi-copy-polish), [post-to-x](#tuzi-post-to-x), [post-to-wechat](#tuzi-post-to-wechat) |
 | **ai-generation-skills** | AI-powered generation backends | [image-gen](#tuzi-image-gen), [video-gen](#tuzi-video-gen), [danger-gemini-web](#tuzi-danger-gemini-web) |
 | **utility-skills** | Utility tools for content processing | [url-to-markdown](#tuzi-url-to-markdown), [danger-x-to-markdown](#tuzi-danger-x-to-markdown), [compress-image](#tuzi-compress-image), [format-markdown](#tuzi-format-markdown) |
 
@@ -602,6 +602,32 @@ Creates short videos for social media platforms (Xiaohongshu, Douyin/TikTok, X/T
 2. Select target platform, auto-apply platform presets
 3. Generate video prompts (single or multi-segment)
 4. Call tuzi-video-gen to generate video
+
+#### tuzi-copy-polish
+
+Optimizes social media copy for different platforms (Xiaohongshu, X/Twitter, Douyin, WeChat). Adjusts tone, length, hashtags, and formatting based on platform best practices.
+
+```bash
+# Polish copy for Xiaohongshu
+/tuzi-copy-polish "Just got a new headphone, great sound quality"
+
+# Polish from file
+/tuzi-copy-polish path/to/draft.md
+
+# Or just tell the agent
+> Please optimize this copy for Twitter
+```
+
+**Supported Platforms**:
+
+| Platform | Style |
+|----------|-------|
+| Xiaohongshu | Casual, emoji-rich, 5-10 hashtags |
+| X/Twitter | Sharp, witty, within 280 chars |
+| Douyin | Suspenseful hook, conversational, engagement-driven |
+| WeChat | Professional, structured, in-depth |
+
+**Optimization Dimensions**: Hook, tone, length, structure, hashtags, CTA, emoji usage
 
 ### AI Generation Skills
 

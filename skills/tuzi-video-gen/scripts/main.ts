@@ -1,7 +1,7 @@
 import path from "node:path"
 import process from "node:process"
 import { homedir } from "node:os"
-import { access, mkdir, readFile, writeFile, rm } from "node:fs/promises"
+import { access, mkdir, readFile, writeFile } from "node:fs/promises"
 import type { CliArgs, ExtendConfig } from "./types"
 
 function printUsage(): void {
@@ -365,8 +365,8 @@ async function main(): Promise<void> {
       return
     }
 
-    const tmpDir = path.join(path.dirname(outputPath), ".segments-tmp")
-    await mkdir(tmpDir, { recursive: true })
+    const segDir = path.join(path.dirname(outputPath), "segments")
+    await mkdir(segDir, { recursive: true })
 
     const segPaths: string[] = []
     const n = mergedArgs.segments
@@ -388,7 +388,7 @@ async function main(): Promise<void> {
       const segArgs: CliArgs = { ...mergedArgs }
 
       if (i > 0 && segPaths.length > 0) {
-        const lastFramePath = path.join(tmpDir, `frame-${i - 1}.png`)
+        const lastFramePath = path.join(segDir, `frame-${i - 1}.png`)
         try {
           await extractLastFrame(segPaths[i - 1]!, lastFramePath)
           segArgs.referenceImages = [lastFramePath]
@@ -398,7 +398,7 @@ async function main(): Promise<void> {
         }
       }
 
-      const segPath = path.join(tmpDir, `seg-${String(i + 1).padStart(2, "0")}.mp4`)
+      const segPath = path.join(segDir, `seg-${String(i + 1).padStart(2, "0")}.mp4`)
       console.log(`\n生成第 ${i + 1}/${n} 段...`)
 
       let data: Uint8Array
@@ -426,8 +426,7 @@ async function main(): Promise<void> {
     const dir = path.dirname(outputPath)
     await mkdir(dir, { recursive: true })
     await concatVideos(segPaths, outputPath)
-    await rm(tmpDir, { recursive: true, force: true })
-    console.log("合并完成。")
+    console.log(`合并完成。分段视频保留在: ${segDir}`)
   } else {
     if (!prompt) {
       console.error("错误: 单视频模式需要 --prompt 或 --promptfiles")

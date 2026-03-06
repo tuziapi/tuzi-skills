@@ -71,7 +71,7 @@ npx skills add tuziapi/tuzi-skills --skill "*"
 
 | 插件 | 说明 | 包含技能 |
 |------|------|----------|
-| **content-skills** | 内容生成和发布 | [xhs-images](#tuzi-xhs-images), [infographic](#tuzi-infographic), [cover-image](#tuzi-cover-image), [slide-deck](#tuzi-slide-deck), [comic](#tuzi-comic), [article-illustrator](#tuzi-article-illustrator), [short-video](#tuzi-short-video), [post-to-x](#tuzi-post-to-x), [post-to-wechat](#tuzi-post-to-wechat) |
+| **content-skills** | 内容生成和发布 | [xhs-images](#tuzi-xhs-images), [infographic](#tuzi-infographic), [cover-image](#tuzi-cover-image), [slide-deck](#tuzi-slide-deck), [comic](#tuzi-comic), [article-illustrator](#tuzi-article-illustrator), [short-video](#tuzi-short-video), [copy-polish](#tuzi-copy-polish), [post-to-x](#tuzi-post-to-x), [post-to-wechat](#tuzi-post-to-wechat) |
 | **ai-generation-skills** | AI 生成后端 | [image-gen](#tuzi-image-gen), [video-gen](#tuzi-video-gen), [danger-gemini-web](#tuzi-danger-gemini-web) |
 | **utility-skills** | 内容处理工具 | [url-to-markdown](#tuzi-url-to-markdown), [danger-x-to-markdown](#tuzi-danger-x-to-markdown), [compress-image](#tuzi-compress-image), [format-markdown](#tuzi-format-markdown) |
 
@@ -602,6 +602,32 @@ WECHAT_APP_SECRET=你的AppSecret
 2. 选择目标平台，自动应用平台预设
 3. 生成视频提示词（单视频或多段长视频）
 4. 调用 tuzi-video-gen 生成视频
+
+#### tuzi-copy-polish
+
+优化社交媒体文案，支持小红书、X/Twitter、抖音、微信公众号等平台。根据平台特性调整文风、长度、标签和排版。
+
+```bash
+# 优化小红书文案
+/tuzi-copy-polish "刚入手了一款新耳机，音质不错推荐给大家"
+
+# 优化推文
+/tuzi-copy-polish path/to/draft.md
+
+# 直接告诉 Agent
+> 帮我把这段文案优化成小红书风格
+```
+
+**支持平台**：
+
+| 平台 | 文风特点 |
+|------|----------|
+| 小红书 | 种草风、emoji、口语化、5-10 个标签 |
+| X/Twitter | 简洁有力、话题标签、280 字符内 |
+| 抖音 | 悬念开头、口语化、引导互动 |
+| 微信公众号 | 专业深度、段落清晰、引导关注 |
+
+**优化维度**：开头吸引力、文风语气、内容长度、排版结构、标签策略、互动引导、emoji 使用
 
 ### AI 生成技能 (AI Generation Skills)
 
