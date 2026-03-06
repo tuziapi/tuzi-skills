@@ -19,6 +19,12 @@ One command to install all skills, suitable for most users:
 npx skills add tuziapi/tuzi-skills
 ```
 
+Add `--yes` to install everything directly:
+
+```bash
+npx skills add tuziapi/tuzi-skills --yes
+```
+
 ### Register as Plugin Marketplace
 
 If you prefer to install selectively and manage updates, register the marketplace first, then choose which plugin groups to install:

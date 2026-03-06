@@ -19,6 +19,12 @@ AI 内容生成技能集，支持 Claude Code 和 OpenClaw，由兔子API (api.t
 npx skills add tuziapi/tuzi-skills
 ```
 
+可以加 `--yes` 全量安装：
+
+```bash
+npx skills add tuziapi/tuzi-skills --yes
+```
+
 ### 注册插件市场
 
 如果你想按需选装、管理更新，可以先注册市场，再选择安装哪些插件分组：
