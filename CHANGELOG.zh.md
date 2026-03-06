@@ -2,6 +2,12 @@
 
 [English](./CHANGELOG.md) | 中文
 
+## 1.47.1 - 2026-03-06
+
+### 文档
+- `tuzi-copy-polish`：当输入为文件路径时，将优化后的文案追加到源文件末尾
+- 在两个 README 中添加 `npx skills check` 和 `npx skills update` 更新说明
+
 ## 1.47.0 - 2026-03-06
 
 ### 新功能

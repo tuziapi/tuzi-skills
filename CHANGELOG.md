@@ -2,6 +2,12 @@
 
 English | [中文](./CHANGELOG.zh.md)
 
+## 1.47.1 - 2026-03-06
+
+### Documentation
+- `tuzi-copy-polish`: append polished copy to source file when input is a file path
+- Add `npx skills check` and `npx skills update` instructions to both READMEs
+
 ## 1.47.0 - 2026-03-06
 
 ### Features
