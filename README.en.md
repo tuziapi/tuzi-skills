@@ -13,19 +13,31 @@ AI content generation skills for Claude Code and OpenClaw, powered by Tuzi API (
 
 ### Quick Install (Recommended)
 
+One command to install all skills, suitable for most users:
+
 ```bash
 npx skills add tuziapi/tuzi-skills
 ```
 
 ### Register as Plugin Marketplace
 
-Run the following command in Claude Code:
+If you prefer to install selectively and manage updates, register the marketplace first, then choose which plugin groups to install:
 
 ```bash
+# Step 1: Register marketplace (one-time)
 /plugin marketplace add tuziapi/tuzi-skills
 ```
 
+> **Quick Install vs Plugin Marketplace?**
+>
+> - **Quick Install**: Installs everything at once — simple and ready to use
+> - **Plugin Marketplace**: Register first, then selectively install plugin groups (e.g., only content skills without utility skills), with auto-update and version management support
+>
+> Not sure which to pick? Go with Quick Install.
+
 ### Install Skills
+
+After registering the marketplace, choose what to install:
 
 **Option 1: Via Browse UI**
 
