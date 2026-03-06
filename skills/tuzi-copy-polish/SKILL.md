@@ -32,7 +32,12 @@ Schema: `references/config/preferences-schema.md`
 
 ## Step 1: Analyze Input
 
-Read the user's draft copy. Identify:
+Determine input source:
+
+- **File path**: Read file content as draft copy. Record the file path for Step 3 output.
+- **Inline text**: Use the text directly as draft copy.
+
+Identify:
 
 - Content type (product promotion, knowledge sharing, personal story, news, opinion)
 - Current language and tone
@@ -77,12 +82,21 @@ Load platform rules from [references/platforms/](references/platforms/), then re
 
 ### Output Format
 
-Present the polished copy in a code block for easy copying. Include:
+**If input is a file path**: Append the polished copy to the end of the original file, separated by a clear divider:
 
-1. Polished copy (ready to paste)
-2. Brief changelog (what was changed and why, 2-3 bullet points)
+```markdown
+---
 
-If the original is significantly different from the polished version, show a before/after comparison.
+## Polished Copy ({platform})
+
+{polished content}
+```
+
+Then inform the user: "已将优化后的文案追加到文件末尾: `{file_path}`"
+
+**If input is inline text**: Present the polished copy in a code block for easy copying.
+
+In both cases, include a brief changelog (what was changed and why, 2-3 bullet points).
 
 ### Multiple Variants
 
