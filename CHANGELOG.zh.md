@@ -2,6 +2,20 @@
 
 [English](./CHANGELOG.md) | 中文
 
+## 1.46.0 - 2026-03-06
+
+### 新功能
+- 将所有技能从 `baoyu-*` 前缀重命名为 `tuzi-*`
+- `tuzi-image-gen`：集成兔子 API 作为默认图片生成后端
+- `tuzi-image-gen`：更新默认模型为 `gemini-3-pro-image-preview`
+- `tuzi-image-gen`：优化 API Key 设置流程、文档和错误提示
+- `tuzi-update-claude-md`：新增 CLAUDE.md 规则更新工作流技能
+- 所有技能描述统一翻译为中文
+
+### 修复
+- `tuzi-image-gen`：修复 API Key 输入说明和模型选项
+- 修复 README.md 和 README.en.md 之间的语言切换链接
+
 ## 1.45.0 - 2026-03-05
 
 ### 新功能

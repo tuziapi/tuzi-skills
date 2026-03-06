@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Claude Code / OpenClaw AI 内容生成技能集，由兔子API (api.tu-zi.com) 驱动",
-    "version": "1.45.0"
+    "version": "1.46.0"
   },
   "plugins": [
     {

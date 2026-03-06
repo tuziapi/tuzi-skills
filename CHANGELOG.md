@@ -2,6 +2,20 @@
 
 English | [中文](./CHANGELOG.zh.md)
 
+## 1.46.0 - 2026-03-06
+
+### Features
+- Rename all skills from `baoyu-*` to `tuzi-*` prefix across the project
+- `tuzi-image-gen`: integrate Tuzi API as default image generation provider
+- `tuzi-image-gen`: update default model to `gemini-3-pro-image-preview`
+- `tuzi-image-gen`: enhance API key setup flow, documentation, and error messages
+- `tuzi-update-claude-md`: add new skill for analyzing code review feedback and updating CLAUDE.md rules
+- Translate all skill descriptions to Chinese for consistency
+
+### Fixes
+- `tuzi-image-gen`: fix API key input instructions and model options
+- Fix language switch links between README.md and README.en.md
+
 ## 1.45.0 - 2026-03-05
 
 ### Features
