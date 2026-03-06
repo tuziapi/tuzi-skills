@@ -1,7 +1,7 @@
 import path from "node:path"
 import process from "node:process"
 import { homedir } from "node:os"
-import { access, mkdir, readFile, writeFile } from "node:fs/promises"
+import { access, mkdir, readFile, writeFile, unlink } from "node:fs/promises"
 import type { CliArgs, ExtendConfig } from "./types"
 
 function printUsage(): void {
@@ -309,7 +309,7 @@ async function concatVideos(segments: string[], outputPath: string): Promise<voi
     { stdout: "pipe", stderr: "pipe" }
   )
   const exitCode = await proc.exited
-  await rm(listFile, { force: true })
+  await unlink(listFile).catch(() => {})
   if (exitCode !== 0) {
     const err = await new Response(proc.stderr).text()
     throw new Error(`ffmpeg 合并失败: ${err}`)
