@@ -332,8 +332,10 @@ async function main(): Promise<void> {
   if (!prompt && mergedArgs.promptFiles.length > 0) prompt = await readPromptFromFiles(mergedArgs.promptFiles)
   if (!prompt) prompt = await readPromptFromStdin()
 
-  if (!prompt) {
-    console.error("错误: 提示词不能为空")
+  const hasSegmentPrompts = mergedArgs.segmentPrompts.length > 0
+
+  if (!prompt && !hasSegmentPrompts) {
+    console.error("错误: 提示词不能为空（使用 --prompt、--promptfiles 或 --segment-prompts）")
     printUsage()
     process.exitCode = 1
     return
@@ -370,9 +372,17 @@ async function main(): Promise<void> {
     const n = mergedArgs.segments
 
     for (let i = 0; i < n; i++) {
-      let segPrompt = prompt
+      let segPrompt: string | null = null
       if (mergedArgs.segmentPrompts[i]) {
         segPrompt = await readFile(mergedArgs.segmentPrompts[i]!, "utf8")
+      } else {
+        segPrompt = prompt
+      }
+
+      if (!segPrompt) {
+        console.error(`错误: 第 ${i + 1} 段缺少提示词（需要 --prompt 或对应的 --segment-prompts）`)
+        process.exitCode = 1
+        return
       }
 
       const segArgs: CliArgs = { ...mergedArgs }
@@ -419,6 +429,11 @@ async function main(): Promise<void> {
     await rm(tmpDir, { recursive: true, force: true })
     console.log("合并完成。")
   } else {
+    if (!prompt) {
+      console.error("错误: 单视频模式需要 --prompt 或 --promptfiles")
+      process.exitCode = 1
+      return
+    }
     let data: Uint8Array
     let retried = false
     while (true) {
