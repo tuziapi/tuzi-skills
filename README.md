@@ -77,7 +77,17 @@ npx skills add tuziapi/tuzi-skills --skill "*"
 
 ## 更新技能
 
-更新技能到最新版本：
+### 通过 skills CLI 更新（推荐）
+
+```bash
+# 检查是否有可用更新
+npx skills check
+
+# 更新所有技能到最新版本
+npx skills update
+```
+
+### 通过插件市场更新
 
 1. 在 Claude Code 中运行 `/plugin`
 2. 切换到 **Marketplaces** 标签页（使用方向键或 Tab）

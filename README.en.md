@@ -77,7 +77,17 @@ Simply tell Claude Code:
 
 ## Update Skills
 
-To update skills to the latest version:
+### Via skills CLI (Recommended)
+
+```bash
+# Check for available updates
+npx skills check
+
+# Update all skills to latest version
+npx skills update
+```
+
+### Via Plugin Marketplace
 
 1. Run `/plugin` in Claude Code
 2. Switch to **Marketplaces** tab (use arrow keys or Tab)
