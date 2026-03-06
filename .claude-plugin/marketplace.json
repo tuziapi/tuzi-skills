@@ -45,7 +45,8 @@
         "./skills/tuzi-compress-image",
         "./skills/tuzi-url-to-markdown",
         "./skills/tuzi-format-markdown",
-        "./skills/tuzi-markdown-to-html"
+        "./skills/tuzi-markdown-to-html",
+        "./skills/tuzi-update-claude-md"
       ]
     }
   ]
