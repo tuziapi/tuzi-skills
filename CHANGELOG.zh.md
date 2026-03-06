@@ -2,6 +2,22 @@
 
 [English](./CHANGELOG.md) | 中文
 
+## 1.47.0 - 2026-03-06
+
+### 新功能
+- `tuzi-video-gen`：新增 AI 视频生成后端，通过兔子 API 支持 Veo、Sora、Kling、Seedance 等模型，支持单视频和长视频（多段合成）模式
+- `tuzi-short-video`：新增短视频创作工作流，支持小红书、抖音、X/Twitter、视频号等平台预设
+- `tuzi-copy-polish`：新增社交媒体文案优化工作流，支持小红书、X/Twitter、抖音、微信公众号
+- `tuzi-video-gen`：长视频模式保留分段视频到 `segments/` 目录，不再自动删除
+
+### 修复
+- `tuzi-video-gen`：长视频模式支持仅使用 `--segment-prompts` 而无需 `--prompt`
+- `tuzi-video-gen`：改进每段缺少提示词时的错误提示
+
+### 文档
+- 添加安装说明：`--skill "*"` 全选技能、快速安装与注册市场的区别
+- 在两个 README 中添加 tuzi-video-gen、tuzi-short-video、tuzi-copy-polish 的使用说明
+
 ## 1.46.0 - 2026-03-06
 
 ### 新功能

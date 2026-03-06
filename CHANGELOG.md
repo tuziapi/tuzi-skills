@@ -2,6 +2,22 @@
 
 English | [中文](./CHANGELOG.zh.md)
 
+## 1.47.0 - 2026-03-06
+
+### Features
+- `tuzi-video-gen`: new AI video generation backend via Tuzi API, supporting Veo, Sora, Kling, Seedance models with single and long video (multi-segment concat) modes
+- `tuzi-short-video`: new workflow skill for creating short videos for Xiaohongshu, Douyin, X/Twitter, and WeChat Channels with platform-specific presets
+- `tuzi-copy-polish`: new workflow skill for optimizing social media copy across platforms (Xiaohongshu, X/Twitter, Douyin, WeChat)
+- `tuzi-video-gen`: preserve segment videos in `segments/` directory instead of auto-deleting
+
+### Fixes
+- `tuzi-video-gen`: allow `--segment-prompts` without requiring `--prompt` for long video mode
+- `tuzi-video-gen`: improve error messages for missing prompts per segment
+
+### Documentation
+- Add installation tips: `--skill "*"` for selecting all skills, quick install vs marketplace comparison
+- Add tuzi-video-gen, tuzi-short-video, and tuzi-copy-polish descriptions to both READMEs
+
 ## 1.46.0 - 2026-03-06
 
 ### Features
