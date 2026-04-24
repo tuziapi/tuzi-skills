@@ -1,6 +1,6 @@
 ---
 name: tuzi-image-gen
-description: 通过兔子API（nano-banana 模型）、Google、OpenAI、DashScope 和 Replicate 进行 AI 图片生成。支持文生图、参考图片、宽高比、模型选择。当用户要求生成、创建或绘制图片时使用。
+description: 通过兔子API（nano-banana 模型）、Google、OpenAI、DashScope 和 Replicate 进行 AI 图片生成。支持文生图、参考图片、宽高比、模型选择，以及 OpenAI 兼容网关方言切换。当用户要求生成、创建或绘制图片时使用。
 ---
 
 # Image Generation (AI SDK)
@@ -55,7 +55,7 @@ test -f "$HOME/.tuzi-skills/tuzi-image-gen/EXTEND.md" && echo "user"
 | `.tuzi-skills/tuzi-image-gen/EXTEND.md` | Project directory |
 | `$HOME/.tuzi-skills/tuzi-image-gen/EXTEND.md` | User home |
 
-**EXTEND.md Supports**: Default provider | Default quality | Default aspect ratio | Default image size | Default models
+**EXTEND.md Supports**: Default provider | Default quality | Default aspect ratio | Default image size | OpenAI image API dialect | Default models
 
 Schema: `references/config/preferences-schema.md`
 
@@ -88,6 +88,9 @@ npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --provi
 npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --provider openai
 npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "一只可爱的猫" --image out.png --provider dashscope
 npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --provider replicate
+
+# OpenAI-compatible gateway dialect
+npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --provider openai --imageApiDialect ratio-metadata
 ```
 
 ## Options
@@ -103,6 +106,7 @@ npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --provi
 | `--size <WxH>` | Size override (e.g., `1024x1024`, `16x9`) |
 | `--quality normal\|2k` | Quality preset. Tuzi: maps to 1k/2k. Google: maps to 1K/2K |
 | `--imageSize 1K\|2K\|4K` | Image size (Tuzi and Google). Overrides `--quality` |
+| `--imageApiDialect openai-native\|ratio-metadata` | OpenAI-compatible endpoint dialect. `ratio-metadata` is for gateways that expect aspect-ratio `size` plus `metadata.resolution` |
 | `--ref <files...>` | Reference images. Tuzi: base64 in JSON body. Google: multimodal. OpenAI: edits API |
 | `--n <count>` | Number of images |
 | `--json` | JSON output |
@@ -131,6 +135,7 @@ Tuzi API (api.tu-zi.com) is the default provider. Models differ in quality, spee
 | `gemini-3-pro-image-preview-hd` | nano-banana-pro-hd | HD built-in |
 | `gemini-3-pro-image-preview-2k` | nano-banana-pro-2k | 2K built-in |
 | `gemini-3-pro-image-preview-4k` | nano-banana-pro-4k | 4K built-in |
+| `gpt-image-2` | — | OpenAI latest image model, supports modern size rules |
 | `gpt-image-1.5` | — | Size: 1:1, 3:2, 2:3 only |
 | `bfl-flux-2-pro` | flux-2-pro | Flux |
 | `bfl-flux-2-max` | flux-2-max | Flux highest quality |
@@ -168,13 +173,25 @@ Auto-detected. Script submits task and polls until complete (5s interval, max 30
 |------------|-----------------|
 | Gemini models (default) | 1:1, 16:9, 9:16, 3:2, 2:3, 4:3, 3:4, 5:4, 4:5, 21:9 |
 | `gemini-3.1-flash-image-preview` | Above + 1:4, 4:1, 1:8, 8:1 (extreme ratios) |
+| `gpt-image-2` | Flexible ratio via generated valid pixel size; custom `--size` must satisfy OpenAI constraints |
 | `gpt-image-1.5` | 1:1, 3:2, 2:3 |
+| `doubao-seedream-*` | Use explicit `--size` / `--imageSize`; `--ar` alone is not supported |
 | Omitted | Model auto-decides |
 
 **Reference images** (`--ref`):
-- Sync models: base64 data URL in JSON `image` field
+- `gpt-image-*`: OpenAI-style `/images/edits` multipart upload
+- Other sync models: base64 data URL in JSON `image` field
 - Async models: `input_reference` in FormData
-- All Tuzi models support reference images
+- Most Tuzi sync models support reference images; `doubao-seedream-3-0-*` does not
+
+**Seedream** (`doubao-seedream-*`):
+
+| Applies to | Size rules | Reference images |
+|------------|------------|------------------|
+| `doubao-seedream-5-0-*` | `2K`, `3K`, or explicit `WxH` | Up to 14 |
+| `doubao-seedream-4-5-*` | `2K`, `4K`, or explicit `WxH` | Up to 14 |
+| `doubao-seedream-4-0-*` | `1K`, `2K`, `4K`, or explicit `WxH` | Up to 14 |
+| `doubao-seedream-3-0-*` | Explicit `WxH` only | Not supported |
 
 ## Environment Variables
 
@@ -188,11 +205,12 @@ Auto-detected. Script submits task and polls until complete (5s interval, max 30
 | `DASHSCOPE_API_KEY` | DashScope API key (阿里云) |
 | `REPLICATE_API_TOKEN` | Replicate API token |
 | `GOOGLE_IMAGE_MODEL` | Google model override |
-| `OPENAI_IMAGE_MODEL` | OpenAI model override |
+| `OPENAI_IMAGE_MODEL` | OpenAI model override (default: `gpt-image-2`) |
 | `DASHSCOPE_IMAGE_MODEL` | DashScope model override |
 | `REPLICATE_IMAGE_MODEL` | Replicate model override |
 | `GOOGLE_BASE_URL` | Custom Google endpoint |
 | `OPENAI_BASE_URL` | Custom OpenAI endpoint |
+| `OPENAI_IMAGE_API_DIALECT` | OpenAI-compatible endpoint dialect (`openai-native` or `ratio-metadata`) |
 | `DASHSCOPE_BASE_URL` | Custom DashScope endpoint |
 | `REPLICATE_BASE_URL` | Custom Replicate endpoint |
 
@@ -217,6 +235,15 @@ Priority (highest → lowest), all providers:
 2. `--ref` provided + no `--provider` → Tuzi > Google > OpenAI > Replicate
 3. Only one API key available → use that provider
 4. Multiple available → Tuzi first
+
+## OpenAI-Compatible Dialect
+
+When `provider=openai`, the endpoint may still be an OpenAI-compatible gateway rather than native OpenAI infrastructure.
+
+- `openai-native`: standard OpenAI Images API request body
+- `ratio-metadata`: sends aspect-ratio `size` plus `metadata.resolution`, useful for compatibility gateways in front of non-native image backends
+
+Current limitation: `ratio-metadata` is text-to-image only. When using `--ref`, stay on `openai-native`.
 
 ## Quality Presets
 
@@ -248,8 +275,27 @@ Format: `owner/name` or `owner/name:version`
 
 ```bash
 npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --provider replicate
-npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --provider replicate --model google/nano-banana
+npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cat" --image out.png --provider replicate --model google/nano-banana-2 --ar 16:9
+npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A fashion photo" --image out.png --provider replicate --model bytedance/seedream-4.5 --size 4K
+npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cinematic scene" --image out.png --provider replicate --model wan-video/wan-2.7-image-pro --size 4K
 ```
+
+### Supported Families
+
+| Family | Example models | Reference images | Aspect ratio | Size handling | Notes |
+|--------|----------------|------------------|--------------|---------------|-------|
+| Nano Banana | `google/nano-banana`, `google/nano-banana-pro`, `google/nano-banana-2` | Up to 14 | Standard documented ratios | `--quality` maps to 1K/2K, `--size` can infer ratio + 1K/2K | Best default compatibility |
+| Seedream 4.5 | `bytedance/seedream-4.5` | Up to 14 | Standard documented ratios | `--size` supports `2K`, `4K`, or custom `WxH` | Good for high-resolution output |
+| Seedream 5 Lite | `bytedance/seedream-5-lite` | Up to 14 | Standard documented ratios | `--size` supports `2K` or `3K` | Simpler size presets |
+| Wan 2.7 Image | `wan-video/wan-2.7-image` | Up to 9 | `W:H` ratios converted into size | `--size` supports `1K`, `2K`, or custom `WxH` | Reference images use `images` field |
+| Wan 2.7 Image Pro | `wan-video/wan-2.7-image-pro` | Up to 9 | `W:H` ratios converted into size | `--size` supports `1K`, `2K`, `4K`, or custom `WxH` | `4K` only for text-to-image (no `--ref`) |
+
+### Replicate Notes
+
+- Current tool saves exactly one image per request, so Replicate supports `--n 1` only.
+- `--imageSize` is not used for Replicate. Use `--quality`, `--ar`, or `--size` instead.
+- Unknown Replicate models still work for prompt-only generation, but `--ref`, `--ar`, and `--size` are only guaranteed for the families listed above.
+- Documented aspect ratios shared by Nano Banana and Seedream in this tool: `1:1`, `2:3`, `3:2`, `3:4`, `4:3`, `4:5`, `5:4`, `9:16`, `16:9`, `21:9`.
 
 ## Extension Support
 

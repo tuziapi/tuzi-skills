@@ -118,7 +118,7 @@ options:
   - label: "DashScope"
     description: "Alibaba Cloud - z-image-turbo, good for Chinese content"
   - label: "Replicate"
-    description: "Community models - nano-banana-pro, flexible model selection"
+    description: "Community models - nano-banana, Seedream, Wan"
 ```
 
 ### Question 2: Default Google Model
@@ -177,6 +177,7 @@ default_provider: [selected provider or null]
 default_quality: [selected quality]
 default_aspect_ratio: null
 default_image_size: null
+default_image_api_dialect: null
 default_model:
   google: [selected google model or null]
   openai: null
@@ -210,10 +211,10 @@ options:
 header: "OpenAI Model"
 question: "Choose a default OpenAI image generation model?"
 options:
-  - label: "gpt-image-1.5 (Recommended)"
-    description: "Latest GPT Image model, high quality"
-  - label: "gpt-image-1"
-    description: "Previous generation GPT Image model"
+  - label: "gpt-image-2 (Recommended)"
+    description: "Latest GPT Image model, supports newer size rules and better gateway compatibility"
+  - label: "gpt-image-1.5"
+    description: "Previous GPT Image generation model"
 ```
 
 ### DashScope Model Selection
@@ -234,10 +235,18 @@ options:
 header: "Replicate Model"
 question: "Choose a default Replicate image generation model?"
 options:
-  - label: "google/nano-banana-pro (Recommended)"
-    description: "Google's fast image model on Replicate"
+  - label: "google/nano-banana-2 (Recommended)"
+    description: "Newest Nano Banana family model on Replicate, strong general default"
+  - label: "google/nano-banana-pro"
+    description: "Stable Nano Banana Pro default, compatible with quality + aspect-ratio flow"
   - label: "google/nano-banana"
-    description: "Google's base image model on Replicate"
+    description: "Google's base Nano Banana model on Replicate"
+  - label: "bytedance/seedream-4.5"
+    description: "High-resolution model, supports 2K/4K and custom WxH"
+  - label: "bytedance/seedream-5-lite"
+    description: "Seedream Lite model, supports 2K/3K"
+  - label: "wan-video/wan-2.7-image-pro"
+    description: "Wan image model with optional 4K text-to-image output"
 ```
 
 ### Tuzi Model Selection
@@ -258,8 +267,8 @@ options:
     description: "nano-banana-pro-4k-vip - 4K built-in, VIP"
   - label: "gemini-3-pro-image-preview"
     description: "nano-banana-pro - supports quality param (1k/2k/4k)"
-  - label: "gpt-image-1.5"
-    description: "GPT Image model, limited size options"
+  - label: "gpt-image-2"
+    description: "GPT Image model with newer size rules"
 ```
 
 ### Update EXTEND.md

@@ -1,29 +1,75 @@
 import path from "node:path";
 import { readFile } from "node:fs/promises";
-import type { CliArgs } from "../types";
+import type { CliArgs, OpenAIImageApiDialect } from "../types";
 
 export function getDefaultModel(): string {
-  return process.env.OPENAI_IMAGE_MODEL || "gpt-image-1.5";
+  return process.env.OPENAI_IMAGE_MODEL || "gpt-image-2";
 }
 
 type OpenAIImageResponse = { data: Array<{ url?: string; b64_json?: string }> };
+type SizeMapping = { square: string; landscape: string; portrait: string };
+type OpenAIGenerationsBody = Record<string, unknown>;
 
-function parseAspectRatio(ar: string): { width: number; height: number } | null {
-  const match = ar.match(/^(\d+(?:\.\d+)?):(\d+(?:\.\d+)?)$/);
-  if (!match) return null;
-  const w = parseFloat(match[1]!);
-  const h = parseFloat(match[2]!);
-  if (w <= 0 || h <= 0) return null;
-  return { width: w, height: h };
+function isGptImageModel(model: string): boolean {
+  return model.includes("gpt-image");
 }
 
-type SizeMapping = {
-  square: string;
-  landscape: string;
-  portrait: string;
-};
+function isGptImage2Model(model: string): boolean {
+  return model.includes("gpt-image-2");
+}
 
-function getOpenAISize(
+export function parseAspectRatio(ar: string): { width: number; height: number } | null {
+  const match = ar.match(/^(\d+(?:\.\d+)?):(\d+(?:\.\d+)?)$/);
+  if (!match) return null;
+
+  const width = parseFloat(match[1]!);
+  const height = parseFloat(match[2]!);
+  if (width <= 0 || height <= 0) return null;
+  return { width, height };
+}
+
+function roundToMultiple(value: number, multiple: number): number {
+  return Math.max(multiple, Math.round(value / multiple) * multiple);
+}
+
+function buildGptImage2SizeFromAspectRatio(
+  ar: string | null,
+  quality: CliArgs["quality"]
+): string {
+  const parsed = ar ? parseAspectRatio(ar) : null;
+  const ratio = parsed ? parsed.width / parsed.height : 1;
+
+  if (!parsed || Math.abs(ratio - 1) < 0.1) {
+    const edge = quality === "2k" ? 2048 : 1024;
+    return `${edge}x${edge}`;
+  }
+
+  const targetLongEdge = quality === "2k" ? 2048 : 1024;
+  let width: number;
+  let height: number;
+
+  if (ratio > 1) {
+    width = targetLongEdge;
+    height = roundToMultiple(width / ratio, 16);
+  } else {
+    height = targetLongEdge;
+    width = roundToMultiple(height * ratio, 16);
+  }
+
+  while (width * height < 655_360) {
+    if (ratio > 1) {
+      width += 16;
+      height = roundToMultiple(width / ratio, 16);
+    } else {
+      height += 16;
+      width = roundToMultiple(height * ratio, 16);
+    }
+  }
+
+  return `${width}x${height}`;
+}
+
+export function getOpenAISize(
   model: string,
   ar: string | null,
   quality: CliArgs["quality"]
@@ -33,6 +79,10 @@ function getOpenAISize(
 
   if (isDalle2) {
     return "1024x1024";
+  }
+
+  if (isGptImage2Model(model)) {
+    return buildGptImage2SizeFromAspectRatio(ar, quality);
   }
 
   const sizes: SizeMapping = isDalle3
@@ -53,11 +103,187 @@ function getOpenAISize(
   if (!parsed) return sizes.square;
 
   const ratio = parsed.width / parsed.height;
-
   if (Math.abs(ratio - 1) < 0.1) return sizes.square;
   if (ratio > 1.5) return sizes.landscape;
   if (ratio < 0.67) return sizes.portrait;
   return sizes.square;
+}
+
+function parsePixelSize(value: string): { width: number; height: number } | null {
+  const match = value.match(/^(\d+)\s*[xX]\s*(\d+)$/);
+  if (!match) return null;
+
+  const width = parseInt(match[1]!, 10);
+  const height = parseInt(match[2]!, 10);
+  if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
+    return null;
+  }
+
+  return { width, height };
+}
+
+function gcd(a: number, b: number): number {
+  let x = Math.abs(a);
+  let y = Math.abs(b);
+
+  while (y !== 0) {
+    const next = x % y;
+    x = y;
+    y = next;
+  }
+
+  return x || 1;
+}
+
+function parseImageApiDialect(value: string | null | undefined): OpenAIImageApiDialect | null {
+  if (value === "openai-native" || value === "ratio-metadata") {
+    return value;
+  }
+  return null;
+}
+
+export function getOpenAIImageApiDialect(
+  args: Pick<CliArgs, "imageApiDialect">
+): OpenAIImageApiDialect {
+  return (
+    parseImageApiDialect(args.imageApiDialect)
+    ?? parseImageApiDialect(process.env.OPENAI_IMAGE_API_DIALECT)
+    ?? "openai-native"
+  );
+}
+
+export function inferAspectRatioFromSize(size: string | null): string | null {
+  if (!size) return null;
+  const parsed = parsePixelSize(size);
+  if (!parsed) return null;
+
+  const divisor = gcd(parsed.width, parsed.height);
+  return `${parsed.width / divisor}:${parsed.height / divisor}`;
+}
+
+export function inferResolutionFromSize(size: string | null): "1K" | "2K" | "4K" | null {
+  if (!size) return null;
+  const parsed = parsePixelSize(size);
+  if (!parsed) return null;
+
+  const longestEdge = Math.max(parsed.width, parsed.height);
+  if (longestEdge <= 1024) return "1K";
+  if (longestEdge <= 2048) return "2K";
+  return "4K";
+}
+
+export function getOpenAIAspectRatio(args: Pick<CliArgs, "aspectRatio" | "size">): string {
+  return args.aspectRatio ?? inferAspectRatioFromSize(args.size) ?? "1:1";
+}
+
+export function getOpenAIResolution(
+  args: Pick<CliArgs, "imageSize" | "size" | "quality">
+): "1K" | "2K" | "4K" {
+  if (args.imageSize === "1K" || args.imageSize === "2K" || args.imageSize === "4K") {
+    return args.imageSize;
+  }
+
+  const inferred = inferResolutionFromSize(args.size);
+  if (inferred) return inferred;
+  return args.quality === "normal" ? "1K" : "2K";
+}
+
+function getOpenAIQuality(
+  model: string,
+  quality: CliArgs["quality"]
+): "standard" | "hd" | "medium" | "high" | null {
+  if (model.includes("dall-e-3")) {
+    return quality === "2k" ? "hd" : "standard";
+  }
+
+  if (isGptImageModel(model)) {
+    return quality === "2k" ? "high" : "medium";
+  }
+
+  return null;
+}
+
+export function getOrientationFromAspectRatio(ar: string): "landscape" | "portrait" | null {
+  const parsed = parseAspectRatio(ar);
+  if (!parsed) return null;
+
+  const ratio = parsed.width / parsed.height;
+  if (Math.abs(ratio - 1) < 0.1) return null;
+  return ratio > 1 ? "landscape" : "portrait";
+}
+
+export function buildOpenAIGenerationsBody(
+  prompt: string,
+  model: string,
+  args: Pick<CliArgs, "aspectRatio" | "size" | "quality" | "imageSize" | "imageApiDialect">
+): OpenAIGenerationsBody {
+  if (getOpenAIImageApiDialect(args) === "ratio-metadata") {
+    const aspectRatio = getOpenAIAspectRatio(args);
+    const metadata: Record<string, string> = {
+      resolution: getOpenAIResolution(args),
+    };
+    const orientation = getOrientationFromAspectRatio(aspectRatio);
+    if (orientation) metadata.orientation = orientation;
+
+    return {
+      model,
+      prompt,
+      size: aspectRatio,
+      metadata,
+    };
+  }
+
+  const body: OpenAIGenerationsBody = {
+    model,
+    prompt,
+    size: args.size || getOpenAISize(model, args.aspectRatio, args.quality),
+  };
+
+  const resolvedQuality = getOpenAIQuality(model, args.quality);
+  if (resolvedQuality) {
+    body.quality = resolvedQuality;
+  }
+
+  return body;
+}
+
+export function validateArgs(model: string, args: CliArgs): void {
+  if (!isGptImage2Model(model)) return;
+
+  if (args.aspectRatio && !args.size) {
+    const parsed = parseAspectRatio(args.aspectRatio);
+    if (!parsed) {
+      throw new Error(`gpt-image-2 的宽高比无效: ${args.aspectRatio}`);
+    }
+    const ratio = parsed.width / parsed.height;
+    if (Math.max(ratio, 1 / ratio) > 3) {
+      throw new Error("gpt-image-2 的宽高比不能超过 3:1。");
+    }
+  }
+
+  if (!args.size) return;
+
+  const parsedSize = parsePixelSize(args.size);
+  if (!parsedSize) {
+    throw new Error(`gpt-image-2 的 --size 无效: ${args.size}。格式应为 <width>x<height>。`);
+  }
+
+  const { width, height } = parsedSize;
+  const totalPixels = width * height;
+  const ratio = Math.max(width, height) / Math.min(width, height);
+
+  if (Math.max(width, height) > 3840) {
+    throw new Error("gpt-image-2 的 --size 最长边不能超过 3840px。");
+  }
+  if (width % 16 !== 0 || height % 16 !== 0) {
+    throw new Error("gpt-image-2 的 --size 宽高都必须是 16 的倍数。");
+  }
+  if (ratio > 3) {
+    throw new Error("gpt-image-2 的 --size 长宽比不能超过 3:1。");
+  }
+  if (totalPixels < 655_360 || totalPixels > 8_294_400) {
+    throw new Error("gpt-image-2 的总像素必须在 655,360 到 8,294,400 之间。");
+  }
 }
 
 export async function generateImage(
@@ -74,18 +300,37 @@ export async function generateImage(
     return generateWithChatCompletions(baseURL, apiKey, prompt, model);
   }
 
-  const size = args.size || getOpenAISize(model, args.aspectRatio, args.quality);
+  const imageApiDialect = getOpenAIImageApiDialect(args);
 
   if (args.referenceImages.length > 0) {
-    if (model.includes("dall-e-2") || model.includes("dall-e-3")) {
+    if (imageApiDialect !== "openai-native") {
       throw new Error(
-        "OpenAI 参考图片需要 GPT Image 模型。请使用 --model gpt-image-1.5（或其他 gpt-image 模型）。"
+        "使用参考图时暂不支持 ratio-metadata 方言。请改用 openai-native，或切换到 Google、Replicate、Tuzi 等支持参考图的后端。"
       );
     }
-    return generateWithOpenAIEdits(baseURL, apiKey, prompt, model, size, args.referenceImages, args.quality);
+    if (model.includes("dall-e-2") || model.includes("dall-e-3")) {
+      throw new Error(
+        "OpenAI 参考图片需要 GPT Image 模型。请使用 --model gpt-image-2（或其他 gpt-image 模型）。"
+      );
+    }
+
+    const size = args.size || getOpenAISize(model, args.aspectRatio, args.quality);
+    return generateWithOpenAIEdits(
+      baseURL,
+      apiKey,
+      prompt,
+      model,
+      size,
+      args.referenceImages,
+      args.quality
+    );
   }
 
-  return generateWithOpenAIGenerations(baseURL, apiKey, prompt, model, size, args.quality);
+  return generateWithOpenAIGenerations(
+    baseURL,
+    apiKey,
+    buildOpenAIGenerationsBody(prompt, model, args)
+  );
 }
 
 async function generateWithChatCompletions(
@@ -113,8 +358,8 @@ async function generateWithChatCompletions(
 
   const result = (await res.json()) as { choices: Array<{ message: { content: string } }> };
   const content = result.choices[0]?.message?.content ?? "";
-
   const match = content.match(/data:image\/[^;]+;base64,([A-Za-z0-9+/=]+)/);
+
   if (match) {
     return Uint8Array.from(Buffer.from(match[1]!, "base64"));
   }
@@ -125,17 +370,8 @@ async function generateWithChatCompletions(
 async function generateWithOpenAIGenerations(
   baseURL: string,
   apiKey: string,
-  prompt: string,
-  model: string,
-  size: string,
-  quality: CliArgs["quality"]
+  body: OpenAIGenerationsBody
 ): Promise<Uint8Array> {
-  const body: Record<string, any> = { model, prompt, size };
-
-  if (model.includes("dall-e-3")) {
-    body.quality = quality === "2k" ? "hd" : "standard";
-  }
-
   const res = await fetch(`${baseURL}/images/generations`, {
     method: "POST",
     headers: {
@@ -168,8 +404,9 @@ async function generateWithOpenAIEdits(
   form.append("prompt", prompt);
   form.append("size", size);
 
-  if (model.includes("gpt-image")) {
-    form.append("quality", quality === "2k" ? "high" : "medium");
+  const resolvedQuality = getOpenAIQuality(model, quality);
+  if (resolvedQuality) {
+    form.append("quality", resolvedQuality);
   }
 
   for (const refPath of referenceImages) {
