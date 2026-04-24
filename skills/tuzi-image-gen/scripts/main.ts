@@ -2,7 +2,7 @@ import path from "node:path";
 import process from "node:process";
 import { homedir } from "node:os";
 import { access, mkdir, readFile, writeFile } from "node:fs/promises";
-import type { CliArgs, Provider, ExtendConfig } from "./types";
+import type { CliArgs, Provider, ExtendConfig, OpenAIImageApiDialect } from "./types";
 
 function printUsage(): void {
   console.log(`用法:
@@ -20,6 +20,7 @@ function printUsage(): void {
   --size <WxH>              尺寸（如 1024x1024）
   --quality normal|2k       质量预设（默认: 2k）
   --imageSize 1K|2K|4K      图片尺寸（默认: 由 quality 决定）
+  --imageApiDialect <id>    OpenAI 兼容网关方言（openai-native|ratio-metadata）
   --ref <files...>          参考图片
   --n <count>               生成数量（默认: 1）
   --json                    JSON 输出
@@ -34,11 +35,12 @@ function printUsage(): void {
   GEMINI_API_KEY            Gemini API 密钥（GOOGLE_API_KEY 别名）
   DASHSCOPE_API_KEY         DashScope API 密钥（阿里云通义万象）
   REPLICATE_API_TOKEN       Replicate API 令牌
-  OPENAI_IMAGE_MODEL        OpenAI 默认模型（gpt-image-1.5）
+  OPENAI_IMAGE_MODEL        OpenAI 默认模型（gpt-image-2）
   GOOGLE_IMAGE_MODEL        Google 默认模型（gemini-3-pro-image-preview）
   DASHSCOPE_IMAGE_MODEL     DashScope 默认模型（z-image-turbo）
   REPLICATE_IMAGE_MODEL     Replicate 默认模型（google/nano-banana-pro）
   OPENAI_BASE_URL           自定义 OpenAI 端点
+  OPENAI_IMAGE_API_DIALECT  OpenAI 兼容网关方言（openai-native|ratio-metadata）
   OPENAI_IMAGE_USE_CHAT     使用 /chat/completions 替代 /images/generations（true|false）
   GOOGLE_BASE_URL           自定义 Google 端点
   DASHSCOPE_BASE_URL        自定义 DashScope 端点
@@ -58,6 +60,7 @@ function parseArgs(argv: string[]): CliArgs {
     size: null,
     quality: null,
     imageSize: null,
+    imageApiDialect: null,
     referenceImages: [],
     n: 1,
     json: false,
@@ -152,6 +155,15 @@ function parseArgs(argv: string[]): CliArgs {
       const v = argv[++i]?.toUpperCase();
       if (v !== "1K" && v !== "2K" && v !== "4K") throw new Error(`无效的图片尺寸: ${v}`);
       out.imageSize = v;
+      continue;
+    }
+
+    if (a === "--imageApiDialect") {
+      const v = argv[++i];
+      if (v !== "openai-native" && v !== "ratio-metadata") {
+        throw new Error(`无效的 OpenAI 图片方言: ${v}`);
+      }
+      out.imageApiDialect = v;
       continue;
     }
 
@@ -256,6 +268,10 @@ function parseSimpleYaml(yaml: string): Partial<ExtendConfig> {
         config.default_aspect_ratio = cleaned === "null" ? null : cleaned;
       } else if (key === "default_image_size") {
         config.default_image_size = value === "null" ? null : (value as "1K" | "2K" | "4K");
+      } else if (key === "default_image_api_dialect") {
+        const cleaned = value.replace(/['"]/g, "");
+        config.default_image_api_dialect =
+          cleaned === "null" ? null : (cleaned as OpenAIImageApiDialect);
       } else if (key === "default_model") {
         config.default_model = { google: null, openai: null, dashscope: null, replicate: null, tuzi: null };
         currentKey = "default_model";
@@ -300,6 +316,7 @@ function mergeConfig(args: CliArgs, extend: Partial<ExtendConfig>): CliArgs {
     quality: args.quality ?? extend.default_quality ?? null,
     aspectRatio: args.aspectRatio ?? extend.default_aspect_ratio ?? null,
     imageSize: args.imageSize ?? extend.default_image_size ?? null,
+    imageApiDialect: args.imageApiDialect ?? extend.default_image_api_dialect ?? null,
   };
 }
 
@@ -379,6 +396,7 @@ async function validateReferenceImages(referenceImages: string[]): Promise<void>
 type ProviderModule = {
   getDefaultModel: () => string;
   generateImage: (prompt: string, model: string, args: CliArgs) => Promise<Uint8Array>;
+  validateArgs?: (model: string, args: CliArgs) => void;
 };
 
 function isRetryableGenerationError(error: unknown): boolean {
@@ -457,6 +475,7 @@ async function main(): Promise<void> {
     if (provider === "tuzi") model = extendConfig.default_model.tuzi ?? null;
   }
   model = model || providerModule.getDefaultModel();
+  providerModule.validateArgs?.(model, mergedArgs);
 
   const outputPath = normalizeOutputImagePath(mergedArgs.imagePath);
 
