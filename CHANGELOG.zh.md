@@ -2,6 +2,11 @@
 
 [English](./CHANGELOG.md) | 中文
 
+## Unreleased
+
+### 新功能
+- `tuzi-doubao-seedance`：新增直接调用 Seedance 网关的技能，支持全局连接配置、多条参考媒体、本地 data URL 转换、下载和 Base64 输出。
+
 ## 1.47.1 - 2026-03-06
 
 ### 文档

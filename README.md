@@ -72,7 +72,7 @@ npx skills add tuziapi/tuzi-skills --skill "*"
 | 插件 | 说明 | 包含技能 |
 |------|------|----------|
 | **content-skills** | 内容生成和发布 | [xhs-images](#tuzi-xhs-images), [infographic](#tuzi-infographic), [cover-image](#tuzi-cover-image), [slide-deck](#tuzi-slide-deck), [comic](#tuzi-comic), [article-illustrator](#tuzi-article-illustrator), [short-video](#tuzi-short-video), [copy-polish](#tuzi-copy-polish), [post-to-x](#tuzi-post-to-x), [post-to-wechat](#tuzi-post-to-wechat) |
-| **ai-generation-skills** | AI 生成后端 | [image-gen](#tuzi-image-gen), [video-gen](#tuzi-video-gen), [danger-gemini-web](#tuzi-danger-gemini-web) |
+| **ai-generation-skills** | AI 生成后端 | [image-gen](#tuzi-image-gen), [video-gen](#tuzi-video-gen), [doubao-seedance](#tuzi-doubao-seedance), [danger-gemini-web](#tuzi-danger-gemini-web) |
 | **utility-skills** | 内容处理工具 | [url-to-markdown](#tuzi-url-to-markdown), [danger-x-to-markdown](#tuzi-danger-x-to-markdown), [compress-image](#tuzi-compress-image), [format-markdown](#tuzi-format-markdown) |
 
 ## 更新技能
@@ -760,6 +760,25 @@ AI 视频生成后端，通过兔子API支持 Veo、Sora、Kling、Seedance 等�
 | `seedance-1.5-pro` | Seedance | 5/10s | 1080p, 720p |
 
 **长视频模式**：指定 `--segments N` 后，依次生成 N 段视频，每段结束自动提取尾帧作为下一段首帧参考（保持画面连续性），最后用 ffmpeg 合并。需要安装 ffmpeg。
+
+#### tuzi-doubao-seedance
+
+直接调用兼容 `POST /v1/videos` 与 `GET /v1/videos/{task_id}` 的任意网关，支持四个豆包 Seedance 模型、多条参考图片/视频、本地媒体自动转换、视频 URL 下载和 Base64 输出。与通用 `tuzi-video-gen` 并列，适合需要固定 Seedance 模型或自定义 API URL 的场景。
+
+```bash
+# 使用全局配置（首次运行会依次询问 URL 和 Key）
+node skills/tuzi-doubao-seedance/scripts/run.mjs --configure
+
+# 生成并下载，图片和视频可重复传入
+node skills/tuzi-doubao-seedance/scripts/run.mjs \
+  --model doubao-seedance-2-5-260628 \
+  --prompt "镜头缓慢推进，主体保持一致" \
+  --image ./reference.png \
+  --video ./reference.mp4 \
+  --download
+```
+
+支持模型：`doubao-seedance-2-5-260628`、`doubao-seedance-2-0-260128`、`doubao-seedance-2-0-fast-260128`、`doubao-seedance-2-0-mini-260615`。连接信息可使用 `TUZI_API_KEY`、`TUZI_BASE_URL`，也可使用 `~/.tuzi-skills/.env` 或 `--configure` 保存的本机配置。完整说明见 [`skills/tuzi-doubao-seedance/SKILL.md`](./skills/tuzi-doubao-seedance/SKILL.md)。
 
 #### tuzi-danger-gemini-web
 

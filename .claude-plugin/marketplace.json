@@ -35,7 +35,8 @@
       "skills": [
         "./skills/tuzi-danger-gemini-web",
         "./skills/tuzi-image-gen",
-        "./skills/tuzi-video-gen"
+        "./skills/tuzi-video-gen",
+        "./skills/tuzi-doubao-seedance"
       ]
     },
     {

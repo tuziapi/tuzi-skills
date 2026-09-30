@@ -72,7 +72,7 @@ Simply tell Claude Code:
 | Plugin | Description | Skills |
 |--------|-------------|--------|
 | **content-skills** | Content generation and publishing | [xhs-images](#tuzi-xhs-images), [infographic](#tuzi-infographic), [cover-image](#tuzi-cover-image), [slide-deck](#tuzi-slide-deck), [comic](#tuzi-comic), [article-illustrator](#tuzi-article-illustrator), [short-video](#tuzi-short-video), [copy-polish](#tuzi-copy-polish), [post-to-x](#tuzi-post-to-x), [post-to-wechat](#tuzi-post-to-wechat) |
-| **ai-generation-skills** | AI-powered generation backends | [image-gen](#tuzi-image-gen), [video-gen](#tuzi-video-gen), [danger-gemini-web](#tuzi-danger-gemini-web) |
+| **ai-generation-skills** | AI-powered generation backends | [image-gen](#tuzi-image-gen), [video-gen](#tuzi-video-gen), [doubao-seedance](#tuzi-doubao-seedance), [danger-gemini-web](#tuzi-danger-gemini-web) |
 | **utility-skills** | Utility tools for content processing | [url-to-markdown](#tuzi-url-to-markdown), [danger-x-to-markdown](#tuzi-danger-x-to-markdown), [compress-image](#tuzi-compress-image), [format-markdown](#tuzi-format-markdown) |
 
 ## Update Skills
@@ -760,6 +760,25 @@ AI video generation backend via Tuzi API. Supports Veo, Sora, Kling, Seedance mo
 | `seedance-1.5-pro` | Seedance | 5/10s | 1080p, 720p |
 
 **Long Video Mode**: With `--segments N`, generates N segments sequentially, auto-extracts last frame as next segment's reference (visual continuity), then concatenates with ffmpeg. Requires ffmpeg installed.
+
+#### tuzi-doubao-seedance
+
+Directly calls any gateway compatible with `POST /v1/videos` and `GET /v1/videos/{task_id}`. Supports four Doubao Seedance models, multiple reference images/videos, automatic local media conversion, video URL downloads, and Base64 output. It complements the general `tuzi-video-gen` skill for fixed Seedance models or custom API URLs.
+
+```bash
+# Save global connection settings (asks for URL, then Key on first run)
+node skills/tuzi-doubao-seedance/scripts/run.mjs --configure
+
+# Generate and download; repeat --image/--video for multiple references
+node skills/tuzi-doubao-seedance/scripts/run.mjs \
+  --model doubao-seedance-2-5-260628 \
+  --prompt "Slow camera push-in, keep the subject consistent" \
+  --image ./reference.png \
+  --video ./reference.mp4 \
+  --download
+```
+
+Supported models: `doubao-seedance-2-5-260628`, `doubao-seedance-2-0-260128`, `doubao-seedance-2-0-fast-260128`, and `doubao-seedance-2-0-mini-260615`. Configure `TUZI_API_KEY` and `TUZI_BASE_URL`, use `~/.tuzi-skills/.env`, or run `--configure`. See [`skills/tuzi-doubao-seedance/SKILL.md`](./skills/tuzi-doubao-seedance/SKILL.md) for all options.
 
 #### tuzi-danger-gemini-web
 

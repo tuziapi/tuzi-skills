@@ -2,6 +2,11 @@
 
 English | [中文](./CHANGELOG.zh.md)
 
+## Unreleased
+
+### Features
+- `tuzi-doubao-seedance`: add a direct Seedance gateway skill with global connection settings, multiple reference media, local data URL conversion, downloads, and Base64 output.
+
 ## 1.47.1 - 2026-03-06
 
 ### Documentation
